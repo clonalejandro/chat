@@ -12,7 +12,7 @@ resetcolors(){
 
 
 checkroot(){
-    if [ "$EUID" -ne 0 ]
+    if [ $(id -u) -ne 0 ]
     then
         setcolor "\e[31m"
         echo "Please run as root user!"
@@ -49,8 +49,6 @@ mysql --defaults-extra-file=./mysql.credentials < assets/sql/init.sql
 
 # Remove the temp files
 rm -rf mysql.credentials
-
-unlink installer
 
 
 # Install node dependencies
