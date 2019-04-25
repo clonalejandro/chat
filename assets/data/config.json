@@ -1,0 +1,18 @@
+{
+	"debug": false,
+	"debug": false,
+	"port": 3000,
+	"apiKey": 54321,
+	"logo": "",
+	"webName": "chat online",
+	"description": "chat with nodejs",
+	"tagsString": "chat, online, clonalejandro, nodejs, js",
+	"email": "",
+	"webURI": "http://192.168.0.46",
+	"db": "chat",
+	"mysql": {
+		"host": "localhost",
+		"user": "root",
+		"password": "1234"
+	}
+}
