@@ -2,11 +2,14 @@
 
 const config  = require("../assets/data/config.json");
 const express = require("express");
+const flash   = require("connect-flash");
 const Color   = require("./utils/color");
 
 var SocketManager = require("./utils/socketmanager");
-var MysqlManager = require("./utils/mysqlmanager");
-var Log = require("./utils/log");
+var MysqlManager  = require("./utils/mysqlmanager");
+var Log 		  = require("./utils/log");
+var Api 		  = require("./utils/api.js");
+var ChatOrm 	  = require("./orms/chatorm");
 
 
 module.exports = class App {
@@ -19,9 +22,10 @@ module.exports = class App {
 		this.server = server;
 		
 		Log = new Log();
-		MysqlManager = new MysqlManager(App, config);
-	
-		App.MysqlManager = MysqlManager;
+		
+		App.MysqlManager = new MysqlManager(App, config);
+		App.ChatOrm = new ChatOrm(App);
+		
 		App.io = io;
 	}
 
@@ -47,6 +51,16 @@ module.exports = class App {
     }
 
 
+    /**
+     * This function check if data is null
+     * @param {*} data 
+     * @return {boolean} isNull
+     */
+    static isNull(data){
+        return data == null || data == undefined;
+    }
+	
+	
     /**
      * This function debug data passed by parameter
      * @param {*} data message
@@ -85,7 +99,53 @@ module.exports = class App {
         if(!App.isNull(err)) App.debug(err.message, "ERROR");
     }
 	
+    /**
+     * This function configure proxy server
+     * @param {*} rateLimit 
+     */
+    configureProxy(rateLimit){
+        this.server.enable("trust proxy");
 
+        const apiLimiter = rateLimit({
+            windowMs: 15 * 60 * 1000, // 15 minutes
+            max: 100, // limit each IP to 100 requests per windowMs
+            message: "Too many accounts created from this IP, please try again after an hour"
+        });
+
+        this.server.use('/api/', apiLimiter);
+    }
+	
+	
+	/**
+     * This function configure the middlewares
+     * @param {*} cookieParser cookieParser
+     * @param {*} bodyParser bodyParser
+     * @param {*} session session
+     * @param {*} passport passport
+     */
+    configureServer(cookieParser, bodyParser, session, passport){
+		const confsession = {
+			secret: "54321A",
+			resave: false,
+			saveUninitialized: false
+		};
+		
+		
+        this.server.use(cookieParser());
+        this.server.use(bodyParser.json());
+        this.server.use(bodyParser.urlencoded({extended: true}));
+        this.server.use(flash());
+        this.server.use(session(confsession));
+        this.server.use(passport.initialize());
+        this.server.use(passport.session());
+
+        //passport.serializeUser((user, done) => done(null, user._id));
+        //passport.deserializeUser((id, done) => App.UserOrm().getSchema().findById(id, (err, user) => done(err, user)));
+        
+        //Auth = new Auth(App, passport);
+    }
+	
+	
 	/**
      * This function prepare the node server
 	 */
@@ -94,7 +154,7 @@ module.exports = class App {
 		this.http.listen(config.port, () => {
 			App.debug("The server has been started!");
 			App.debug(`The server is listening the port: ${config.port}`);
-		})
+		});
 	}
 	
 		
@@ -106,5 +166,11 @@ module.exports = class App {
 		SocketManager.registerListeners();		
 	}
 
-
+	
+	/**
+	 * This function prepare all api
+	 */
+	prepareApi(){
+		Api = new Api(App, this.server)
+	}
 }
