@@ -58,7 +58,7 @@ module.exports = class App {
 
         Log.write(prefix + prompt + data + "\n");
 
-		if (!config.debug) return;
+	if (!config.debug) return;
 
         if (prefix.includes("ERROR")) console.log(Color.FgRed + prefix + Color.FgMagenta + prompt + Color.Reset + data);
         else if (prefix.includes("ALERT")) console.log(Color.FgYellow + prefix + Color.FgMagenta + prompt + Color.Reset + data);
