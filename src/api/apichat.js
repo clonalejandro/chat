@@ -27,7 +27,7 @@ module.exports = class ApiChat {
 	
 	/**
      * This function prepare the route for create chat in the api
-	 * requeriments for the request: (nameChat, userId)
+	 * requeriments for the request: (name, userId)
      */
 	createChat(){
 		this.server.post('/api/create-chat', (req, res) => {
@@ -49,7 +49,7 @@ module.exports = class ApiChat {
 	
 	/**
 	 * This function prepare the route for delete chat in the api
-	 * requeriments for the request: (id || nameChat)
+	 * requeriments for the request: (id || name)
 	 */
 	deleteChat(){
 		this.server.post('/api/delete-chat', (req, res) => {
@@ -76,7 +76,7 @@ module.exports = class ApiChat {
 	
 	/**
 	 * This function prepare the route for update chat in the api
-	 * requeriments for the request: (id || nameChat) and new nameChat
+	 * requeriments for the request: ((id || name), newname)
 	 */
 	updateChat(){
 		this.server.post('/api/update-chat', (req, res) => {

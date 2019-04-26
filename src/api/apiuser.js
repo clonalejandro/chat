@@ -18,28 +18,30 @@ module.exports = class ApiUser {
 	 * This function register all apiuser routes
 	 */
 	register(){
-		deleteUser();
-		updateUser();
+		this.deleteUser();
+		this.updateUser();
+		
+		this.App.debug("Register all apiuser routes", this.prefix);
 	}
 	
 	
 	/**
 	 * This function prepare the route for delete chat in the api
-	 * requeriments for the request: (id || nameUser)
+	 * requeriments for the request: (id || username)
 	 */
 	deleteUser(){
 		this.server.post('/api/delete-user', (req, res) => {
 			try {
 				const bind = {
 					id: req.body.id,
-					name: req.body.name
+					username: req.body.username
 				};
 				
 				if (!this.App.isNull(bind.id)) this.App.UserOrm.deleteById({
 					id: bind.id
 				});
 				else this.App.UserOrm.deleteByName({
-					name: bind.name
+					username: bind.username
 				})
 			}
 			catch (err){
@@ -49,26 +51,27 @@ module.exports = class ApiUser {
 		})
 	}
 	
+	
 	/**
 	 * This function prepare the route for update user in the api
-	 * requeriments for the request: (id || nameUser) and new nameUser
+	 * requeriments for the request: ((id || username), newusername)
 	 */
 	updateUser(){
 		this.server.post('/api/update-user', (req, res) => {
 			try {
 				const bind = {
 					id: req.body.id,
-					name: req.body.name,
-					newname: req.body.newname
+					username: req.body.username,
+					newusername: req.body.newusername
 				};
 				
 				if (!this.App.isNull(bind.id)) this.App.UserOrm.updateById({
 					id: bind.id,
-					newname: bind.newname
+					newname: bind.newusername
 				});
 				else this.App.UserOrm.updateByName({
-					name: bind.name,
-					newname: bind.newname
+					username: bind.username,
+					newusername: bind.newusername
 				})
 			}
 			catch (err){

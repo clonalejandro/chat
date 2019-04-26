@@ -1,4 +1,4 @@
-/** IMPORTS **/
+﻿/** IMPORTS **/
 
 const config  = require("../assets/data/config.json");
 const express = require("express");
@@ -10,6 +10,8 @@ var MysqlManager  = require("./utils/mysqlmanager");
 var Log 		  = require("./utils/log");
 var Api 		  = require("./utils/api.js");
 var ChatOrm 	  = require("./orms/chatorm");
+var UserOrm 	  = require("./orms/userorm");
+var MessageOrm	  = require("./orms/messageorm");
 
 
 module.exports = class App {
@@ -18,15 +20,18 @@ module.exports = class App {
 	/** SMALL CONSTRUCTORS **/
 	
 	constructor(http, server, io){
-		this.http = http;
-		this.server = server;
+        this.http = http;
+        this.server = server;
 		
-		Log = new Log();
+        Log = new Log();
 		
-		App.MysqlManager = new MysqlManager(App, config);
-		App.ChatOrm = new ChatOrm(App);
+        App.MysqlManager = new MysqlManager(App, config);
 		
-		App.io = io;
+        App.ChatOrm = new ChatOrm(App);
+		App.UserOrm = new UserOrm(App);
+		App.MessageOrm = new MessageOrm(App);
+		
+        App.io = io;
 	}
 
 	
@@ -63,16 +68,18 @@ module.exports = class App {
 	
     /**
      * This function debug data passed by parameter
-     * @param {*} data message
+     * @param {String || Object} data message to debug
+	 * @param {String} type
      */
-    static debug(data, type = "NORMAL"){
-        data instanceof Object ? data = JSON.stringify(data) : data = data;
-        const prefix = "[" + type + "]";
+    static debug(data, type = "INFO"){
+		const prefix = `[ ${type} ]`;
         const prompt = " ⇒ ";
+        
+		data instanceof Object ? data = JSON.stringify(data) : data = data;
 
-        Log.write(prefix + prompt + data + "\n");
+		Log.write(prefix + prompt + data + "\n");
 
-	if (!config.debug) return;
+        if (!config.debug) return;
 
         if (prefix.includes("ERROR")) console.log(Color.FgRed + prefix + Color.FgMagenta + prompt + Color.Reset + data);
         else if (prefix.includes("ALERT")) console.log(Color.FgYellow + prefix + Color.FgMagenta + prompt + Color.Reset + data);
@@ -124,7 +131,7 @@ module.exports = class App {
      * @param {*} passport passport
      */
     configureServer(cookieParser, bodyParser, session, passport){
-		const confsession = {
+		const configSession = {
 			secret: "54321A",
 			resave: false,
 			saveUninitialized: false
@@ -135,7 +142,7 @@ module.exports = class App {
         this.server.use(bodyParser.json());
         this.server.use(bodyParser.urlencoded({extended: true}));
         this.server.use(flash());
-        this.server.use(session(confsession));
+        this.server.use(session(configSession));
         this.server.use(passport.initialize());
         this.server.use(passport.session());
 

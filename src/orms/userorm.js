@@ -20,7 +20,7 @@ module.exports = class UserOrm {
 	 * @param data {Object} data is the name of the user and the password of the user
 	 */
 	create(data){
-		this.con.query(`INSERT INTO ${props.table} VALUES (NULL, "${data.name}", "${data.password}")`, (err, res) => {
+		this.con.query(`INSERT INTO ${props.table} VALUES (NULL, "${data.username}", "${data.password}")`, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Creating user with: ${data}`, this.props.prefix)
 		})
@@ -44,7 +44,7 @@ module.exports = class UserOrm {
 	 * @param data {Object} data is the name of the user
 	 */
 	deleteByName(data){
-		this.con.query(`DELETE FROM ${props.table} WHERE name="${data.name}"`, (err, res) => {
+		this.con.query(`DELETE FROM ${props.table} WHERE username="${data.username}"`, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Deleting user with: ${data}`, this.props.prefix)
 		})
@@ -56,7 +56,7 @@ module.exports = class UserOrm {
 	 * @param data {Object} data is the id of the user and newname of the user
 	 */
 	updateById(data){
-		this.con.query(`UPDATE ${props.table} SET name="${data.newname}" WHERE id=${data.id}`, (err, res) => {
+		this.con.query(`UPDATE ${props.table} SET username="${data.newusername}" WHERE id=${data.id}`, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Updating user with: ${data}`, this.props.prefix)
 		})
@@ -68,7 +68,7 @@ module.exports = class UserOrm {
 	 * @param data {Object} data is the name of the user and newname of the user
 	 */
 	updateByName(data){
-		this.con.query(`UPDATE ${props.table} SET name="${data.newname}" WHERE id=${data.id}`, (err, res) => {
+		this.con.query(`UPDATE ${props.table} SET username="${data.newusername}" WHERE username="${data.username}"`, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Updating user with: ${data}`, this.props.prefix)
 		})
