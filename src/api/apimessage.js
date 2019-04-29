@@ -22,7 +22,7 @@ module.exports = class ApiMessage {
 		this.deleteMessage();
 		this.updateMessage();
 		
-		this.App.debug("Register all apimessage routes", this.prefix);
+		this.App.debug("Register all apimessage routes", this.prefix)
 	}
 	
 	
@@ -35,10 +35,9 @@ module.exports = class ApiMessage {
 			const date = new Date();
 			const dateFormat = n => {
 				n = n.toString();
-				if (n.length < 2) n = `0${n}`;
-				return n;
+				return n.length < 2 ? `0${n}` : n;
 			};
-			
+
 			return `${date.getFullYear()}-${dateFormat(date.getMonth())}-${dateFormat(date.getDate())} ${dateFormat(date.getHours())}:${dateFormat(date.getMinutes())}:${dateFormat(date.getSeconds())}`;
 		};
 		

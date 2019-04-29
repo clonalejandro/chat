@@ -8,7 +8,7 @@ module.exports = class ChatOrm {
 		this.con = App.MysqlManager.con;
 		this.props = {
 			prefix: "CHAT-ORM",
-			table: "CHATS"
+			table: `${this.App.config.db}.CHATS`
 		};
 	}
 	
@@ -17,61 +17,81 @@ module.exports = class ChatOrm {
 	
 	/**
 	 * This function create a chat in database
-	 * @param data {Object} data is the name of chat and userId associated
+	 * @param {Object} data is the name of chat and userId associated
+	 * @param {*} callback
 	 */
-	create(data){
-		this.con.query(`INSERT INTO ${props.table} VALUES (NULL, "${data.name}", ${data.userId})`, (err, res) => {
+	create(data, callback = undefined){
+		const query = `INSERT INTO ${this.props.table} VALUES (NULL, "${data.name}", ${data.userId})`;
+		
+		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Creating chat with: ${data}`, this.props.prefix)
-		})
+		});
+		else this.con.query(query, callback)
 	}
 	
 	
 	/**
 	 * This function update a chat name in database
-	 * @param data {Object} data is the id of chat and the newname of the chat
+	 * @param {Object} data is the id of chat and the newname of the chat
+	 * @param {*} callback
 	 */
-	updateById(data){
-		this.con.query(`UPDATE ${props.table} SET name="${data.newname}" WHERE id=${data.id}`, (err, res) => {
+	updateById(data, callback = undefined){
+		const query = `UPDATE ${this.props.table} SET name="${data.newname}" WHERE id=${data.id}`;
+		
+		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Updating chat with: ${data}`, this.props.prefix)
-		})
+		});
+		else this.con.query(query, callback)
 	}
 	
 	
 	/**
 	 * This function update a chat name in database
-	 * @param data {Object} data is the name of chat and the newname of the chat
+	 * @param {Object} data is the name of chat and the newname of the chat
+	 * @param {*} callback
 	 */
-	updateByName(data){
-		this.con.query(`UPDATE ${props.table} SET name="${data.newname}" WHERE name="${data.name}"`, (err, res) => {
+	updateByName(data, callback = undefined){
+		const query = `UPDATE ${this.props.table} SET name="${data.newname}" WHERE name="${data.name}"`;
+		
+		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Updating chat with: ${data}`, this.props.prefix)
-		})
+		});
+		else this.con.query(query, callback)
 	}
 	
 	
 	/**
 	 * This function delete a chat in database
-	 * @param data {Object} data is the name of chat
+	 * @param {Object} data is the name of chat
+	 * @param {*} callback
 	 */
-	deleteByName(data){
-		this.con.query(`DELETE FROM ${props.table} WHERE name="${data.name}"`, (err, res) => {
+	deleteByName(data, callback = undefined){
+		const query = `DELETE FROM ${this.props.table} WHERE name="${data.name}"`;
+		
+		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
 			else this.App.debug(`Deleting chat with: ${data}`, this.props.prefix)
-		})
+		});
+		else this.con.query(query, callback)
 	}
 	
 
 	/**
 	 * This function delete a chat in database
-	 * @param data {Object} data is the id of chat
+	 * @param {Object} data is the id of chat
+	 * @param {*} callback
 	 */
-	deleteById(data){
-		this.con.query(`DELETE FROM ${props.table} WHERE id=${data.id}`, (err, res) => {
+	deleteById(data, callback = undefined){
+		const query = `DELETE FROM ${this.props.table} WHERE id=${data.id}`;
+		
+		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err)
 			else this.App.debug(`Deleting chat with: ${data}`, this.props.prefix)
-		})
+		});
+		else this.con.query(query, callback)
 	}
 
 	

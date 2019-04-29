@@ -29,7 +29,7 @@ checkroot
 
 # Main vars
 debug="none"
-fileconfig="assets/data/config.json"
+fileconfig="../data/config.json"
 
 
 # Reset the last config
@@ -49,6 +49,9 @@ read -p "Website description: " description
 read -p "Website tags separated by comas: " tags
 read -p "Contact email: " email
 read -p "Website URL: " weburi
+read -p "Session secret key: " secret
+read -p "Session resave: " resave
+read -p "Session save uninitialized: " saveunitialized
 read -p "MySQL host: " host
 read -p "MySQL user: " user
 read -p "MySQL password: " password
@@ -68,6 +71,11 @@ echo "	\"tagsString\": \"$tags\"," >> $fileconfig
 echo "	\"email\": \"$email\"," >> $fileconfig
 echo "	\"webURI\": \"$weburi\"," >> $fileconfig
 echo "	\"db\": \"chat\"," >> $fileconfig
+echo "  \"session\": {" >> $fileconfig
+echo "		\"secret\": \"$secret\"," >> $fileconfig
+echo "		\"resave\": $resave," >> $fileconfig
+echo "		\"saveUninitialized\": $saveunitialized" >> $fileconfig
+echo "  }," >> $fileconfig
 echo "	\"mysql\": {" >> $fileconfig
 echo "		\"host\": \"$host\"," >> $fileconfig
 echo "		\"user\": \"$user\"," >> $fileconfig

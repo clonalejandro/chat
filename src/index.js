@@ -1,15 +1,15 @@
 /** IMPORTS **/
 
-const express 	   = require("express");
-const rateLimit    = require("express-rate-limit");
+const express 	   = require('express');
+const rateLimit    = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
-const session      = require("express-session");
-const passport     = require("passport");
+const session      = require('express-session');
+const passport     = require('passport');
 const server  	   = express();
-const http    	   = require("http").Server(server);
-const io      	   = require("socket.io")(http);
-const App     	   = require("./app");
+const http    	   = require('http').Server(server);
+const io      	   = require('socket.io')(http);
+const App     	   = require('./app');
 const manager 	   = new App(http, server, io);
 
 

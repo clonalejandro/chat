@@ -44,7 +44,7 @@ module.exports = class Log {
 	
 	
 	/**
-	 * @param text {String}
+	 * @param {String} text
      * This function writes in the log
 	 */
 	write(text){
