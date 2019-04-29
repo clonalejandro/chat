@@ -20,6 +20,11 @@ function createLogName(){
 }
 
 
+function createLogDir(dir){
+	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+}
+
+
 module.exports = class Log {
 
 
@@ -28,6 +33,8 @@ module.exports = class Log {
 	constructor(logDir){
 		this.name = createLogName();
 		this.logDir = __dirname + "/../../logs/";
+		
+		createLogDir(this.logDir);
 		this.create();
 	}
 
