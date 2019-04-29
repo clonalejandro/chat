@@ -1,12 +1,13 @@
 var socket;
 var author = getAuthor();
+var waiting = false;
 const tasks = new Array();
 
 
 /** TASKS **/
 
 /**
- * 
+ * This task check if connection is ended for reconnect this
  * @return task {*}
  */
 const connectionChecker = () => {
@@ -16,6 +17,16 @@ const connectionChecker = () => {
 			console.log("Trying to reconnect to the socket server")
 		}
 	}, 2000)
+};
+
+
+/**
+ * This task create a delay for resubmit the chat form
+ */
+const submitDelay = () => {
+	setTimeout(() => {
+		waiting = false	
+	}, 2500)
 };
 
 
@@ -48,6 +59,24 @@ function $(query){
  */
 function isNull(element){
 	return element == undefined || element == null || element == ""
+}
+
+
+/**
+ * This function clear the textarea for write in the chat
+ */
+function clearInput(){
+	setTimeout(() => {
+		$("[name=msg]")[0].value = ""
+	}, 100)
+}
+
+
+/**
+ * This function clear the chat
+ */
+function clearChat(){
+	$("#messages")[0].innerHTML = ""
 }
 
 
@@ -127,7 +156,16 @@ $("#submiter")[0].addEventListener('click', e => {
 		msg: $("[name=msg]")[0].value
 	};
 	
+	if (waiting){
+		alert("Wait two seconds for send the next message");
+		return;
+	}
+	
 	if (isNull(message.msg)) return;//For prevent the message is empty
 
-	socket.emit('send-message', message)
-});
+	socket.emit('send-message', message);
+	clearInput();
+
+	waiting = true;
+	submitDelay()
+})

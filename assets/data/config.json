@@ -9,14 +9,16 @@
 	"tagsString": "chat, online, clonalejandro, nodejs, js",
 	"email": "",
 	"webURI": "http://192.168.0.46",
-	"db": "chat",
 	"session": {
 		"secret": "54321A",
 		"resave": false,
 		"saveUninitialized": false
 	},
 	"mysql": {
+		"supportBigNumbers": true,
+		"bigNumberStrings": true,
 		"host": "localhost",
+		"database": "chat",
 		"user": "root",
 		"password": "1234"
 	}

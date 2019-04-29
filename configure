@@ -53,6 +53,7 @@ read -p "Session secret key: " secret
 read -p "Session resave: " resave
 read -p "Session save uninitialized: " saveunitialized
 read -p "MySQL host: " host
+read -p "MySQL database: " database
 read -p "MySQL user: " user
 read -p "MySQL password: " password
 
@@ -70,14 +71,16 @@ echo "	\"description\": \"$description\"," >> $fileconfig
 echo "	\"tagsString\": \"$tags\"," >> $fileconfig
 echo "	\"email\": \"$email\"," >> $fileconfig
 echo "	\"webURI\": \"$weburi\"," >> $fileconfig
-echo "	\"db\": \"chat\"," >> $fileconfig
 echo "  \"session\": {" >> $fileconfig
 echo "		\"secret\": \"$secret\"," >> $fileconfig
 echo "		\"resave\": $resave," >> $fileconfig
 echo "		\"saveUninitialized\": $saveunitialized" >> $fileconfig
 echo "  }," >> $fileconfig
 echo "	\"mysql\": {" >> $fileconfig
+echo "		\"supportBigNumbers\": true," >> $fileconfig 
+echo "		\"bigNumberStrings\": true," >> $fileconfig
 echo "		\"host\": \"$host\"," >> $fileconfig
+echo "		\"database\": \"$database\"," >> $fileconfig
 echo "		\"user\": \"$user\"," >> $fileconfig
 echo "		\"password\": \"$password\"" >> $fileconfig
 echo "	}" >> $fileconfig
