@@ -8,7 +8,7 @@ module.exports = class ChatOrm {
 		this.con = App.MysqlManager.con;
 		this.props = {
 			prefix: "CHAT-ORM",
-			table: `${this.App.config.db}.CHATS`
+			table: `${this.App.config.mysql.database}.CHATS`
 		};
 	}
 	

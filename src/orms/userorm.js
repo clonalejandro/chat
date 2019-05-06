@@ -8,7 +8,7 @@ module.exports = class UserOrm {
 		this.con = App.MysqlManager.con;
 		this.props = {
 			prefix: "USER-ORM",
-			table: `${this.App.config.db}.USERS`
+			table: `${this.App.config.mysql.database}.USERS`
 		};
 	}
 	

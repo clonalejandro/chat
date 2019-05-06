@@ -154,8 +154,8 @@ module.exports = class App {
         this.server.use(passport.initialize());
         this.server.use(passport.session());
 
-        passport.serializeUser((user, done) => done(null, user.id));
-        passport.deserializeUser((id, done) => App.UserOrm.getByPk({id: id}, (err, rows) => done(err, rows[0])));
+        passport.serializeUser((user, done) => done(null, user.username));
+        passport.deserializeUser((username, done) => App.UserOrm.getByUserName({username: username}, (err, rows) => done(err, rows[0])));
        
         Auth = new Auth(App, passport)
     }
@@ -165,6 +165,7 @@ module.exports = class App {
      * This function prepare the node server
 	 */
 	prepareServer(){
+		this.server.use('/assets', express.static( __dirname + "/../public/assets/"));
 		this.server.set('views', 'views');
         this.server.set('view engine', 'pug');
 		

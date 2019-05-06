@@ -8,7 +8,7 @@ module.exports = class MessageOrm {
 		this.con = App.MysqlManager.con;
 		this.props = {
 			prefix: "MESSAGE-ORM",
-			table: `${this.App.config.db}.MESSAGES`
+			table: `${this.App.config.mysql.database}.MESSAGES`
 		};
 	}
 	

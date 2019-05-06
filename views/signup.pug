@@ -1,0 +1,93 @@
+doctype html
+html
+	head
+		- var author = "clonalejandro"
+		- var twitter = "clonalejandro11"
+		- var title = `Sign Up`
+		
+		meta(name="DC.title", content=`${title}`)
+		meta(property="og:title", content=`${title}`)
+		meta(name="twitter:title", content=`${title}`)
+		meta(charset="utf-8")
+		meta(lang="es")
+		meta(http-equiv="Content-Language", content="en")
+		meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+		meta(name="description", content=`${description}`)
+		meta(name="keywords", content=`${tagsString}`)
+		meta(name="author", content=`${author}`)
+		link(rel="apple-touch-icon", sizes="120x120", alt=`${title}`, href=`${logo}?size=120`)
+		link(rel="apple-touch-icon", sizes="152x152", alt=`${title}`, href=`${logo}?size=152`)
+		link(rel="icon", href=`${logo}`, alt=`${title}`, type="image/png")
+		link(rel="shortcut icon", href=`${logo}`, alt=`${title}`, type="image/png")
+		meta(name="robots", content="all")
+		meta(name="distribution", content="global")
+		meta(name="google", content="translate")
+		meta(name="DC.creator", content=`${author}`)
+		meta(name="DC.description", content=`${description}`)
+		meta(property="og:description", content=`${description}`)
+		meta(property="og:type", content="website")
+		meta(property="og:url", content=`${webURI}`)
+		meta(property="og:image", content=`${logo}`)
+		meta(property="og:site_name", content=`${title}`)
+		meta(name="twitter:card", content="summary")
+		meta(name="twitter:site", content=`${twitter}`)
+		meta(name="twitter:description", content=`${description}`)
+		meta(name="twitter:image", content=`${logo}`)
+		meta(name="twitter:url", content=`${webURI}`)
+		meta(name="generator", content="clonacms")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0, shrink-to-fit=no")
+		meta(name="theme-color", content="#000000")
+		
+		title #{title}
+		
+		//Cookies
+		link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css")
+		script(async, src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js")
+		script.
+			window.addEventListener("load", function(){
+			window.cookieconsent.initialise({
+				"palette": {
+					"popup": {
+						"background": "#3c404d",
+						"text": "#d6d6d6"
+					},
+					
+					"button": {
+						"background": "transparent",
+						"text": "#8bed4f",
+						"border": "#8bed4f"
+					}
+				},
+				"position": "bottom-right",
+				"content": {
+					"dismiss": "Let's go",
+					"href": "/tos"
+				}
+			})});
+			
+		//Bootstrap
+		link(rel='stylesheet', href="https://bootswatch.com/4/materia/bootstrap.min.css")
+		link(rel='stylesheet', href="assets/css/auth.css")
+		body
+			
+			div#wrapper
+				if msg
+					div.alert.alert-danger.alert-dismissible
+						button.close(type="button", data-dismiss="alert") &times;
+						strong Oh an error has occurred
+						p The error trace is: #{msg}
+				header
+					img(src="https://avatars3.githubusercontent.com/u/20615143?v=3&s=460")
+				div.container
+					form(action="/signup", method="post")
+						div.form-group
+							input.form-control(placeholder="Username", name="username", required)
+						div.form-group
+							input.form-control(placeholder="Password", minlength=6, name="password", type="password", required)
+						div.form-group
+							input.form-control(placeholder="Age", type="number", min=18, name="age")
+						button.btn.btn-info Sign Up 
+						div.help
+							p I have an a account go to 
+								a(href="login") this
+			include helpers/js.pug

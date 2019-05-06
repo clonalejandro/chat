@@ -36,7 +36,7 @@ module.exports = class Router {
 	 * This function render all routes
 	 */
 	render(){
-		this.renderMainRoutes();
+		//this.renderMainRoutes();
 		this.renderRegister();
 		this.renderLogin();
 		this.renderPanel();
@@ -74,8 +74,10 @@ module.exports = class Router {
 				if (req.isAuthenticated()) res.redirect('/logout');
 				else {
 					const tempConfig = getSecureConfig();
-					tempConfig.message = req.flash('message');
-					
+					const msg = req.flash('msg');
+				
+					tempConfig.msg = (!msg.length || this.App.isNull(msg)) ? undefined : msg;
+				
 					res.render('signup', tempConfig)
 				}
 			}
@@ -86,7 +88,7 @@ module.exports = class Router {
 		});
 		
 		this.server.post('/signup', this.passport.authenticate('signup', {
-			successRedirect: '/panel',
+			successRedirect: '/',
 			failureRedirect: '/signup',
 			failureFlash: true
 		}));
@@ -102,7 +104,9 @@ module.exports = class Router {
 		this.server.get('/login', this.preventRelogin, (req, res) => {
 			try {
 				const tempConfig = getSecureConfig();
-				tempConfig.message = req.flash('message');
+				const msg = req.flash('msg');
+				
+				tempConfig.msg = (!msg.length || this.App.isNull(msg)) ? undefined : msg;
 				
 				res.render('login', tempConfig)
 			}
@@ -113,7 +117,7 @@ module.exports = class Router {
 		});
 		
 		this.server.post('/login', this.passport.authenticate('login', {
-			successRedirect: '/panel',
+			successRedirect: '/',
 			failureRedirect: '/login',
 			failureFlash: true
 		}));
@@ -143,13 +147,13 @@ module.exports = class Router {
      * This function render the panel route and the panel view
      */
 	renderPanel(){
-		this.server.get('/panel',  this.isAuthenticated, (req, res) => {
+		this.server.get('/',  this.isAuthenticated, (req, res) => {
 			try {
-				res.render('panel', {
-					username: req.user.username,
-					apiKey: config.apiKey,
-					email: config.email
-				})
+				const tempConfig = getSecureConfig();
+
+				tempConfig.username = req.user.username;
+				
+				res.render('panel', tempConfig)
 			}
 			catch (err){
 				this.App.throwAlert(err);
