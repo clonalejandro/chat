@@ -24,7 +24,7 @@ module.exports = class TaskTimer {
 		
 		tasks.map((e, index) => {
 			if (e.name == this.props.name) 
-				delete this.tasks[index];
+				delete App.tasks[index];
 		})
 	}
 }
