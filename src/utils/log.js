@@ -1,7 +1,6 @@
 /** IMPORTS **/
 
-const fs   = require('fs');
-const Math = require('./math');
+const fs   = require("fs");
 
 
 /** FUNCTIONS **/ 
@@ -21,16 +20,21 @@ function createLogName(){
 }
 
 
+function createLogDir(dir){
+	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+}
+
+
 module.exports = class Log {
 
 
 	/** SMALL CONSTRUCTORS **/
 
-	constructor(App, logDir){
+	constructor(logDir){
 		this.name = createLogName();
 		this.logDir = __dirname + "/../../logs/";
 		
-		this.createLogDir();
+		createLogDir(this.logDir);
 		this.create();
 	}
 
@@ -41,7 +45,7 @@ module.exports = class Log {
 	create(){
 		fs.writeFile(this.logDir + this.name, '', err => {
 			if (err) throw err;
-			else console.log(`New log started wich name is ${this.name}`)
+			else console.log("Log started!")
 		})
 	}
 	
@@ -55,35 +59,6 @@ module.exports = class Log {
 			if (err) throw err
 		})
 	}
-	
-	
-	/**
-	 * This function creates a logDir
-	 */
-	createLogDir(dir = this.logDir){
-		if (!fs.existsSync(dir)) fs.mkdirSync(dir)
-	}
 
-	
-	/**
-	 * This function rotate the log
-	 */
-	logRotate(){
-		const log = this.logDir + this.name;
-		const size = Math.bytesToMegas(
-			fs.statSync(log).size
-		);
-			
-		if (size >= 1024){
-			const newName = createLogName();
-			const lastName = this.name;
-				
-			this.write(`\nRotating this log to: "${newName}"`);
-				
-			this.name = newName;
-				
-			this.create();
-			this.write(`Log rotated from: ${lastName}`)
-		}
-	}
+
 }

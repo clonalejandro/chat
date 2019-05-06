@@ -25,7 +25,7 @@ module.exports = class ChatOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Creating chat with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Creating chat with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -41,7 +41,7 @@ module.exports = class ChatOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Updating chat with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -57,7 +57,7 @@ module.exports = class ChatOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Updating chat with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -73,7 +73,7 @@ module.exports = class ChatOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Deleting chat with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -89,7 +89,7 @@ module.exports = class ChatOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err)
-			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Deleting chat with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}

@@ -25,7 +25,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Creating message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Creating message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -41,7 +41,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Deleting message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -59,7 +59,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Deleting message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -75,7 +75,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Deleting message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -91,7 +91,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Updating message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -109,7 +109,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Updating message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -125,7 +125,7 @@ module.exports = class MessageOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
+			else this.App.debug(`Updating message with: ${data}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}

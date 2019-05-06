@@ -1,7 +1,7 @@
 /** IMPORTS **/
 
-const bCrypt = require('bcrypt-nodejs');
-const LocalStrategy = require('passport-local').Strategy;
+const bCrypt = require("bcrypt-nodejs");
+const LocalStrategy = require("passport-local").Strategy;
 
 
 module.exports = class Auth {
@@ -39,12 +39,12 @@ module.exports = class Auth {
 			}
 
 			if (!rows.length){
-				this.App.debug(`User not found: ${JSON.stringify(req)}`, prefix);
+				this.App.debug(`User not found: ${req}`, prefix);
 				return done(null, false, req.flash('msg', 'User not found!'))
 			}			
 			
 			if (!this.isValidPassword(rows[0], password)){
-				this.debug(`Wrong password: ${JSON.stringify(req)}`, prefix);
+				this.debug(`Wrong password: ${req}`, prefix);
 				return done(null, false, req.flash('msg', 'Oops! Wrong password.'))
 			}
 			
@@ -69,7 +69,7 @@ module.exports = class Auth {
 				}
 				
 				if (rows.length){
-					this.debug(`The username is alredy taken: ${JSON.stringify(req)}`, prefix);
+					this.debug(`The username is alredy taken: ${req}`, prefix);
 					return done(null, false, req.flash('msg', 'That username is already taken.'))
 				}
 				
