@@ -2,13 +2,17 @@
 
 const config  = require('../assets/data/config.json');
 const express = require('express');
+const path    = require('path');
 const flash   = require('connect-flash');
 const Color   = require('./utils/color');
+const TaskTimer    = require('./utils/tasktimer');
+const Math    = require('./utils/math');
 
 var SocketManager = require('./utils/socketmanager');
 var MysqlManager  = require('./utils/mysqlmanager');
 var Log 		  = require('./utils/log');
 var Api 		  = require('./utils/api');
+var Router		  = require('./utils/router');
 var Auth 		  = require('./utils/auth');
 var ChatOrm 	  = require('./orms/chatorm');
 var UserOrm 	  = require('./orms/userorm');
@@ -31,6 +35,7 @@ module.exports = class App {
         App.ChatOrm = new ChatOrm(App);
 		App.UserOrm = new UserOrm(App);
 		App.MessageOrm = new MessageOrm(App);
+		App.tasks = new Array();
 		
         App.io = io;
 	}
@@ -53,7 +58,7 @@ module.exports = class App {
         while (data.includes(charToReplace))
             data = data.replace(charToReplace, newChar);
 
-        return data;
+        return data
     }
 
 
@@ -63,7 +68,7 @@ module.exports = class App {
      * @return {boolean} isNull
      */
     static isNull(data){
-        return data == null || data == undefined;
+        return data == null || data == undefined
     }
 	
 	
@@ -76,7 +81,7 @@ module.exports = class App {
 		const prefix = `[${type}]`;
         const prompt = " ⇒ ";
         
-		data instanceof Object ? data = JSON.stringify(data) : data = data;
+		data = (data instanceof Object ? JSON.stringify(data) : data);
 
 		Log.write(`${prefix}${prompt}${data}\n`);
 
@@ -129,7 +134,7 @@ module.exports = class App {
             message: "Too many requests created from this IP, please try again after an hour"
         })
 
-        this.server.use('/api/', apiLimiter);
+        this.server.use('/api/', apiLimiter)
     }
 	
 	
@@ -152,7 +157,7 @@ module.exports = class App {
         passport.serializeUser((user, done) => done(null, user.id));
         passport.deserializeUser((id, done) => App.UserOrm.getByPk({id: id}, (err, rows) => done(err, rows[0])));
        
-        Auth = new Auth(App, passport);
+        Auth = new Auth(App, passport)
     }
 	
 	
@@ -160,20 +165,22 @@ module.exports = class App {
      * This function prepare the node server
 	 */
 	prepareServer(){
-		this.server.use(express.static('public'));
+		this.server.set('views', 'views');
+        this.server.set('view engine', 'pug');
+		
 		this.http.listen(config.port, () => {
 			App.debug("The server has been started!");
 			App.debug(`The server is listening the port: ${config.port}`)
-		});
+		})
 	}
 	
-		
+	
 	/**
      * This function register all listeners for the sockets and eneable this
      */
 	prepareSockets(){
 		SocketManager = new SocketManager(App);
-		SocketManager.registerListeners();		
+		SocketManager.registerListeners()	
 	}
 
 	
@@ -182,5 +189,25 @@ module.exports = class App {
 	 */
 	prepareApi(){
 		Api = new Api(App, this.server)
+	}
+	
+	
+	/**
+	 * This function prepare main routes
+	 * @param {*} passport
+	 */
+	prepareRoutes(passport){
+		Router = new Router(App, this.server, passport);
+		Router.render();
+	}
+	
+	
+	/**
+	 * This function start the task for the logRotate
+	 */
+	startLogRotate(){
+		new TaskTimer(App, 'Log rotate', () => {
+			Log.logRotate()
+		}, Math.hoursToMilis(1))
 	}
 }

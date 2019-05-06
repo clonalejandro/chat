@@ -15,8 +15,11 @@ const manager 	   = new App(http, server, io);
 
 /** REST **/
 
+manager.startLogRotate();
 manager.configureProxy(rateLimit);
 manager.configureServer(cookieParser, bodyParser, session, passport);
 manager.prepareServer();
 manager.prepareSockets();
 manager.prepareApi();
+manager.prepareRoutes(passport);
+

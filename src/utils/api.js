@@ -1,8 +1,8 @@
 /** IMPORTS **/
 
-var ApiChat    = require("../api/apichat");
-var ApiUser    = require("../api/apiuser");
-var ApiMessage = require("../api/apimessage");
+var ApiChat    = require('../api/apichat');
+var ApiUser    = require('../api/apiuser');
+var ApiMessage = require('../api/apimessage');
 
 module.exports = class Api {
 	

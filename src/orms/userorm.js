@@ -45,7 +45,7 @@ module.exports = class UserOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 				if (err) this.App.throwErr(err);
-				else this.App.debug(`Creating user with: ${data}`, this.props.prefix)
+				else this.App.debug(`Creating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -61,7 +61,7 @@ module.exports = class UserOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting user with: ${data}`, this.props.prefix)
+			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -77,7 +77,7 @@ module.exports = class UserOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Deleting user with: ${data}`, this.props.prefix)
+			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -93,7 +93,7 @@ module.exports = class UserOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating user with: ${data}`, this.props.prefix)
+			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
@@ -109,7 +109,7 @@ module.exports = class UserOrm {
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
-			else this.App.debug(`Updating user with: ${data}`, this.props.prefix)
+			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
 	}
