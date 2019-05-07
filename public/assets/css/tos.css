@@ -1,0 +1,22 @@
+#header,
+#accounts,
+#links,
+#law,
+#changes,
+#contact {
+	margin-top: 5%;
+	margin-bottom: 5%
+}
+
+#accounts > h2,
+#links > h2,
+#law > h2,
+#changes > h2,
+#contact > h2 {
+	margin-bottom: 1%
+}
+
+#header > h1 {
+	text-align: center;
+	margin-bottom: 3%
+}

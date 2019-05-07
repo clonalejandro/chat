@@ -36,7 +36,7 @@ module.exports = class Router {
 	 * This function render all routes
 	 */
 	render(){
-		//this.renderMainRoutes();
+		this.renderMainRoutes();
 		this.renderRegister();
 		this.renderLogin();
 		this.renderPanel();
