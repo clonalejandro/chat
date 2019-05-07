@@ -64,12 +64,45 @@ html
 					"href": "/tos"
 				}
 			})});
-			
+		//Icons
+		link(rel='stylesheet', href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
 		//Bootstrap
 		link(rel='stylesheet', href="https://bootswatch.com/4/materia/bootstrap.min.css")
 		link(rel='stylesheet', href="assets/css/panel.css")
 		body
-			h1 Welcome #{username} to panel 
-			h4 If you want to logout click 
-				a(href="logout") this
+			div#wrapper
+				nav.navbar.navbar-expand-lg.navbar-light.bg-light
+					a.navbar-brand(href="/")
+						img(src=`${logo}`, alt=`${webName}`)
+					button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar", aria-controls="navbarColor03", aria-expanded="false", aria-label="Toggle navigation")
+						span.navbar-toggler-icon
+					div.collapse.navbar-collapse#navbar
+						ul.navbar-nav.mr-auto
+							li.nav-item.active
+								a.nav-link(href="#") #{username}
+							li.nav-item.dropdown
+								a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+									i.fa.fa-bed.nav-icon
+								div.dropdown-menu(aria-labelledby="roomDropdown")
+									a.dropdown-item(href="#") Create room 
+										i.fa.fa-plus
+									a.dropdown-item(href="#") Edit room 
+										i.fa.fa-pencil
+									a.dropdown-item(href="#") Join a room 
+										i.fa.fa-sign-in
+						ul.nav.navbar-nav.navbar-right
+							li.dropdown
+								a(href="#", role="button", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+									i.fa.fa-user.nav-icon
+								div.dropdown-menu(aria-labelledby="userDropdown")
+									a.dropdown-item(href="#") Settings 
+										i.fa.fa-cog
+									a.dropdown-item(href="#") Delete profile 
+										i.fa.fa-trash
+									a.dropdown-item(href="/logout") Logout 
+										i.fa.fa-sign-out 
+				h1 Welcome #{username} to panel 
+				h4 If you want to logout click 
+					a(href="logout") this
 			include helpers/js.pug
+			script(src="assets/js/panel.js")

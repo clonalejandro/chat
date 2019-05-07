@@ -1,0 +1,105 @@
+body {
+	background-attachment: fixed;
+    height: 100%;
+	text-align: center;
+    background-image: url(../img/panel-background.jpg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+#wrapper {
+	background: rgba(0, 0, 0, .5)
+}
+
+
+/** NAVBAR **/
+
+.navbar {
+	background: transparent!important;
+}
+
+.navbar-collapse {
+	margin-left: 5%
+} 
+
+.active > .nav-link {
+	color: rgba(255, 255, 255, .9)!important;
+	font-size: 1.4em;
+	transition: border-bottom .7s ease-in, color .7s ease-in
+}
+
+.active > .nav-link:hover {
+	transition: border-bottom .7s ease-out, color .7s ease-in;
+	color: white!important
+}
+
+.mr-auto > .nav-item {
+	margin-left: 50%
+}
+
+.mr-auto > .active {
+	margin-left: initial
+}
+
+.nav-link {
+	font-size: 1.4em;
+	color: rgba(255, 255, 255, .7)!important;
+	transition: border-bottom .7s ease-in, color .7s ease-in;
+}
+
+.nav-link:hover {
+	color: rgba(255, 255, 255, .8)!important;
+	transition: border-bottom .7s ease-out, color .7s ease-out;
+	border-bottom: 3px solid #8e44ad
+}
+
+.navbar-brand > img {
+	width: 64px;
+	height: 64px
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.nav-icon {
+	font-size: 2em
+}
+
+
+/** DROPDOWN **/
+
+.dropdown-menu, .dropdown-item, .dropdown-item:focus, .dropdown-item:hover {
+	background: transparent;
+	color: white;
+	transition: color .7s ease;
+	box-shadow: none
+}
+
+.dropdown i {
+	color: rgba(255, 255, 255, .7);
+	transition: color .4s ease;
+}
+
+.dropdown > a > i {
+	margin-top: 5%
+}
+
+li.dropdown:hover > a > i {
+	color: rgba(255, 255, 255, .8);
+	border-bottom: 3px solid #8e44ad
+}
+
+
+/** MEDIAS **/
+
+@media (min-width: 768px) {
+	.dropdown > a > i {
+		margin-top: 40%
+	}
+	
+	.navbar-right {
+		margin-right: 15%
+	}
+}
