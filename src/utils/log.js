@@ -6,18 +6,23 @@ const Math = require('./math');
 
 /** FUNCTIONS **/ 
 
+function formatDate(n){
+	n = n.toString();
+	return (n.length > 1 ? n : `0${n}`);
+}
+
 function createLogName(){
 	const date = new Date();
 	const d = {
 		year: date.getFullYear(),
-		month: date.getMonth(),
-		day: date.getDate(),
-		hour: date.getHours(),
-		min: date.getMinutes(),
-		sec: date.getSeconds() 
+		month: formatDate(date.getMonth()),
+		day: formatDate(date.getDate()),
+		hour: formatDate(date.getHours()),
+		min: formatDate(date.getMinutes()),
+		sec: formatDate(date.getSeconds())
 	};
 
-	return `log${d.year}-${d.month}-${d.day}_${d.hour}:${d.min}:${d.sec}`
+	return `log${d.year}${d.month}${d.day}${d.hour}${d.min}${d.sec}.log`
 }
 
 

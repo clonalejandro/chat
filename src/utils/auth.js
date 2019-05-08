@@ -75,7 +75,8 @@ module.exports = class Auth {
 				
 				const data = {
 					username: username, 
-					password: this.createHash(password)
+					password: this.createHash(password),
+					rank: 0
 				};
 				
 				this.App.UserOrm.create(data, (err, res) => {

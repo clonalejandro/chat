@@ -35,7 +35,7 @@ module.exports = class ApiMessage {
 			const date = new Date();
 			const dateFormat = n => {
 				n = n.toString();
-				return n.length < 2 ? `0${n}` : n;
+				return n.length > 1 ? n : `0${n}`
 			};
 
 			return `${date.getFullYear()}-${dateFormat(date.getMonth())}-${dateFormat(date.getDate())} ${dateFormat(date.getHours())}:${dateFormat(date.getMinutes())}:${dateFormat(date.getSeconds())}`;
@@ -46,16 +46,18 @@ module.exports = class ApiMessage {
 			try {
 				const bind = {
 					text: req.body.text,
-					chat: req.body.chat,
+					chatId: req.body.chatId,
 					userId: req.body.userId,
 					date: generateDate(),
 				};
 				
-				this.App.MessageOrm.create(bind)
+				this.App.MessageOrm.create(bind);
+				
+				res.status(200).send('Ok!')
 			}
 			catch (err){
 				this.App.throwErr(err);
-				res.status(500).send(err)
+				res.status(500).send(err.message)
 			}
 		})
 	}
@@ -63,30 +65,23 @@ module.exports = class ApiMessage {
 	
 	/**
      * This function prepare the route for delete message in the api
-	 * requeriments for the request: (id || username || userId)
+	 * requeriments for the request: (id)
      */
 	deleteMessage(){
 		this.server.post('/api/delete-message', (req, res) => {
 			try {
 				const bind = {
-					id: req.body.id,
-					username: req.body.username,
-					userId: req.body.userId
+					id: req.body.id
 				};
 				
-				if (!this.App.isNull(bind.id)) this.App.MessageOrm.deleteById({
-					id: bind.id
-				});
-				else if (!this.App.isNull(bind.username)) this.App.MessageOrm.deleteByUserName({
-					username: bind.username
-				});
-				else this.App.MessageOrm.deleteByUserId({
-					userId: bind.userId
-				})
+				if (!this.App.isNull(bind.id)) 
+					this.App.MessageOrm.deleteById({ id: bind.id });
+				
+				res.status(200).send('Ok!')
 			}
 			catch (err){
 				this.App.throwErr(err);
-				res.status(500).send(err)
+				res.status(500).send(err.message)
 			}
 		})
 	}
@@ -94,34 +89,26 @@ module.exports = class ApiMessage {
 	
 	/**
      * This function prepare the route for update message in the api
-	 * requeriments for the request: ((id || username || userId), text)
+	 * requeriments for the request: (id, text)
      */
 	updateMessage(){
 		this.server.post('/api/update-message', (req, res) => {
 			try {
 				const bind = {
 					id: req.body.id,
-					text: req.body.text,
-					username: req.body.username,
-					userId: req.body.userId
+					text: req.body.text
 				}
 				
 				if (!this.App.isNull(bind.id)) this.App.MessageOrm.updateById({
 					id: bind.id,
 					text: bind.text
 				});
-				else if (!this.App.isNull(bind.username)) this.App.MessageOrm.updateByUserName({
-					username: bind.username,
-					text: bind.text
-				});
-				else this.App.MessageOrm.updateByUserId({
-					userId: bind.userId,
-					text: bind.text
-				})
+				
+				res.status(200).send('Ok!')
 			}
 			catch (err){
 				this.App.throwErr(err);
-				res.status(500).send(err)
+				res.status(500).send(err.message)
 			}
 		})
 	}

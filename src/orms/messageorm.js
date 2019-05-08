@@ -17,11 +17,11 @@ module.exports = class MessageOrm {
 	
 	/**
 	 * This function create a message in database
-	 * @param {Object} data is text of the message, the chatName associated, the userId associated, and the date of the message
+	 * @param {Object} data is text of the message, the chatId associated, the userId associated, and the date of the message
 	 * @param {*} callback
 	 */
 	create(data, callback = undefined){
-		const query = `INSERT INTO ${this.props.table} VALUES (NULL, "${data.text}", "${data.chat}", ${data.userId}, "${data.date}"`;
+		const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", "${data.chatId}", ${data.userId}, "${data.date}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
@@ -37,7 +37,7 @@ module.exports = class MessageOrm {
 	 * @param {*} callback
 	 */
 	deleteById(data, callback = undefined){
-		const query = `DELETE FROM ${this.props.table} WHERE id=${data.id}`;
+		const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
@@ -71,7 +71,7 @@ module.exports = class MessageOrm {
 	 * @param {*} callback
 	 */
 	deleteByUserId(data, callback = undefined){
-		const query = `DELETE FROM $(this.props.table} WHERE userId=${data.userId}`;
+		const query = `DELETE FROM $(this.props.table} WHERE userId="${data.userId}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
@@ -87,7 +87,7 @@ module.exports = class MessageOrm {
 	 * @param {*} callback
 	 */
 	updateById(data, callback = undefined){
-		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE id=${data.id}`;
+		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
 			if (err) this.App.throwErr(err);
@@ -121,7 +121,7 @@ module.exports = class MessageOrm {
 	 * @param {*} callback
 	 */
 	updateByUserId(data, callback = undefined){
-		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE userId=${data.userId}`;
+		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE userId="${data.userId}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
 			if (err) this.App.throwErr(err);

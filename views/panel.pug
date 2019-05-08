@@ -70,6 +70,22 @@ html
 		link(rel='stylesheet', href="https://bootswatch.com/4/materia/bootstrap.min.css")
 		link(rel='stylesheet', href="assets/css/panel.css")
 		body
+			//Modals
+			div.modal#modalCreateRoom( role="dialog")
+				div.modal-dialog(role="document")
+					div.modal-content
+						div.modal-header
+							h5.modal-title Room creator
+							button.close(type="button", data-dismiss="modal", aria-label="Close")
+								span(aria-hidden="true") &times;
+						div.modal-body
+							form(onsubmit="return false")
+								div.form-group
+									input.form-control(placeholder="Room name", maxlength=32, name="roomName", required)
+						div.modal-footer
+							button.btn.btn-danger(data-dismiss="modal") Close
+							button.btn.btn-success(type="submit") Create!
+		
 			div#wrapper
 				nav.navbar.navbar-expand-lg.navbar-light.bg-light
 					a.navbar-brand(href="/")
@@ -84,7 +100,7 @@ html
 								a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
 									i.fa.fa-bed.nav-icon
 								div.dropdown-menu(aria-labelledby="roomDropdown")
-									a.dropdown-item(href="#") Create room 
+									a.dropdown-item(href="#")#createRoom Create room 
 										i.fa.fa-plus
 									a.dropdown-item(href="#") Edit room 
 										i.fa.fa-pencil
@@ -100,9 +116,15 @@ html
 									a.dropdown-item(href="#") Delete profile 
 										i.fa.fa-trash
 									a.dropdown-item(href="/logout") Logout 
-										i.fa.fa-sign-out 
-				h1 Welcome #{username} to panel 
-				h4 If you want to logout click 
-					a(href="logout") this
+										i.fa.fa-sign-out
+				//Notifications
+				div.container#notifications
+				
+				//Content
+				div.container
+					h1 Welcome #{username} to panel 
+					h4 If you want to logout click 
+						a(href="logout") this
+
 			include helpers/js.pug
 			script(src="assets/js/panel.js")

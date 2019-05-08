@@ -1,12 +1,12 @@
 ﻿/** IMPORTS **/
 
-const config  = require('../assets/data/config.json');
-const express = require('express');
-const path    = require('path');
-const flash   = require('connect-flash');
-const Color   = require('./utils/color');
-const TaskTimer    = require('./utils/tasktimer');
-const Math    = require('./utils/math');
+const config	= require('../assets/data/config.json');
+const express	= require('express');
+const path		= require('path');
+const flash   	= require('connect-flash');
+const Color		= require('./utils/color');
+const TaskTimer = require('./utils/tasktimer');
+const Math		= require('./utils/math');
 
 var SocketManager = require('./utils/socketmanager');
 var MysqlManager  = require('./utils/mysqlmanager');
@@ -17,6 +17,7 @@ var Auth 		  = require('./utils/auth');
 var ChatOrm 	  = require('./orms/chatorm');
 var UserOrm 	  = require('./orms/userorm');
 var MessageOrm	  = require('./orms/messageorm');
+var RankOrm 	  = require('./orms/rankorm');
 
 
 module.exports = class App {
@@ -35,6 +36,7 @@ module.exports = class App {
         App.ChatOrm = new ChatOrm(App);
 		App.UserOrm = new UserOrm(App);
 		App.MessageOrm = new MessageOrm(App);
+		App.RankOrm = new RankOrm(App);
 		App.tasks = new Array();
 		
         App.io = io;

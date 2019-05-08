@@ -16,17 +16,17 @@ module.exports = class UserOrm {
 	/** REST **/
 	
 	/**
-	 * This function get all data user from database
+	 * This function get all user data from database
 	 * @param {Object} data is the id of the user
 	 * @param {*} callback
 	 */
 	getByPk(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE id=${data.id}`, callback)
+		this.con.query(`SELECT * FROM ${this.props.table} WHERE id="${data.id}"`, callback)
 	}
 	
 	
 	/**
-	 * THis function get all data user from database
+	 * This function get all user data from database
 	 * @param {Object} data is the username of the user
 	 * @param {*} callback
 	 */
@@ -41,7 +41,7 @@ module.exports = class UserOrm {
 	 * @param {*} callback
 	 */
 	create(data, callback = undefined){
-		const query = `INSERT INTO ${this.props.table} VALUES (NULL, "${data.username}", "${data.password}")`;
+		const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.username}", "${data.password}", ${data.rank})`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 				if (err) this.App.throwErr(err);
@@ -57,7 +57,7 @@ module.exports = class UserOrm {
 	 * @param {*} callback
 	 */
 	deleteById(data, callback = undefined){
-		const query = `DELETE FROM ${this.props.table} WHERE id=${data.id}`;
+		const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);
@@ -89,7 +89,7 @@ module.exports = class UserOrm {
 	 * @param {*} callback
 	 */
 	updateById(data, callback = undefined){
-		const query = `UPDATE ${this.props.table} SET username="${data.newusername}" WHERE id=${data.id}`;
+		const query = `UPDATE ${this.props.table} SET username="${data.newusername}" WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
 			if (err) this.App.throwErr(err);

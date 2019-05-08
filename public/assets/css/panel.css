@@ -34,10 +34,6 @@ body {
 	color: white!important
 }
 
-.mr-auto > .nav-item {
-	margin-left: 50%
-}
-
 .mr-auto > .active {
 	margin-left: initial
 }
@@ -70,8 +66,14 @@ body {
 
 /** DROPDOWN **/
 
+.dropdown:focus .dropdown-menu,
+.dropdown:active .dropdown-menu,
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+
 .dropdown-menu, .dropdown-item, .dropdown-item:focus, .dropdown-item:hover {
-	background: transparent;
+	background: rgba(0, 0, 0, .3);
 	color: white;
 	transition: color .7s ease;
 	box-shadow: none
@@ -91,6 +93,49 @@ li.dropdown:hover > a > i {
 	border-bottom: 3px solid #8e44ad
 }
 
+.dropdown-item:hover {
+	background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+
+
+/** MODALS **/
+
+.modal-content,
+.modal-dialog {
+	background: rgba(233, 30, 99, .5)
+}
+
+.modal-header span,
+.modal-title {
+	color: white
+}
+
+.form-control,
+.form-control:focus {
+	color: white
+}
+
+.modal-header,
+.modal-footer {
+	border-top: none;
+	border-bottom: none
+}
+
+::placeholder {
+	color: white!important
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+input:-internal-autofill-selected {
+	background: transparent!important;
+    transition: background-color 5000s ease-in-out 0s!important;
+    -webkit-text-fill-color: #fff !important;
+}
+
 
 /** MEDIAS **/
 
@@ -101,5 +146,9 @@ li.dropdown:hover > a > i {
 	
 	.navbar-right {
 		margin-right: 15%
+	}
+	
+	.mr-auto > .nav-item {
+		margin-left: 50%
 	}
 }

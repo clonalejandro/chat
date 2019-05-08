@@ -27,26 +27,23 @@ module.exports = class ApiUser {
 	
 	/**
 	 * This function prepare the route for delete chat in the api
-	 * requeriments for the request: (id || username)
+	 * requeriments for the request: (id)
 	 */
 	deleteUser(){
 		this.server.post('/api/delete-user', (req, res) => {
 			try {
 				const bind = {
-					id: req.body.id,
-					username: req.body.username
+					id: req.body.id
 				};
 				
-				if (!this.App.isNull(bind.id)) this.App.UserOrm.deleteById({
-					id: bind.id
-				});
-				else this.App.UserOrm.deleteByName({
-					username: bind.username
-				})
+				if (!this.App.isNull(bind.id)) 
+					this.App.UserOrm.deleteById({ id: bind.id });
+				
+				res.status(200).send('Ok!')
 			}
 			catch (err){
 				this.App.throwErr(err);
-				res.status(500).send(err)
+				res.status(500).send(err.message)
 			}
 		})
 	}
@@ -54,14 +51,13 @@ module.exports = class ApiUser {
 	
 	/**
 	 * This function prepare the route for update user in the api
-	 * requeriments for the request: ((id || username), newusername)
+	 * requeriments for the request: (id , newusername)
 	 */
 	updateUser(){
 		this.server.post('/api/update-user', (req, res) => {
 			try {
 				const bind = {
 					id: req.body.id,
-					username: req.body.username,
 					newusername: req.body.newusername
 				};
 				
@@ -69,14 +65,12 @@ module.exports = class ApiUser {
 					id: bind.id,
 					newname: bind.newusername
 				});
-				else this.App.UserOrm.updateByName({
-					username: bind.username,
-					newusername: bind.newusername
-				})
+
+				res.status(200).send('Ok!')
 			}
 			catch (err){
 				this.App.throwErr(err);
-				res.status(500).send(err)
+				res.status(500).send(err.message)
 			}
 		})
 	}
