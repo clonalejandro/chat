@@ -37,6 +37,7 @@ module.exports = class Router {
 	 */
 	render(){
 		this.renderMainRoutes();
+		this.renderChat();
 		this.renderRegister();
 		this.renderLogin();
 		this.renderPanel();
@@ -64,7 +65,24 @@ module.exports = class Router {
 		})
 	}
 	
-
+	
+	renderChat(){
+		this.server.get('/chats/:room', (req, res) => {
+			try {
+				const room = req.params.room;
+				
+				res.send(`${room}`);
+			}
+			catch (err){
+				this.App.throwAlert(err);
+				res.status(500).send(err)
+			}
+		});
+		
+		this.App.debug(`The server is registering route: "/chats/:room" aiming to: chat`, this.prefix);
+	}
+	
+	
     /**
      * This function render the register pasarel
      */

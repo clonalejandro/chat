@@ -34,7 +34,7 @@ module.exports = class Auth {
 		},
 		(req, username, password, done) => this.App.UserOrm.getByUserName({username: username}, (err, rows) => {
 			if (err){
-				this.App.throwErr(err);
+				this.App.throwErr(err, this.prefix);
 				return done(err)
 			}
 
@@ -64,7 +64,7 @@ module.exports = class Auth {
 		const localStrategy = new LocalStrategy({passReqToCallback: true}, (req, username, password, done) => {
 			const findOrCreateUser = () => this.App.UserOrm.getByUserName({username: username}, (err, rows) => {
 				if (err){
-					this.App.throwErr(err);
+					this.App.throwErr(err, this.prefix);
 					return done(err)
 				}
 				
@@ -80,7 +80,7 @@ module.exports = class Auth {
 				};
 				
 				this.App.UserOrm.create(data, (err, res) => {
-					if (err) this.App.throwErr(err);
+					if (err) this.App.throwErr(err, this.prefix);
 					return done(null, data);
 				})
 			})

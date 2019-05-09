@@ -1,3 +1,5 @@
+/** GRID **/
+
 body {
 	background-attachment: fixed;
     height: 100%;
@@ -12,42 +14,69 @@ body {
 	background: rgba(0, 0, 0, .5)
 }
 
+#main {
+	margin-top: 10%;
+	color: rgba(255, 255, 255, .8)
+}
+
+#main > h1,
+#main > h4 {
+	font-weight: 300
+}
+
+#main i.fa {
+	color: #f44336
+}
+
+#main > h4:hover > i.fa,
+#main > h4:focus > i.fa {
+	animation: 1s bounce
+}
+
 
 /** NAVBAR **/
 
 .navbar {
 	background: transparent!important;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none
 }
 
 .navbar-collapse {
 	margin-left: 5%
 } 
 
-.active > .nav-link {
-	color: rgba(255, 255, 255, .9)!important;
-	font-size: 1.4em;
-	transition: border-bottom .7s ease-in, color .7s ease-in
-}
-
-.active > .nav-link:hover {
-	transition: border-bottom .7s ease-out, color .7s ease-in;
-	color: white!important
-}
-
 .mr-auto > .active {
 	margin-left: initial
+}
+
+.active > .nav-link {
+	font-size: 1.4em;
+	color: rgba(255, 255, 255, .9)!important;
+	transition: border-bottom .7s ease, color .7s ease;
+	-webkit-transition: border-bottom .7s ease, color .7s ease
 }
 
 .nav-link {
 	font-size: 1.4em;
 	color: rgba(255, 255, 255, .7)!important;
-	transition: border-bottom .7s ease-in, color .7s ease-in;
+	transition: border-bottom .7s ease, color .7s ease;
+	-webkit-transition: border-bottom .7s ease, color .7s ease
+}
+
+.active > .nav-link:hover {
+	color: white!important;
+	border-bottom: 3px solid #8e44ad;
+	transition: border-bottom .7s ease-out, color .7s ease-out;
+	-webkit-transition: border-bottom .7s ease-out, color .7s ease-out
 }
 
 .nav-link:hover {
 	color: rgba(255, 255, 255, .8)!important;
+	border-bottom: 3px solid #8e44ad;
 	transition: border-bottom .7s ease-out, color .7s ease-out;
-	border-bottom: 3px solid #8e44ad
+	-webkit-transition: border-bottom .7s ease-out, color .7s ease-out
 }
 
 .navbar-brand > img {
@@ -72,38 +101,68 @@ body {
 	display: block;
 }
 
+.dropdown-menu {
+	background: rgba(0, 0, 0, .5)
+}
+
 .dropdown-menu, .dropdown-item, .dropdown-item:focus, .dropdown-item:hover {
-	background: rgba(0, 0, 0, .3);
 	color: white;
 	transition: color .7s ease;
 	box-shadow: none
 }
 
 .dropdown i {
-	color: rgba(255, 255, 255, .7);
-	transition: color .4s ease;
+	color: rgba(255, 255, 255, .7)
 }
 
 .dropdown > a > i {
-	margin-top: 5%
+	margin-top: 5%;
+	transition: border-bottom .7s ease-in, color .7s ease-in
 }
 
 li.dropdown:hover > a > i {
 	color: rgba(255, 255, 255, .8);
-	border-bottom: 3px solid #8e44ad
+	border-bottom: 3px solid #8e44ad;
+	transition: border-bottom .7s ease-out, color .7s ease-out;
+	-webkit-transition: transition: border-bottom .7s ease-out, color .7s ease-out
 }
 
 .dropdown-item:hover {
-	background: rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, .2);
     border-radius: 2px;
+}
+
+.open > .dropdown-menu.dropdown-info {
+	opacity: 1;
+	display: block;
+	transition: all 1s ease-in;
+	-webkit-transition: all 1s ease-in
+}
+
+.dropdown-menu.dropdown-info {
+	display:none;
+	position: absolute;
+	opacity: 0;
+	transition: all 0.2s ease-out;
+	-webkit-transition: all 0.2s ease-out
 }
 
 
 /** MODALS **/
 
-.modal-content,
-.modal-dialog {
+#modalCreateRoom .modal-content,
+#modalCreateRoom .modal-dialog {
 	background: rgba(233, 30, 99, .5)
+}
+
+#modalJoinRoom .modal-content,
+#modalJoinRoom .modal-dialog {
+	background: rgba(63, 81, 181, .5)
+}
+
+#modalJoinRoom input.form-control:focus {
+	-webkit-box-shadow: inset 0 -2px 0 #e91e63;
+    box-shadow: inset 0 -2px 0 #e91e63
 }
 
 .modal-header span,
@@ -134,6 +193,27 @@ input:-internal-autofill-selected {
 	background: transparent!important;
     transition: background-color 5000s ease-in-out 0s!important;
     -webkit-text-fill-color: #fff !important;
+}
+
+
+/** AUTOCOMPLETE **/
+
+.autocompleter {
+	width: 30%;
+	border-radius: 0.25rem;
+	margin-top: 2%;
+	color: white;
+	background: rgba(0, 0, 0, .3);
+	padding-top: 3%;
+	padding-bottom: 3%
+}
+
+.autocompleter > .element {
+	cursor: pointer
+}
+
+.autocompleter > .element:hover {
+	background: rgba(255, 255, 255, .2)
 }
 
 

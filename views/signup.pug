@@ -40,45 +40,21 @@ html
 		
 		title #{title}
 		
-		//Cookies
-		link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css")
-		script(async, src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js")
-		script.
-			window.addEventListener("load", function(){
-			window.cookieconsent.initialise({
-				"palette": {
-					"popup": {
-						"background": "#3c404d",
-						"text": "#d6d6d6"
-					},
-					
-					"button": {
-						"background": "transparent",
-						"text": "#8bed4f",
-						"border": "#8bed4f"
-					}
-				},
-				"position": "bottom-right",
-				"content": {
-					"dismiss": "Let's go",
-					"href": "/tos"
-				}
-			})});
-			
-		//Bootstrap
-		link(rel='stylesheet', href="https://bootswatch.com/4/materia/bootstrap.min.css")
+		include helpers/cookies.pug	
+		include helpers/css.pug
 		link(rel='stylesheet', href="assets/css/auth.css")
 		body
-			
 			div#wrapper
-				if msg
-					div.alert.alert-danger.alert-dismissible
-						button.close(type="button", data-dismiss="alert") &times;
-						strong Oh an error has occurred
-						p The error trace is: #{msg}
+				div#notifications.container
+					include helpers/noscript.pug
+					if msg
+						div.alert.alert-danger.alert-dismissible
+							button.close(type="button", data-dismiss="alert") &times;
+							strong Oops! an error has occurred
+							p The error trace is: #{msg}
 				header
 					img(src="https://avatars3.githubusercontent.com/u/20615143?v=3&s=460")
-				div.container
+				div.container#main
 					form(action="/signup", method="post")
 						div.form-group
 							input.form-control(placeholder="Username", name="username", required)
@@ -91,3 +67,4 @@ html
 							p I have an a account go to 
 								a(href="login") this
 			include helpers/js.pug
+			script(src="assets/js/auth.js")

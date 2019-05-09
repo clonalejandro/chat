@@ -18,10 +18,31 @@ module.exports = class ApiUser {
 	 * This function register all apiuser routes
 	 */
 	register(){
+		this.getUserChats();
 		this.deleteUser();
 		this.updateUser();
 		
 		this.App.debug("Register all apiuser routes", this.prefix);
+	}
+	
+	
+	getUserChats(){
+		this.server.get('/api/get-user-chats', (req, res) => {
+			try {
+				const bind = {
+					userId: req.user.id
+				};
+				
+				this.App.ChatOrm.getByUserId(bind, (err, rows) => {
+					if (err) throw err;
+					else res.send(rows)
+				})
+			}
+			catch (err){
+				this.App.throwErr(err);
+				res.status(500).send(err.message)
+			}
+		})
 	}
 	
 	
@@ -36,8 +57,7 @@ module.exports = class ApiUser {
 					id: req.body.id
 				};
 				
-				if (!this.App.isNull(bind.id)) 
-					this.App.UserOrm.deleteById({ id: bind.id });
+				this.App.UserOrm.deleteById({ id: bind.id });
 				
 				res.status(200).send('Ok!')
 			}

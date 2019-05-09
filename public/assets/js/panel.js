@@ -1,15 +1,21 @@
 /** MAIN VARS **/
 
 const webURI = `${window.location.protocol}//${window.location.host}`;
+var myRooms = new Array();
 
 
 /** FUNCTIONS **/
 
-function responsive(){
-	$("#wrapper").height(
-		$(window).height()
-	);
+function getHeight(){
+	return $(window).height()
+}
+
+
+function responsive(height = getHeight()){
+	$("#wrapper").height(height);
+	$("header").height(height);
 	
+	$("#navbar").on("show.bs.collapse", e => responsive(getHeight() + $("#main").height()));//When navbar open this height increments the navbar expand
 	window.addEventListener("resize", e => responsive())//When window resize, this execute this function
 }
 
@@ -41,6 +47,44 @@ function throwErr(message){
 }
 
 
+function processCreateRoom(){
+	const name = $("#modalCreateRoom input[name='roomName']").val();
+	
+	if (isNull(name)) return;
+	
+	//Close modal, navbar and clear the input val
+	$("#modalCreateRoom").fadeOut(300, () => $("#modalCreateRoom").modal('hide'));
+	$('.collapse').collapse('hide');
+	$("#modalCreateRoom input[name='roomName']").val("");
+	
+	createRoomRequest(name, () => {
+		const html = `
+			<div data-timeout="5" class="alert alert-dimissible alert-info">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Success!</strong><br> Creating a new room called: '${name}'
+			</div>
+		`;
+	
+		$("#notifications").append(html);
+		alertTimeout()
+	});
+}
+
+
+function processJoinRoom(){
+	const name = $("#modalJoinRoom input[name='roomName']").val();
+	
+	if (isNull(name)) return;
+	
+	//Close modal, navbar and clear the input val
+	$("#modalJoinRoom").fadeOut(300, () => $("#modalJoinRoom").modal("hide"));
+	$('.collapse').collapse('hide');
+	$("#modalJoinRoom input[name='roomName']").val("");
+	
+	setTimeout(() => window.location.href = `${webURI}/chats/${name}`, 250);
+}
+
+
 /** REQUEST **/
 
 function createRoomRequest(name, callback){
@@ -54,42 +98,46 @@ function createRoomRequest(name, callback){
 				<li style='text-align: left'><strong>URL: </strong><i>${e.responseURL}</i></li>
 			</ul>
 		`);
-	}, "name=${name}");
+	}, "name=${name}")
+}
+
+
+function getChatsRequest(){
+	new Request(`${webURI}/api/get-user-chats`, "GET", e => {
+		const res = e.response;
+		const json = JSON.parse(res);
+		
+		json.forEach(e => myRooms.push(e.name));
+		new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms)
+	})
 }
 
 
 /** METHODS **/
 
 $(document).ready(() => {
-	responsive()
+	responsive();
+	getChatsRequest()
 });
 
 
 /** EVENTS **/
 
-$("#createRoom").on('click', () => {
-	$("#modalCreateRoom").fadeIn(300, () => $("#modalCreateRoom").modal('show'))
-});
+$("#createRoom").on('click', 
+	() => $("#modalCreateRoom").fadeIn(300, () => $("#modalCreateRoom").modal('show'))
+);
 
 
-$("#modalCreateRoom .btn-success").on('click', () => {
-	const name = $("input[name='roomName']").val();
-	
-	if (isNull(name)) return;
-	
-	//Close modal and navbar
-	$("#modalCreateRoom").fadeOut(300, () => $("#modalCreateRoom").modal('hide'));
-	$('.collapse').collapse('hide');
-	
-	createRoomRequest(name, () => {
-		const html = `
-			<div data-timeout="5" class="alert alert-dimissible alert-info">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<strong>Success!</strong><br> Creating a new room called: '${name}'
-			</div>
-		`;
-	
-		$("#notifications").append(html);
-		alertTimeout()
-	})
-});
+$("#joinRoom").on('click', 
+	() => $("#modalJoinRoom").fadeIn(300, () => $("#modalJoinRoom").modal('show'))
+);
+
+
+$("#modalCreateRoom form").on('submit', e => e.preventDefault());
+$("#modalCreateRoom .btn-success").on('click', () => processCreateRoom());
+
+$("#modalJoinRoom form").on('submit', e => e.preventDefault());
+$("#modalJoinRoom .btn-success").on('click', () => processJoinRoom());
+
+
+

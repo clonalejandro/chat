@@ -1,0 +1,24 @@
+//Cookies
+link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css")
+script(async, src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js")
+script.
+	window.addEventListener("load", function(){
+		window.cookieconsent.initialise({
+			"palette": {
+				"popup": {
+					"background": "#3c404d",
+					"text": "#d6d6d6"
+				},
+				"button": {
+					"background": "transparent",
+					"text": "#8bed4f",
+					"border": "#8bed4f"
+				}
+			},
+			"position": "bottom-right",
+			"content": {
+				"dismiss": "Let's go",
+				"href": "/tos"
+			}
+		})
+	})

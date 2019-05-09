@@ -109,7 +109,7 @@ module.exports = class App {
      * This function throw custom alerts
      * @param {*} data alert 
      */
-    static throwAlert(data){
+    static throwAlert(data, type = "ALERT"){
         App.debug(data, "ALERT")
     }
 
@@ -118,8 +118,10 @@ module.exports = class App {
      * This function throw custom errors
      * @param {*} err error
      */
-    static throwErr(err){
-        if(!App.isNull(err)) App.debug(err.message, "ERROR")
+    static throwErr(err, type = "ERROR"){
+        if(!App.isNull(err)) App.debug(
+			err.message, (type == "!ERROR" ? type : `${type}!ERROR`)
+		)
     }
 	
 	

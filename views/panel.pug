@@ -40,38 +40,12 @@ html
 		
 		title #{title}
 		
-		//Cookies
-		link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css")
-		script(async, src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js")
-		script.
-			window.addEventListener("load", function(){
-			window.cookieconsent.initialise({
-				"palette": {
-					"popup": {
-						"background": "#3c404d",
-						"text": "#d6d6d6"
-					},
-					
-					"button": {
-						"background": "transparent",
-						"text": "#8bed4f",
-						"border": "#8bed4f"
-					}
-				},
-				"position": "bottom-right",
-				"content": {
-					"dismiss": "Let's go",
-					"href": "/tos"
-				}
-			})});
-		//Icons
-		link(rel='stylesheet', href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
-		//Bootstrap
-		link(rel='stylesheet', href="https://bootswatch.com/4/materia/bootstrap.min.css")
+		include helpers/cookies.pug
+		include helpers/css.pug
 		link(rel='stylesheet', href="assets/css/panel.css")
 		body
-			//Modals
-			div.modal#modalCreateRoom( role="dialog")
+			//Modal Room create
+			div.modal#modalCreateRoom(role="dialog")
 				div.modal-dialog(role="document")
 					div.modal-content
 						div.modal-header
@@ -79,13 +53,29 @@ html
 							button.close(type="button", data-dismiss="modal", aria-label="Close")
 								span(aria-hidden="true") &times;
 						div.modal-body
-							form(onsubmit="return false")
+							form(onsubmit="processCreateRoom()")
 								div.form-group
 									input.form-control(placeholder="Room name", maxlength=32, name="roomName", required)
 						div.modal-footer
 							button.btn.btn-danger(data-dismiss="modal") Close
 							button.btn.btn-success(type="submit") Create!
-		
+			
+			//Modal Room join
+			div.modal#modalJoinRoom(role="dialog")
+				div.modal-dialog(role="document")
+					div.modal-content
+						div.modal-header
+							h5.modal-title Join a room
+							button.close(type="button", data-dismiss="modal", aria-label="Close")
+								span(aria-hidden="true") &times;
+						div.modal-body
+							form(onsubmit="processJoinRoom()")
+								div.form-group
+									input.form-control#auto(placeholder="Room name", autocomplete="off", maxlength=32, name="roomName", required)
+						div.modal-footer
+							button.btn.btn-danger(data-dismiss="modal") Close
+							button.btn.btn-success(type="submit") Create!
+			
 			div#wrapper
 				nav.navbar.navbar-expand-lg.navbar-light.bg-light
 					a.navbar-brand(href="/")
@@ -100,11 +90,11 @@ html
 								a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
 									i.fa.fa-bed.nav-icon
 								div.dropdown-menu(aria-labelledby="roomDropdown")
-									a.dropdown-item(href="#")#createRoom Create room 
+									a.dropdown-item#createRoom(href="#") Create room 
 										i.fa.fa-plus
-									a.dropdown-item(href="#") Edit room 
+									a.dropdown-item#editRoom(href="#") Edit room 
 										i.fa.fa-pencil
-									a.dropdown-item(href="#") Join a room 
+									a.dropdown-item#joinRoom(href="#") Join a room 
 										i.fa.fa-sign-in
 						ul.nav.navbar-nav.navbar-right
 							li.dropdown
@@ -119,12 +109,15 @@ html
 										i.fa.fa-sign-out
 				//Notifications
 				div.container#notifications
+					include helpers/noscript.pug
 				
 				//Content
-				div.container
+				div.container#main
 					h1 Welcome #{username} to panel 
-					h4 If you want to logout click 
-						a(href="logout") this
+					h4 Developed with much 
+						i.fa.fa-heart
+						|  by 
+						a(href="https://clonalejandro.github.io", target="_blank") clonalejandro
 
 			include helpers/js.pug
 			script(src="assets/js/panel.js")

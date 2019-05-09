@@ -24,7 +24,7 @@ module.exports = class MessageOrm {
 		const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", "${data.chatId}", ${data.userId}, "${data.date}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Creating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -40,7 +40,7 @@ module.exports = class MessageOrm {
 		const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -58,7 +58,7 @@ module.exports = class MessageOrm {
 		)`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err,this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -74,7 +74,7 @@ module.exports = class MessageOrm {
 		const query = `DELETE FROM $(this.props.table} WHERE userId="${data.userId}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -90,7 +90,7 @@ module.exports = class MessageOrm {
 		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE id="${data.id}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -108,7 +108,7 @@ module.exports = class MessageOrm {
 		)`;
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
@@ -124,7 +124,7 @@ module.exports = class MessageOrm {
 		const query = `UPDATE ${this.props.table} SET text="${data.text}" WHERE userId="${data.userId}"`;
 		
 		if (this.App.isNull(callback)) this.con.query(query,(err, res) => {
-			if (err) this.App.throwErr(err);
+			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
 		else this.con.query(query, callback)
