@@ -86,7 +86,7 @@ class AutoComplete {
 				targetList.push(e) 
 		});
 	
-		if (!targetList.length) return;
+		if (!targetList.length) return this.clearContainer();
 
 		var html = `<div class='autocompleter'>`;
 
