@@ -58,7 +58,7 @@ module.exports = class ChatOrm {
 	create(data, callback = undefined){
 		const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.name}", "${data.userId}")`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Creating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -74,7 +74,7 @@ module.exports = class ChatOrm {
 	updateById(data, callback = undefined){
 		const query = `UPDATE ${this.props.table} SET name="${data.newname}" WHERE id="${data.id}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -90,7 +90,7 @@ module.exports = class ChatOrm {
 	updateByName(data, callback = undefined){
 		const query = `UPDATE ${this.props.table} SET name="${data.newname}" WHERE name="${data.name}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -106,7 +106,7 @@ module.exports = class ChatOrm {
 	deleteByName(data, callback = undefined){
 		const query = `DELETE FROM ${this.props.table} WHERE name="${data.name}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -124,7 +124,7 @@ module.exports = class ChatOrm {
 			SELECT id FROM ${this.props.table} WHERE id="${data.id}"
 		)`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix)
 			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});

@@ -43,7 +43,7 @@ module.exports = class UserOrm {
 	create(data, callback = undefined){
 		const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.username}", "${data.password}", ${data.rank})`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 				if (err) this.App.throwErr(err, this.props.prefix);
 				else this.App.debug(`Creating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -59,7 +59,7 @@ module.exports = class UserOrm {
 	deleteById(data, callback = undefined){
 		const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -75,7 +75,7 @@ module.exports = class UserOrm {
 	deleteByName(data, callback = undefined){
 		const query = `DELETE FROM ${this.props.table} WHERE username="${data.username}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -91,7 +91,7 @@ module.exports = class UserOrm {
 	updateById(data, callback = undefined){
 		const query = `UPDATE ${this.props.table} SET username="${data.newusername}" WHERE id="${data.id}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
@@ -107,7 +107,7 @@ module.exports = class UserOrm {
 	updateByName(data, callback = undefined){
 		const query = `UPDATE ${this.props.table} SET username="${data.newusername}" WHERE username="${data.username}"`;
 		
-		if (this.App.isNull(callback)) this.con.query(query, (err, res) => {
+		if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
