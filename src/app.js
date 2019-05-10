@@ -1,12 +1,12 @@
 ﻿/** IMPORTS **/
 
-const config	= require('../assets/data/config.json');
-const express	= require('express');
-const path		= require('path');
-const flash   	= require('connect-flash');
-const Color		= require('./utils/color');
-const TaskTimer = require('./utils/tasktimer');
-const Math		= require('./utils/math');
+const config	  = require('../assets/data/config.json');
+const express	  = require('express');
+const compress 	  = require('compression');
+const flash		  = require('connect-flash');
+const Color		  = require('./utils/color');
+const TaskTimer	  = require('./utils/tasktimer');
+const Math		  = require('./utils/math');
 
 var SocketManager = require('./utils/socketmanager');
 var MysqlManager  = require('./utils/mysqlmanager');
@@ -31,13 +31,13 @@ module.exports = class App {
 		
         Log = new Log();
 		
-		App.config = config;
+        App.config = config;
         App.MysqlManager = new MysqlManager(App, config);
         App.ChatOrm = new ChatOrm(App);
 		App.UserOrm = new UserOrm(App);
 		App.MessageOrm = new MessageOrm(App);
 		App.RankOrm = new RankOrm(App);
-		App.tasks = new Array();
+        App.tasks = new Array();
 		
         App.io = io;
 	}
@@ -110,7 +110,7 @@ module.exports = class App {
      * @param {*} data alert 
      */
     static throwAlert(data, type = "ALERT"){
-        App.debug(data, "ALERT")
+        App.debug(data, (type == "ALERT" ? type : `${type}!ERROR`))
     }
 
 
@@ -120,11 +120,11 @@ module.exports = class App {
      */
     static throwErr(err, type = "ERROR"){
         if(!App.isNull(err)) App.debug(
-			err.message, (type == "!ERROR" ? type : `${type}!ERROR`)
+			err.message, (type == "ERROR" ? type : `${type}!ERROR`)
 		)
     }
-	
-	
+
+
     /**
      * This function configure proxy server
      * @param {*} rateLimit 
@@ -149,7 +149,7 @@ module.exports = class App {
      * @param {*} session session
      * @param {*} passport passport
      */
-    configureServer(cookieParser, bodyParser, session, passport){		
+    configureServer(cookieParser, bodyParser, session, passport){
         this.server.use(cookieParser());
         this.server.use(bodyParser.json());
         this.server.use(bodyParser.urlencoded({extended: true}));
@@ -157,6 +157,7 @@ module.exports = class App {
         this.server.use(session(config.session));
         this.server.use(passport.initialize());
         this.server.use(passport.session());
+		this.server.use(compress());
 
         passport.serializeUser((user, done) => done(null, user.username));
         passport.deserializeUser((username, done) => App.UserOrm.getByUserName({username: username}, (err, rows) => done(err, rows[0])));
@@ -169,7 +170,9 @@ module.exports = class App {
      * This function prepare the node server
 	 */
 	prepareServer(){
-		this.server.use('/assets', express.static( __dirname + "/../public/assets/"));
+		this.server.use('/assets', express.static(`${ __dirname}/../public/assets/`, { 
+            maxAge: Math.hoursToMilis(1) 
+        } ));
 		this.server.set('views', 'views');
         this.server.set('view engine', 'pug');
 		
@@ -214,5 +217,7 @@ module.exports = class App {
 		new TaskTimer(App, 'Log rotate', () => {
 			Log.logRotate()
 		}, Math.hoursToMilis(1))
-	}
+    }
+    
+
 }

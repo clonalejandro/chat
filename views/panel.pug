@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="en")
 	head
 		- var author = "clonalejandro"
 		- var twitter = "clonalejandro11"
@@ -80,7 +80,7 @@ html
 				nav.navbar.navbar-expand-lg.navbar-light.bg-light
 					a.navbar-brand(href="/")
 						img(src=`${logo}`, alt=`${webName}`)
-					button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar", aria-controls="navbarColor03", aria-expanded="false", aria-label="Toggle navigation")
+					button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar", aria-controls="navbar", aria-expanded="false", aria-label="Toggle navigation")
 						span.navbar-toggler-icon
 					div.collapse.navbar-collapse#navbar
 						ul.navbar-nav.mr-auto
@@ -117,7 +117,7 @@ html
 					h4 Developed with much 
 						i.fa.fa-heart
 						|  by 
-						a(href="https://clonalejandro.github.io", target="_blank") clonalejandro
+						a(href="https://clonalejandro.github.io", rel="noopener", target="_blank") clonalejandro
 
 			include helpers/js.pug
 			script(src="assets/js/panel.js")

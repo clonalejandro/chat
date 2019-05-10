@@ -5,7 +5,7 @@ module.exports = class ChatOrm {
 	
 	constructor(App){
 		this.App = App;
-		this.con = App.MysqlManager.con;
+		this.con = () => App.MysqlManager.con;
 		this.props = {
 			prefix: "CHAT-ORM",
 			table: `${this.App.config.mysql.database}.CHATS`
@@ -21,7 +21,7 @@ module.exports = class ChatOrm {
 	 * @param {*} callback
 	 */
 	getByPk(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE id="${data.id}"`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE id="${data.id}"`, callback)
 	}
 	
 	
@@ -31,7 +31,7 @@ module.exports = class ChatOrm {
 	 * @param {*} callback
 	 */
 	getByUserId(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE userId="${data.userId}"`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE userId="${data.userId}"`, callback)
 	}
 	
 	
@@ -46,7 +46,7 @@ module.exports = class ChatOrm {
 			SELECT id FROM ${usersTable} WHERE username="${data.username}"
 		)`;
 		
-		this.con.query(query, callback)
+		this.con().query(query, callback)
 	}
 	
 	
@@ -62,7 +62,7 @@ module.exports = class ChatOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Creating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -78,7 +78,7 @@ module.exports = class ChatOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -94,7 +94,7 @@ module.exports = class ChatOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -110,7 +110,7 @@ module.exports = class ChatOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 
@@ -128,7 +128,7 @@ module.exports = class ChatOrm {
 			if (err) this.App.throwErr(err, this.props.prefix)
 			else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 
 	

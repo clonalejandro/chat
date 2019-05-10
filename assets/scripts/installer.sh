@@ -56,12 +56,12 @@ npm install
 
 
 # Create script for start nodejs
-touch start_server
+touch start
 
-chmod 755 start_server
-echo "#!/bin/bash" >> start_server
-echo "echo 'Starting server...' && sleep 1" >> start_server
-echo "npm start" >> start_server
+chmod 755 start
+echo "#!/bin/bash" >> start
+echo "echo 'Starting server...' && sleep 1" >> start
+echo "npm start" >> start
 
 
 # Print the installation finished

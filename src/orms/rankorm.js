@@ -5,7 +5,7 @@ module.exports = class RankOrm {
 	
 	constructor(App){
 		this.App = App;
-		this.con = App.MysqlManager.con;
+		this.con = () => App.MysqlManager.con;
 		this.props = {
 			prefix: "RANK-ORM",
 			table: `${this.App.config.mysql.database}.RANKS`
@@ -21,7 +21,7 @@ module.exports = class RankOrm {
 	 * @param {*} callback
 	 */
 	getByPk(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE id=${data.id}`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE id=${data.id}`, callback)
 	}
 	
 	
@@ -31,7 +31,7 @@ module.exports = class RankOrm {
 	 * @param {*} callback
 	 */
 	getByRankName(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE name="${data.name}"`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE name="${data.name}"`, callback)
 	}
 	
 	
@@ -46,7 +46,7 @@ module.exports = class RankOrm {
 			SELECT rankId FROM ${usersTable} WHERE id="${data.userId}"
 		)`;
 		
-		this.con.query(query, callback)
+		this.con().query(query, callback)
 	}
 	
 	
@@ -61,7 +61,7 @@ module.exports = class RankOrm {
 			SELECT rankId FROM ${usersTable} WHERE username="${data.username}"
 		)`;
 		
-		this.con.query(query, callback)
+		this.con().query(query, callback)
 	}
 	
 	

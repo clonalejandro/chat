@@ -4,7 +4,9 @@ body {
 	background-attachment: fixed;
     height: 100%;
 	text-align: center;
-    background-image: url(../img/panel-background.jpg);
+	max-width: 100%;
+	max-height: 100%;
+    background: url(https://i.imgur.com/xqW6vsi.jpg);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover
@@ -127,7 +129,8 @@ li.dropdown:hover > a > i {
 	-webkit-transition: transition: border-bottom .7s ease-out, color .7s ease-out
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover,
+.dropdown-item:focus {
 	background: rgba(255, 255, 255, .2);
     border-radius: 2px;
 }
@@ -219,7 +222,7 @@ input:-internal-autofill-selected {
 
 /** MEDIAS **/
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
 	.dropdown > a > i {
 		margin-top: 40%
 	}

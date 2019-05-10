@@ -29,6 +29,8 @@ checkroot
 
 # Main vars
 debug="none"
+resave="none"
+saveUninitialized="none"
 fileconfig="../data/config.json"
 
 
@@ -50,8 +52,15 @@ read -p "Website tags separated by comas: " tags
 read -p "Contact email: " email
 read -p "Website URL: " weburi
 read -p "Session secret key: " secret
-read -p "Session resave: " resave
-read -p "Session save uninitialized: " saveunitialized
+
+while [ $resave != "true" ] && [ $resave != "false" ]; do
+	read -p "Session resave (true/false): " resave
+done
+while [ $saveUninitialized != "true" ] && [ $saveUninitialized != "false" ]; do
+	read -p "Session save unitiliazed (true/false): " saveUninitialized
+done
+
+read -p "Session Cookie max age: " cookieAge
 read -p "MySQL host: " host
 read -p "MySQL database: " database
 read -p "MySQL user: " user
@@ -74,7 +83,10 @@ echo "	\"webURI\": \"$weburi\"," >> $fileconfig
 echo "  \"session\": {" >> $fileconfig
 echo "		\"secret\": \"$secret\"," >> $fileconfig
 echo "		\"resave\": $resave," >> $fileconfig
-echo "		\"saveUninitialized\": $saveunitialized" >> $fileconfig
+echo "		\"saveUninitialized\": $saveunitialized," >> $fileconfig
+echo "		\"cookie\": {" >> $fileconfig
+echo "			\"maxAge\": $cookieAge" >> $fileconfig
+echo "		}" >> $fileconfig
 echo "  }," >> $fileconfig
 echo "	\"mysql\": {" >> $fileconfig
 echo "		\"supportBigNumbers\": true," >> $fileconfig 

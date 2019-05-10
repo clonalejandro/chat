@@ -8,7 +8,7 @@ const Math = require('./math');
 
 function formatDate(n){
 	n = n.toString();
-	return (n.length > 1 ? n : `0${n}`);
+	return (n.length > 1 ? n : `0${n}`)
 }
 
 function createLogName(){
@@ -31,7 +31,7 @@ module.exports = class Log {
 
 	/** SMALL CONSTRUCTORS **/
 
-	constructor(App, logDir){
+	constructor(){
 		this.name = createLogName();
 		this.logDir = __dirname + "/../../logs/";
 		
@@ -91,4 +91,6 @@ module.exports = class Log {
 			this.write(`Log rotated from: ${lastName}`)
 		}
 	}
+
+	
 }

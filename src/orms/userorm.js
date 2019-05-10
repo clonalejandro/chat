@@ -5,7 +5,7 @@ module.exports = class UserOrm {
 	
 	constructor(App){
 		this.App = App;
-		this.con = App.MysqlManager.con;
+		this.con = () => App.MysqlManager.con;
 		this.props = {
 			prefix: "USER-ORM",
 			table: `${this.App.config.mysql.database}.USERS`
@@ -21,7 +21,7 @@ module.exports = class UserOrm {
 	 * @param {*} callback
 	 */
 	getByPk(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE id="${data.id}"`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE id="${data.id}"`, callback)
 	}
 	
 	
@@ -31,7 +31,7 @@ module.exports = class UserOrm {
 	 * @param {*} callback
 	 */
 	getByUserName(data, callback){
-		this.con.query(`SELECT * FROM ${this.props.table} WHERE username="${data.username}"`, callback)
+		this.con().query(`SELECT * FROM ${this.props.table} WHERE username="${data.username}"`, callback)
 	}
 
 
@@ -47,7 +47,7 @@ module.exports = class UserOrm {
 				if (err) this.App.throwErr(err, this.props.prefix);
 				else this.App.debug(`Creating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -63,7 +63,7 @@ module.exports = class UserOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -79,7 +79,7 @@ module.exports = class UserOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -95,7 +95,7 @@ module.exports = class UserOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -111,7 +111,7 @@ module.exports = class UserOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	

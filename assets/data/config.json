@@ -2,16 +2,19 @@
 	"debug": false,
 	"port": 3000,
 	"apiKey": 54321,
-	"logo": "",
+	"logo": "https://s.gravatar.com/avatar/549430497442fc376ed2ffaa53fc6877",
 	"webName": "chat online",
 	"description": "chat with nodejs",
 	"tagsString": "chat, online, clonalejandro, nodejs, js",
 	"email": "",
-	"webURI": "http://192.168.0.46",
+	"webURI": "http://alex.hdt.es",
 	"session": {
 		"secret": "54321A",
 		"resave": false,
-		"saveUninitialized": false
+		"saveUninitialized": false,
+		"cookie": {
+			"maxAge": 2592000000
+		}
 	},
 	"mysql": {
 		"supportBigNumbers": true,

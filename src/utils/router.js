@@ -7,11 +7,15 @@ const config = require('../../assets/data/config.json');
 /** FUNCTIONS **/
 
 function getSecureConfig(){
-	const tempConfig = config;
-	
-	delete tempConfig.mysql;
-	delete tempConfig.session;
-	delete tempConfig.debug;
+	const tempConfig = {
+		apiKey: config.apiKey,
+		logo: config.logo,
+		webName: config.webName,
+		description: config.description,
+		tagsString: config.tagsString,
+		email: config.email,
+		webURI: config.webURI
+	}
 	
 	return tempConfig
 }

@@ -5,7 +5,7 @@ module.exports = class MessageOrm {
 	
 	constructor(App){
 		this.App = App;
-		this.con = App.MysqlManager.con;
+		this.con = () => App.MysqlManager.con;
 		this.props = {
 			prefix: "MESSAGE-ORM",
 			table: `${this.App.config.mysql.database}.MESSAGES`
@@ -27,7 +27,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Creating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -43,7 +43,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -61,7 +61,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err,this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -77,7 +77,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -93,7 +93,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -111,7 +111,7 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 	
 	
@@ -127,6 +127,6 @@ module.exports = class MessageOrm {
 			if (err) this.App.throwErr(err, this.props.prefix);
 			else this.App.debug(`Updating message with: ${JSON.stringify(data)}`, this.props.prefix)
 		});
-		else this.con.query(query, callback)
+		else this.con().query(query, callback)
 	}
 }
