@@ -15,7 +15,7 @@ module.exports = class Auth {
 		this.prefix = "AUTH";
 		
 		this.configureLogin();
-		this.configureRegister();
+		this.configureRegister()
 	}
 	
 	
@@ -81,7 +81,7 @@ module.exports = class Auth {
 				
 				this.App.UserOrm.create(data, (err, res) => {
 					if (err) this.App.throwErr(err, this.prefix);
-					return done(null, data);
+					return done(null, data)
 				})
 			})
 			
