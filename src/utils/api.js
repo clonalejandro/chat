@@ -17,7 +17,7 @@ module.exports = class Api {
 		this.ApiMessage = new ApiMessage(App, server);
 		this.ApiRank = new ApiRank(App, server);
 		
-		App.debug("The api has been started!");
+		App.debug("The api has been started!")
 	}
 	
 	
