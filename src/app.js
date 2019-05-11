@@ -21,16 +21,16 @@ var RankOrm 	  = require('./orms/rankorm');
 
 
 module.exports = class App {
-	
-	
+
+
 	/** SMALL CONSTRUCTORS **/
-	
+
 	constructor(http, server, io){
 		this.http = http;
 		this.server = server;
-		
+
 		Log = new Log();
-		
+
 		App.config = config;
 		App.MysqlManager = new MysqlManager(App, config);
 		App.ChatOrm = new ChatOrm(App);
@@ -38,23 +38,23 @@ module.exports = class App {
 		App.MessageOrm = new MessageOrm(App);
 		App.RankOrm = new RankOrm(App);
 		App.tasks = new Array();
-		
+
 		App.io = io;
 	}
 
-	
+
 	/** REST **/
-	
+
 	/**
 	 * This function replace all
-	 * @param {String} data 
+	 * @param {String} data
 	 * @param {String} charToReplace charToReplace
-	 * @param {String} newChar newChar 
-	 * @return {String} data 
+	 * @param {String} newChar newChar
+	 * @return {String} data
 	 */
 	static replaceAll(data, charToReplace, newChar = ""){
 		if (App.isNull(data)) return data;
-		
+
 		typeof data != "string" ? data = data.toString() : data = data;
 
 		while (data.includes(charToReplace))
@@ -62,18 +62,18 @@ module.exports = class App {
 
 		return data
 	}
-	
+
 
 	/**
 	 * This function check if data is null
-	 * @param {*} data 
+	 * @param {*} data
 	 * @return {boolean} isNull
 	 */
 	static isNull(data){
 		return data == null || data == undefined
 	}
-	
-	
+
+
 	/**
 	 * This function debug data passed by parameter
 	 * @param {String || Object} data message to debug
@@ -82,7 +82,7 @@ module.exports = class App {
 	static debug(data, type = "INFO"){
 		const prefix = `[${type}]`;
 		const prompt = " ⇒ ";
-		
+
 		data = (data instanceof Object ? JSON.stringify(data) : data);
 
 		Log.write(`${prefix}${prompt}${data}\n`);
@@ -95,7 +95,7 @@ module.exports = class App {
 		else console.log(Color.FgBlue + prefix + Color.FgMagenta + prompt + Color.Reset + data);
 	}
 
-	
+
 	/**
 	 * This function throw custom test debug messages
 	 * @param {*} data test
@@ -103,11 +103,11 @@ module.exports = class App {
 	static throwTest(data){
 		App.debug(data, "TEST")
 	}
-	
-	
+
+
 	/**
 	 * This function throw custom alerts
-	 * @param {*} data alert 
+	 * @param {*} data alert
 	 */
 	static throwAlert(data, type = "ALERT"){
 		App.debug(data, (type == "ALERT" ? type : `${type}!ERROR`))
@@ -127,7 +127,7 @@ module.exports = class App {
 
 	/**
 	 * This function configure proxy server
-	 * @param {*} rateLimit 
+	 * @param {*} rateLimit
 	 */
 	configureProxy(rateLimit){
 		this.server.enable("trust proxy");
@@ -140,8 +140,8 @@ module.exports = class App {
 
 		this.server.use('/api/', apiLimiter)
 	}
-	
-	
+
+
 	/**
 	 * This function configure the middlewares
 	 * @param {*} cookieParser cookieParser
@@ -161,45 +161,45 @@ module.exports = class App {
 
 		passport.serializeUser((user, done) => done(null, user.username));
 		passport.deserializeUser((username, done) => App.UserOrm.getByUserName({username: username}, (err, rows) => done(err, rows[0])));
-	   
+
 		Auth = new Auth(App, passport)
 	}
-	
-	
+
+
 	/**
 	 * This function prepare the node server
 	 */
 	prepareServer(){
-		this.server.use('/assets', express.static(`${ __dirname}/../public/assets/`, { 
-			maxAge: Math.hoursToMilis(1) 
+		this.server.use('/assets', express.static(`${ __dirname}/../public/assets/`, {
+			maxAge: Math.hoursToMilis(1)
 		} ));
 		this.server.set('views', 'views');
 		this.server.set('view engine', 'pug');
-		
+
 		this.http.listen(config.port, () => {
 			App.debug("The server has been started!");
 			App.debug(`The server is listening the port: ${config.port}`)
 		})
 	}
-	
-	
+
+
 	/**
 	 * This function register all listeners for the sockets and eneable this
 	 */
 	prepareSockets(){
 		SocketManager = new SocketManager(App);
-		SocketManager.registerListeners()	
+		SocketManager.registerListeners()
 	}
 
-	
+
 	/**
 	 * This function prepare all api
 	 */
 	prepareApi(){
 		Api = new Api(App, this.server)
 	}
-	
-	
+
+
 	/**
 	 * This function prepare main routes
 	 * @param {*} passport
@@ -208,8 +208,8 @@ module.exports = class App {
 		Router = new Router(App, this.server, passport);
 		Router.render();
 	}
-	
-	
+
+
 	/**
 	 * This function start the task for the logRotate
 	 */
@@ -218,6 +218,6 @@ module.exports = class App {
 			Log.logRotate()
 		}, Math.hoursToMilis(1))
 	}
-	
+
 
 }
