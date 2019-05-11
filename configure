@@ -102,3 +102,6 @@ echo "}" >> $fileconfig
 setcolor "\e[32m"
 echo "Configuration completed!"
 resetcolors
+
+# Remove temp configure
+rm -rf configure
