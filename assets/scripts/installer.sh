@@ -56,7 +56,7 @@ npm install
 
 
 # Create script for start nodejs
-touch start
+touch ../../start
 
 chmod 755 start
 echo "#!/bin/bash" >> start

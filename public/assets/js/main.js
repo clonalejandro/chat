@@ -11,12 +11,12 @@ const tasks = new Array();
  * @return task {*}
  */
 const connectionChecker = () => {
-	return setInterval(() => {
-		if (!socket.connected && !socket.connecting){
-			socket.connect();
-			console.log("Trying to reconnect to the socket server")
-		}
-	}, 2000)
+    return setInterval(() => {
+        if (!socket.connected && !socket.connecting){
+            socket.connect();
+            console.log("Trying to reconnect to the socket server")
+        }
+    }, 2000)
 };
 
 
@@ -24,9 +24,9 @@ const connectionChecker = () => {
  * This task create a delay for resubmit the chat form
  */
 const submitDelay = () => {
-	setTimeout(() => {
-		waiting = false	
-	}, 2500)
+    setTimeout(() => {
+        waiting = false	
+    }, 2500)
 };
 
 
@@ -36,9 +36,9 @@ const submitDelay = () => {
  * This function init the backend sockets
  */
 (function initIo(){
-	const config = {'forceNew': true};
-	socket = io.connect(location.href, config);
-	tasks.push({name: "connectionChecker", id: connectionChecker()})
+    const config = {'forceNew': true};
+    socket = io.connect(location.href, config);
+    tasks.push({name: "connectionChecker", id: connectionChecker()})
 })();
 
 
@@ -48,7 +48,7 @@ const submitDelay = () => {
  * @return DOMObject {*}
  */
 function $(query){
-	return document.querySelectorAll(query)
+    return document.querySelectorAll(query)
 }
 
 
@@ -58,7 +58,7 @@ function $(query){
  * @return isNull {Boolean}
  */
 function isNull(element){
-	return element == undefined || element == null || element == ""
+    return element == undefined || element == null || element == ""
 }
 
 
@@ -66,9 +66,9 @@ function isNull(element){
  * This function clear the textarea for write in the chat
  */
 function clearInput(){
-	setTimeout(() => {
-		$("[name=msg]")[0].value = ""
-	}, 100)
+    setTimeout(() => {
+        $("[name=msg]")[0].value = ""
+    }, 100)
 }
 
 
@@ -76,7 +76,7 @@ function clearInput(){
  * This function clear the chat
  */
 function clearChat(){
-	$("#messages")[0].innerHTML = ""
+    $("#messages")[0].innerHTML = ""
 }
 
 
@@ -85,14 +85,14 @@ function clearChat(){
  * @param res {*} 
  */
 function renderMessages(res){
-	const html = res.map((data, index) => {
-		return (`<div>
-			<strong>${data.author}: </strong>
-			<em>${data.msg} </em>
-		</div>`)
-	}).join(" ");
-	
-	$("#messages")[0].innerHTML = html
+    const html = res.map((data, index) => {
+        return (`<div>
+            <strong>${data.author}: </strong>
+            <em>${data.msg} </em>
+        </div>`)
+    }).join(" ");
+    
+    $("#messages")[0].innerHTML = html
 }
 
 
@@ -101,9 +101,9 @@ function renderMessages(res){
  * @return author {String}
  */
 function changeAuthor(){
-	localStorage.removeItem("author");
-	author = getAuthor();
-	return author
+    localStorage.removeItem("author");
+    author = getAuthor();
+    return author
 }
 
 
@@ -112,36 +112,36 @@ function changeAuthor(){
  * @return author {String}
  */
 function getAuthor(){
-	let author = localStorage.getItem("author");
-	
-	if (isNull(author)){
-		const date = new Date();
-		const d = {
-			year: date.getFullYear(),
-			month: date.getMonth(),
-			day: date.getDate(),
-			hour: date.getHours(),
-			min: date.getMinutes(),
-			sec: date.getSeconds()
-		};
-		const salt = d.year + d.month + d.hour + d.day + d.hour + d.min + d.sec;
-		
-		author = prompt("Username: ") + salt;
-		
-		if (isNull(author) || author == salt) return getAuthor(); //For prevent author is null
-		
-		localStorage.setItem("author", author);
-	}
-	
-	return author
+    let author = localStorage.getItem("author");
+    
+    if (isNull(author)){
+        const date = new Date();
+        const d = {
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            day: date.getDate(),
+            hour: date.getHours(),
+            min: date.getMinutes(),
+            sec: date.getSeconds()
+        };
+        const salt = d.year + d.month + d.hour + d.day + d.hour + d.min + d.sec;
+        
+        author = prompt("Username: ") + salt;
+        
+        if (isNull(author) || author == salt) return getAuthor(); //For prevent author is null
+        
+        localStorage.setItem("author", author);
+    }
+    
+    return author
 }
 
 
 /** REST **/ 
 
 socket.on('get-message', data => {
-	console.log(data);
-	renderMessages(data)
+    console.log(data);
+    renderMessages(data)
 });
 
 
@@ -151,21 +151,21 @@ socket.on('connect', () => {
 
  
 $("#submiter")[0].addEventListener('click', e => { 
-	const message = {
-		author: author,
-		msg: $("[name=msg]")[0].value
-	};
-	
-	if (waiting){
-		alert("Wait two seconds for send the next message");
-		return;
-	}
-	
-	if (isNull(message.msg)) return;//For prevent the message is empty
+    const message = {
+        author: author,
+        msg: $("[name=msg]")[0].value
+    };
+    
+    if (waiting){
+        alert("Wait two seconds for send the next message");
+        return;
+    }
+    
+    if (isNull(message.msg)) return;//For prevent the message is empty
 
-	socket.emit('send-message', message);
-	clearInput();
+    socket.emit('send-message', message);
+    clearInput();
 
-	waiting = true;
-	submitDelay()
+    waiting = true;
+    submitDelay()
 })

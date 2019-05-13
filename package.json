@@ -1,35 +1,35 @@
 {
-  "name": "chat",
-  "version": "1.0.0",
-  "description": "A chat app by clonalejandro",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "chat",
-    "clonalejandro",
-    "node",
-    "nodejs",
-    "javascript"
-  ],
-  "author": "clonalejandro",
-  "license": "MIT",
-  "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
-    "cookie-parser": "^1.4.4",
-    "express": "^4.16.4",
-    "express-rate-limit": "^3.5.0",
-    "express-session": "^1.16.1",
-    "http": "0.0.0",
-    "mysql": "^2.17.1",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "path": "^0.12.7",
-    "pug": "^2.0.3",
-    "socket.io": "^2.2.0"
-  }
+    "name": "chat",
+    "version": "1.0.0",
+    "description": "A chat app by clonalejandro",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "chat",
+        "clonalejandro",
+        "node",
+        "nodejs",
+        "javascript"
+    ],
+    "author": "clonalejandro",
+    "license": "MIT",
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "body-parser": "^1.19.0",
+        "connect-flash": "^0.1.1",
+        "cookie-parser": "^1.4.4",
+        "express": "^4.16.4",
+        "express-rate-limit": "^3.5.0",
+        "express-session": "^1.16.1",
+        "http": "0.0.0",
+        "mysql": "^2.17.1",
+        "passport": "^0.4.0",
+        "passport-local": "^1.0.0",
+        "path": "^0.12.7",
+        "pug": "^2.0.3",
+        "socket.io": "^2.2.0"
+    }
 }

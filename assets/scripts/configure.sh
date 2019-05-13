@@ -60,7 +60,7 @@ while [ $saveUninitialized != "true" ] && [ $saveUninitialized != "false" ]; do
 	read -p "Session save unitiliazed (true/false): " saveUninitialized
 done
 
-read -p "Session Cookie max age: " cookieAge
+read -p "Session Cookie max age in milis: " cookieAge
 read -p "MySQL host: " host
 read -p "MySQL database: " database
 read -p "MySQL user: " user
@@ -83,7 +83,7 @@ echo "	\"webURI\": \"$weburi\"," >> $fileconfig
 echo "  \"session\": {" >> $fileconfig
 echo "		\"secret\": \"$secret\"," >> $fileconfig
 echo "		\"resave\": $resave," >> $fileconfig
-echo "		\"saveUninitialized\": $saveunitialized," >> $fileconfig
+echo "		\"saveUninitialized\": $saveUnitialized," >> $fileconfig
 echo "		\"cookie\": {" >> $fileconfig
 echo "			\"maxAge\": $cookieAge" >> $fileconfig
 echo "		}" >> $fileconfig

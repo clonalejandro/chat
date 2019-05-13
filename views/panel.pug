@@ -75,7 +75,21 @@ html(lang="en")
 						div.modal-footer
 							button.btn.btn-danger(data-dismiss="modal") Close
 							button.btn.btn-success(type="submit") Create!
-			
+
+			//Modal Room join
+			div.modal#modalDeleteProfile(role="dialog")
+				div.modal-dialog(role="document")
+					div.modal-content
+						div.modal-header
+							h5.modal-title Delete profile
+							button.close(type="button", data-dismiss="modal", aria-label="Close")
+								span(aria-hidden="true") &times;
+						div.modal-body
+							| Are you sure to delete your profile?
+						div.modal-footer
+							button.btn.btn-danger.delete Delete
+							button.btn.btn-primary(data-dismiss="modal") Cancel
+					
 			div#wrapper
 				nav.navbar.navbar-expand-lg.navbar-light.bg-light
 					a.navbar-brand(href="/")
@@ -103,9 +117,9 @@ html(lang="en")
 								div.dropdown-menu(aria-labelledby="userDropdown")
 									a.dropdown-item(href="#") Settings 
 										i.fa.fa-cog
-									a.dropdown-item(href="#") Delete profile 
+									a#deleteProfile.dropdown-item(href="#") Delete profile 
 										i.fa.fa-trash
-									a.dropdown-item(href="/logout") Logout 
+									a#logout.dropdown-item(href="#") Logout 
 										i.fa.fa-sign-out
 				//Notifications
 				div.container#notifications
