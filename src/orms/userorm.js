@@ -66,10 +66,7 @@ module.exports = class UserOrm {
         else this.con().query(query, callback)
     }
     
-<<<<<<< HEAD
     //TODO: WHEN DELETE USER DELETE CHAT AND MESSAGE 
-=======
->>>>>>> 8356a5404267ef56df766ccba6c83eb88396764a
     
     /**
      * This function deletes a user in database

@@ -17,16 +17,8 @@ module.exports = class Api {
         this.ApiMessage = new ApiMessage(App, server);
         this.ApiRank = new ApiRank(App, server);
         
-<<<<<<< HEAD
         App.debug("The api has been started!");
     }
     
     
 }
-=======
-        App.debug("The api has been started!")
-    }
-    
-    
-}
->>>>>>> 8356a5404267ef56df766ccba6c83eb88396764a

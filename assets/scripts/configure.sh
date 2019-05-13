@@ -62,6 +62,7 @@ done
 
 read -p "Session Cookie max age in milis: " cookieAge
 read -p "MySQL host: " host
+read -p "MySQL database: " database
 read -p "MySQL user: " user
 read -p "MySQL password: " password
 
@@ -91,7 +92,7 @@ echo "	\"mysql\": {" >> $fileconfig
 echo "		\"supportBigNumbers\": true," >> $fileconfig 
 echo "		\"bigNumberStrings\": true," >> $fileconfig
 echo "		\"host\": \"$host\"," >> $fileconfig
-echo "		\"database\": \"chat\"," >> $fileconfig
+echo "		\"database\": \"$database\"," >> $fileconfig
 echo "		\"user\": \"$user\"," >> $fileconfig
 echo "		\"password\": \"$password\"" >> $fileconfig
 echo "	}" >> $fileconfig

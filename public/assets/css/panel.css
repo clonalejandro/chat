@@ -155,7 +155,6 @@ li.dropdown:hover > a > i {
 
 #modalCreateRoom .modal-content,
 #modalCreateRoom .modal-dialog {
-<<<<<<< HEAD
     background: rgba(233, 30, 99, .6)
 }
 
@@ -163,18 +162,11 @@ li.dropdown:hover > a > i {
 #modalDeleteProfile .modal-dialog {
     color: white;
     background: rgba(255, 152, 0, .6)
-=======
-    background: rgba(233, 30, 99, .5)
->>>>>>> 8356a5404267ef56df766ccba6c83eb88396764a
 }
 
 #modalJoinRoom .modal-content,
 #modalJoinRoom .modal-dialog {
-<<<<<<< HEAD
     background: rgba(63, 81, 181, .6)
-=======
-    background: rgba(63, 81, 181, .5)
->>>>>>> 8356a5404267ef56df766ccba6c83eb88396764a
 }
 
 #modalJoinRoom input.form-control:focus {

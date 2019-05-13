@@ -51,7 +51,6 @@ module.exports = class ApiUser {
      * requeriments for the request: (id)
      */
     deleteUser(){
-<<<<<<< HEAD
         this.server.get('/api/delete-user', (req, res) => {
             try {
                 const bind = {
@@ -61,17 +60,6 @@ module.exports = class ApiUser {
                 res.redirect('/logout');
                     
                 setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
-=======
-        this.server.post('/api/delete-user', (req, res) => {
-            try {
-                const bind = {
-                    id: req.body.id
-                };
-                
-                this.App.UserOrm.deleteById({ id: bind.id });
-                
-                res.status(200).send('Ok!')
->>>>>>> 8356a5404267ef56df766ccba6c83eb88396764a
             }
             catch (err){
                 this.App.throwErr(err);
