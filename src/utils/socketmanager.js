@@ -21,11 +21,11 @@ module.exports = class SocketManager {
         this.io.on('connection', socket => {
             this.App.debug("Client connected", this.prefix);
 
-            if (this.messageBuffer.length > 0) this.send(socket, 'get-message', this.messageBuffer);
-            
             this.registerSocketListener(socket, 'send-message', data => {
-                this.messageBuffer.push(data);
-                this.send(this.io.sockets, 'get-message', this.messageBuffer);
+                this.App.MessageOrm.getByChatName({chatName: data.room}, (err, rows) => {
+                    if (err) return this.App.throwErr(err, this.prefix);                    
+                    this.send(this.io.sockets, 'get-message', rows)
+                })
             })
         })
     }

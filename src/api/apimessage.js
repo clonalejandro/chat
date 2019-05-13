@@ -19,6 +19,7 @@ module.exports = class ApiMessage {
      */
     register(){
         this.createMessage();
+        this.getMessages();
         this.deleteMessage();
         this.updateMessage();
         
@@ -28,7 +29,7 @@ module.exports = class ApiMessage {
     
     /**
      * This function prepare the route for create message in the api
-     * requeriments for the request: (text, chat, userId, date)
+     * requeriments for the request: (text, chatName)
      */
     createMessage(){
         const generateDate = () => {
@@ -41,14 +42,13 @@ module.exports = class ApiMessage {
             return `${date.getFullYear()}-${dateFormat(date.getMonth())}-${dateFormat(date.getDate())} ${dateFormat(date.getHours())}:${dateFormat(date.getMinutes())}:${dateFormat(date.getSeconds())}`;
         };
         
-        
-        this.server.post('/api/create-message', (req, res) => {
+        this.server.get('/api/create-message', (req, res) => {
             try {
                 const bind = {
-                    text: req.body.text,
-                    chatId: req.body.chatId,
-                    userId: req.body.userId,
-                    date: generateDate(),
+                    text: req.query.text,
+                    chatName: req.query.chatName,
+                    userId: req.user.id,
+                    date: (this.App.isNull(req.query.date) ? generateDate() : req.query.date)
                 };
                 
                 this.App.MessageOrm.create(bind);
@@ -56,13 +56,37 @@ module.exports = class ApiMessage {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })
     }
     
     
+     /**
+     * This function prepare the route for get messages in the api
+     * requeriments for the request: (chatName)
+     */
+    getMessages(){
+        this.server.get('/api/get-messages', (req, res) => {
+            try {
+                const bind = {
+                    chatName: req.query.chatName,
+                }
+
+                this.App.MessageOrm.getByChatName(bind, (err, rows) => {
+                    if (err) throw err
+                    res.status(200).send(rows)
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix);
+                res.status(500).send(err.message)
+            }
+        })
+    }
+
+
     /**
      * This function prepare the route for delete message in the api
      * requeriments for the request: (id)
@@ -80,7 +104,7 @@ module.exports = class ApiMessage {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })
@@ -107,7 +131,7 @@ module.exports = class ApiMessage {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })

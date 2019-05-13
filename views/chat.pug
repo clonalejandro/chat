@@ -1,0 +1,109 @@
+doctype html
+html(lang="en")
+    head
+        - var author = "clonalejandro"
+        - var twitter = "clonalejandro11"
+        - var title = `${webName} | Room ${room}`
+
+        meta(name="DC.title", content=`${title}`)
+        meta(property="og:title", content=`${title}`)
+        meta(name="twitter:title", content=`${title}`)
+        meta(charset="utf-8")
+        meta(lang="es")
+        meta(http-equiv="Content-Language", content="en")
+        meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+        meta(name="description", content=`${description}`)
+        meta(name="keywords", content=`${tagsString}`)
+        meta(name="author", content=`${author}`)
+        link(rel="apple-touch-icon", sizes="120x120", alt=`${title}`, href=`${logo}?size=120`)
+        link(rel="apple-touch-icon", sizes="152x152", alt=`${title}`, href=`${logo}?size=152`)
+        link(rel="icon", href=`${logo}`, alt=`${title}`, type="image/png")
+        link(rel="shortcut icon", href=`${logo}`, alt=`${title}`, type="image/png")
+        meta(name="robots", content="all")
+        meta(name="distribution", content="global")
+        meta(name="google", content="translate")
+        meta(name="DC.creator", content=`${author}`)
+        meta(name="DC.description", content=`${description}`)
+        meta(property="og:description", content=`${description}`)
+        meta(property="og:type", content="website")
+        meta(property="og:url", content=`${webURI}`)
+        meta(property="og:image", content=`${logo}`)
+        meta(property="og:site_name", content=`${title}`)
+        meta(name="twitter:card", content="summary")
+        meta(name="twitter:site", content=`${twitter}`)
+        meta(name="twitter:description", content=`${description}`)
+        meta(name="twitter:image", content=`${logo}`)
+        meta(name="twitter:url", content=`${webURI}`)
+        meta(name="generator", content="clonacms")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, shrink-to-fit=no")
+        meta(name="theme-color", content="#000000")
+        
+        title #{title}
+        
+        include helpers/cookies.pug
+        include helpers/css.pug
+        link(rel='stylesheet', href="../assets/css/chat.css")
+        body
+            div#wrapper
+                nav.navbar.navbar-expand-lg.navbar-light.bg-light
+                    a.navbar-brand(href="/")
+                        img(src=`${logo}`, alt=`${webName}`)
+                    button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar", aria-controls="navbar", aria-expanded="false", aria-label="Toggle navigation")
+                        span.navbar-toggler-icon
+                    div.collapse.navbar-collapse#navbar
+                        ul.navbar-nav.mr-auto
+                            li.nav-item.active
+                                a.nav-link(href="#") #{user.username}
+                            li.nav-item.dropdown
+                                a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                                    i.fa.fa-bed.nav-icon
+                                div.dropdown-menu(aria-labelledby="roomDropdown")
+                                    a.dropdown-item#createRoom(href="#") Create room 
+                                        i.fa.fa-plus
+                                    a.dropdown-item#editRoom(href="#") Edit room 
+                                        i.fa.fa-pencil
+                                    a.dropdown-item#joinRoom(href="#") Join a room 
+                                        i.fa.fa-sign-in
+                        ul.nav.navbar-nav.navbar-right
+                            li.dropdown
+                                a(href="#", role="button", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                                    i.fa.fa-user.nav-icon
+                                div.dropdown-menu(aria-labelledby="userDropdown")
+                                    a.dropdown-item(href="#") Settings 
+                                        i.fa.fa-cog
+                                    a#deleteProfile.dropdown-item(href="#") Delete profile 
+                                        i.fa.fa-trash
+                                    a#logout.dropdown-item(href="#") Logout 
+                                        i.fa.fa-sign-out
+                //Rest
+                div.container
+                    //Notification
+                    div#notifications.container
+                        include helpers/noscript.pug
+                        if msg
+                            div.alert.alert-danger.alert-dismissible
+                                button.close(type="button", data-dismiss="alert") &times;
+                                strong Oops an error has occurred
+                                p The error trace is: #{msg}
+                    header
+                        h3 Room #{room}
+                    div.messagin
+                        div.inbox_msg
+                            div.mesgs
+                                div.msg_history
+                                div.type_msg
+                                    div.input_msg_write
+                                        form(onsubmit="sendMessage()")
+                                            input.form-control.write_msg(placeholder="Type a message", required)
+                                            button.msg_send_btn(type="submit")
+                                                i.fa.fa-paper-plane-o(aria-hidden="true")
+
+            script const user = {id: '#{user.id}', username: '#{user.username}'}; const room = '#{room}';  
+            script(src="https://code.jquery.com/jquery-3.4.1.min.js", integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=", crossorigin="anonymous")
+            script(src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js")
+            script(src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js")
+            script(src="../assets/js/request.js")
+            script(src="../assets/js/autocomplete.js")
+            script(src="../assets/js/chatsocket.js")
+            script(src="../assets/js/chat.js")

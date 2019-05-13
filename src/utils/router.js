@@ -71,15 +71,19 @@ module.exports = class Router {
     
     
     renderChat(){
-        this.server.get('/chats/:room', (req, res) => {
+        this.server.get('/chats/:room', this.isAuthenticated, (req, res) => {
             try {
                 const room = req.params.room;
-                
-                res.send(`${room}`);
+                const tempConfig = getSecureConfig();
+
+                tempConfig.room = room;
+                tempConfig.user = req.user;
+
+                res.render('chat', tempConfig)
             }
             catch (err){
                 this.App.throwAlert(err);
-                res.status(500).send(err)
+                res.status(500).send(err.message)
             }
         });
         
@@ -105,7 +109,7 @@ module.exports = class Router {
             }
             catch (err){
                 this.App.throwAlert(err);
-                res.status(500).send(err)
+                res.status(500).send(err.message)
             }
         });
         
@@ -134,7 +138,7 @@ module.exports = class Router {
             }
             catch (err){
                 this.App.throwAlert(err);
-                res.status(500).send(err)
+                res.status(500).send(err.message)
             }
         });
         
@@ -159,7 +163,7 @@ module.exports = class Router {
             }
             catch (err){
                 this.App.throwAlert(err);
-                res.status(500).send(err)
+                res.status(500).send(err.message)
             }
         })
     }
@@ -179,7 +183,7 @@ module.exports = class Router {
             }
             catch (err){
                 this.App.throwAlert(err);
-                res.status(500).send(err)
+                res.status(500).send(err.message)
             }
         });
         

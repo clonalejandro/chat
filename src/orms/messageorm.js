@@ -17,11 +17,13 @@ module.exports = class MessageOrm {
     
     /**
      * This function create a message in database
-     * @param {Object} data is text of the message, the chatId associated, the userId associated, and the date of the message
+     * @param {Object} data data is text of the message, the chatName associated, the userId associated, and the date of the message
      * @param {*} callback
      */
     create(data, callback = undefined){
-        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", "${data.chatId}", ${data.userId}, "${data.date}"`;
+        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", (
+            SELECT id FROM ${this.App.ChatOrm.props.table} WHERE name="${data.chatName}"
+        ), "${data.userId}", "${data.date}")`;
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
@@ -32,8 +34,48 @@ module.exports = class MessageOrm {
     
     
     /**
+     * This function get all data for message
+     * @param {Object} data data is the chatName of the chat associated to this message 
+     * @param {*} callback 
+     */
+    getByChatName(data, callback){
+        const query = `SELECT * FROM ${this.props.table} WHERE chatId = (
+            SELECT id FROM ${this.App.ChatOrm.props.table} WHERE name="${data.chatName}"
+        ) ORDER BY date ASC`;
+
+        this.con().query(query, callback)
+    }
+
+
+    /**
+     * This function get all data for message
+     * @param {Object} data data is the username of the user associated to this message 
+     * @param {*} callback 
+     */
+    getByUserName(data, callback){
+        const query = `SELECT * FROM ${this.props.table} WHERE userId = (
+            SELECT id FROM ${this.App.UserOrm.props.table} WHERE username="${data.username}"
+        )`;
+
+        this.con().query(query, callback)
+    }
+
+
+    /**
+     * This function get all data for message
+     * @param {Object} data data is the userId of the user associated to this message 
+     * @param {*} callback 
+     */
+    getByUserId(data, callback){
+        const query = `SELECT * FROM ${this.props} WHERE userId="${data.userId}"`;
+
+        this.con().query(query, callback)
+    }
+
+
+    /**
      * This function delete a message in database
-     * @param {Object} data is the id of the message
+     * @param {Object} data data is the id of the message
      * @param {*} callback
      */
     deleteById(data, callback = undefined){
@@ -49,7 +91,7 @@ module.exports = class MessageOrm {
     
     /**
      * This function delete a message in database
-     * @param {Object} data is the username associated to message
+     * @param {Object} data data is the username associated to message
      * @param {*} callback
      */
     deleteByUserName(data, callback = undefined){
@@ -67,7 +109,7 @@ module.exports = class MessageOrm {
     
     /**
      * This function delete a message in database
-     * @param {Object} data is the userId associated to message
+     * @param {Object} data data is the userId associated to message
      * @param {*} callback
      */
     deleteByUserId(data, callback = undefined){
@@ -83,7 +125,7 @@ module.exports = class MessageOrm {
     
     /**
      * This function update a message in database
-     * @param {Object} data is the id of the message
+     * @param {Object} data data is the id of the message
      * @param {*} callback
      */
     updateById(data, callback = undefined){
@@ -99,7 +141,7 @@ module.exports = class MessageOrm {
     
     /**
      * This function update a message in database 
-     * @param {Object} data is the username associated to the message
+     * @param {Object} data data is the username associated to the message
      * @param {*} callback
      */
     updateByUserName(data, callback = undefined){
@@ -117,7 +159,7 @@ module.exports = class MessageOrm {
     
     /**
      * This function update a message in database 
-     * @param {Object} data is the userId associated to the message
+     * @param {Object} data data is the userId associated to the message
      * @param {*} callback
      */
     updateByUserId(data, callback = undefined){

@@ -6,20 +6,6 @@ var myRooms = new Array();
 
 /** FUNCTIONS **/
 
-function getHeight(){
-    return $(window).height()
-}
-
-
-function responsive(height = getHeight()){
-    $("#wrapper").height(height);
-    $("header").height(height);
-    
-    $("#navbar").on("show.bs.collapse", e => responsive(getHeight() + $("#main").height()));//When navbar open this height increments the navbar expand
-    window.addEventListener("resize", e => responsive())//When window resize, this execute this function
-}
-
-
 function alertTimeout(){
     const notification = $("#notifications > .alert");
     const timeout = notification.data("timeout");
@@ -135,7 +121,6 @@ function deleteUserRequest(){
 /** METHODS **/
 
 $(document).ready(() => {
-    responsive();
     getChatsRequest()
 });
 
