@@ -35,11 +35,12 @@ module.exports = class ApiUser {
         this.server.get('/api/get-username', (req, res) => {
             try {
                 const bind = {
-                    id: req.query.id
+                    id: this.App.deserializeSalt(req.query.id)
                 };
 
                 this.App.UserOrm.getByPk(bind, (err, rows) => {
-                    if (err) throw err;
+                    if (err) return this.App.throwErr(err, this.prefix, res);
+                    if (!rows) return this.App.throwErr({message: "User not found!"}, this.prefix, res);
                     else res.send(rows[0].username)
                 })
             }

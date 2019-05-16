@@ -76,6 +76,7 @@ module.exports = class ApiMessage {
 
                 this.App.MessageOrm.getByChatName(bind, (err, rows) => {
                     if (err) this.App.throwErr(err, this.prefix, res);
+                    if (rows) rows.forEach(row => row.userId = this.App.serializeSalt(row.userId));//Serialize userId
                     res.status(200).send(rows)
                 })
             }

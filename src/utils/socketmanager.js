@@ -23,21 +23,23 @@ module.exports = class SocketManager {
 
             this.registerSocketListener(socket, 'send-message', data => {
                 this.App.MessageOrm.getByChatName({chatName: data.room}, (err, rows) => {
-                    if (err) return this.App.throwErr(err, this.prefix);                    
+                    if (err) return this.App.throwErr(err, this.prefix);
+                    if (rows) rows.forEach(row => row.userId = this.App.serializeSalt(row.userId));//Serialize userId
                     this.send(this.io.sockets, 'get-message', rows)
                 })
             });
 
             this.registerSocketListener(socket, 'refresh', data => {
                 this.App.MessageOrm.getByChatName({chatName: data.room}, (err, rows) => {
-                    if (err) return this.App.throwErr(err, this.prefix);                    
+                    if (err) return this.App.throwErr(err, this.prefix);
+                    if (rows) rows.forEach(row => row.userId = this.App.serializeSalt(row.userId));//Serialize userId
                     this.send(this.io.sockets, 'refresh', rows)
                 })
             })
         })
     }
 
-    
+
     /**
      * This function register a listener for a socket
      * @param socket {*}

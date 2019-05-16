@@ -1,4 +1,4 @@
-module.exports = class Math {
+module.exports = class CMath {
 
     
     /** REST **/
@@ -33,4 +33,12 @@ module.exports = class Math {
     }
     
     
+    /**
+     * This function returns a random number
+     * @param {Number} min 
+     * @param {Number} max 
+     */
+    static rand(min = 0, max = 1){
+        return Math.floor((Math.random() * max) + min)
+    }
 }

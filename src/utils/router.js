@@ -78,6 +78,7 @@ module.exports = class Router {
 
                 tempConfig.room = room;
                 tempConfig.user = req.user;
+                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
 
                 res.render('chat', tempConfig)
             }
