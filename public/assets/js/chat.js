@@ -100,9 +100,7 @@ function renderIncomingMessage(props){
         </div>
     `);
 
-    resolveUserNameRequest(
-        props, e => $(`#${props.userId}.incoming_msg b`).text(e.responseText)
-    );
+    getUserNameFromCache(props);
 
     return responsive()
 }
@@ -203,8 +201,28 @@ function processSocketData(data){
  */
 function deleteMessageListener(bind){
     $(`#${bind.id}-btn`).on('click', e =>  deleteMessageRequest(bind, () => 
-        $(`#${bind.id}`).fadeOut(350, () => $(this).remove())
+        $(`#${bind.id}`).fadeOut(350, () => {
+            socketSendRefresh({room: room});
+            $(this).remove()
+        })
     ))
+}
+
+
+/**
+ * This function get Username from localStorage
+ * @param {Object} bind userId
+ */
+function getUserNameFromCache(bind){
+    let username = localStorage.getItem(bind.userId);
+
+    if (isNull(username)) resolveUserNameRequest(bind, e => {
+        username = e.responseText;
+        
+        localStorage.setItem(bind.userId, username)
+        $(`#${bind.userId}.incoming_msg b`).text(username)
+    })
+    else $(`#${bind.userId}.incoming_msg b`).text(username)    
 }
 
 
@@ -232,6 +250,8 @@ function getMessagesFromThisChatRequest(){
             const json = JSON.parse(e.responseText);
 
             processSocketData(json);
+
+            socketOnRefresh(data => processSocketData(data));
             socketOnGetMessage(data => processSocketData(data))
         }
         else throwErr(e.responseText)

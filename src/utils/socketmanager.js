@@ -26,6 +26,13 @@ module.exports = class SocketManager {
                     if (err) return this.App.throwErr(err, this.prefix);                    
                     this.send(this.io.sockets, 'get-message', rows)
                 })
+            });
+
+            this.registerSocketListener(socket, 'refresh', data => {
+                this.App.MessageOrm.getByChatName({chatName: data.room}, (err, rows) => {
+                    if (err) return this.App.throwErr(err, this.prefix);                    
+                    this.send(this.io.sockets, 'refresh', rows)
+                })
             })
         })
     }

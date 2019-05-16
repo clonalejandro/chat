@@ -37,9 +37,7 @@ module.exports = class ApiUser {
                 const bind = {
                     id: req.query.id
                 };
-                
-                console.log(bind.id);
-                
+
                 this.App.UserOrm.getByPk(bind, (err, rows) => {
                     if (err) throw err;
                     else res.send(rows[0].username)

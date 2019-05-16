@@ -54,9 +54,27 @@ function socketOnGetMessage(callback){
 
 
 /**
+ * This function register a listener when socket refresh
+ * @param {*} callback 
+ */
+function socketOnRefresh(callback){
+	socket.on('refresh', callback)
+}
+
+
+/**
  * This function send data via sockets
  * @param {Object} data 
  */
 function socketSendMessage(data){
     socket.emit('send-message', data)
+}
+
+
+/**
+ * This function send data via sockets
+ * @param {Object} data 
+ */
+function socketSendRefresh(data){
+	socket.emit('refresh', data)
 }

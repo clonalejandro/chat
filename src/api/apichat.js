@@ -1,3 +1,17 @@
+/** FUNCTIONS **/
+
+function userIsJoined(rows, bind){
+    var result;
+
+    rows.forEach(row => {
+        result = (row.userId == bind.userId);
+        if (result) return;
+    })
+
+    return result
+}
+
+
 module.exports = class ApiChat {
 
     
@@ -19,6 +33,7 @@ module.exports = class ApiChat {
      */
     register(){
         this.createChat();
+        this.join();
         this.updateChat();
         this.deleteChat();
         
@@ -42,13 +57,44 @@ module.exports = class ApiChat {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res);
             }
         })
     }
 
-    
+
+    /**
+     * This function prepare the route for join chat in the api
+     * requeriments for the request: (name, userId)
+     */
+    join(){
+        this.server.get('/api/join-chat', (req, res) => {
+            try {
+                const bind = {
+                    name: req.query.name,
+                    userId: req.user.id
+                };
+
+                this.App.ChatOrm.getByChatName(bind, (err, rows) => {
+                    if (err) return this.App.throwErr(err, this.prefix, res);
+                    
+                    if (!rows.length) return this.App.throwErr({message: "This chat not exists"}, this.prefix, res);
+                    
+                    if (userIsJoined(rows, bind)) return res.status(200).send("You already joined to this chat!")
+                    
+                    this.App.ChatOrm.create(bind, (err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else res.status(200).send("Ok!")
+                    })
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res);
+            }
+        })
+    }
+
+
     /**
      * This function prepare the route for delete chat in the api
      * requeriments for the request: (id)
@@ -64,8 +110,7 @@ module.exports = class ApiChat {
                 res.status(200).send('Ok!');
             }
             catch (err){
-                this.App.throwErr(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res);
             }
         })
     }
@@ -91,8 +136,7 @@ module.exports = class ApiChat {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res);
             }
         })
     }

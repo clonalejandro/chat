@@ -21,9 +21,7 @@ module.exports = class MessageOrm {
      * @param {*} callback
      */
     create(data, callback = undefined){
-        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", (
-            SELECT id FROM ${this.App.ChatOrm.props.table} WHERE name="${data.chatName}"
-        ), "${data.userId}", "${data.date}")`;
+        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.text}", "${data.chatName}", "${data.userId}", "${data.date}")`;
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
@@ -39,9 +37,7 @@ module.exports = class MessageOrm {
      * @param {*} callback 
      */
     getByChatName(data, callback){
-        const query = `SELECT * FROM ${this.props.table} WHERE chatId = (
-            SELECT id FROM ${this.App.ChatOrm.props.table} WHERE name="${data.chatName}"
-        ) ORDER BY date ASC`;
+        const query = `SELECT * FROM ${this.props.table} WHERE chatName="${data.chatName}" ORDER BY date ASC`;
 
         this.con().query(query, callback)
     }

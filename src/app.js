@@ -118,10 +118,12 @@ module.exports = class App {
      * This function throw custom errors
      * @param {*} err error
      */
-    static throwErr(err, type = "ERROR"){
+    static throwErr(err, type = "ERROR", res = undefined){
         if(!App.isNull(err)) App.debug(
 			err.message, (type == "ERROR" ? type : `${type}!ERROR`)
-		)
+        )
+        
+        if (!App.isNull(res)) res.status(500).send(err.message)
     }
 
 

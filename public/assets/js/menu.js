@@ -66,7 +66,7 @@ function processJoinRoom(){
     $('.collapse').collapse('hide');
     $("#modalJoinRoom input[name='roomName']").val("");
     
-    setTimeout(() => window.location.href = `${webURI}/chats/${name}`, 250);
+    setTimeout(() => joinChatRequest({name: name}, () => window.location.href = `${webURI}/chats/${name}`), 250)
 }
 
 
@@ -83,7 +83,7 @@ function createRoomRequest(name, callback){
                 <li style='text-align: left'><strong>URL: </strong><i>${e.responseURL}</i></li>
             </ul>
         `);
-    }, "name=${name}")
+    }, `name=${name}`)
 }
 
 
@@ -97,6 +97,14 @@ function getChatsRequest(){
 
         new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms)
     })
+}
+
+
+function joinChatRequest(bind, callback){
+    new Request(`${webURI}/api/join-chat?name=${bind.name}`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback()
+        else throwErr(e.responseText)
+    }, `name=${bind.name}`)
 }
 
 

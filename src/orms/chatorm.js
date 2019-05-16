@@ -27,6 +27,16 @@ module.exports = class ChatOrm {
     
     /**
      * This function get all chat data
+     * @param {Object} data is the name of the chat
+     * @param {*} callback 
+     */
+    getByChatName(data, callback){
+        this.con().query(`SELECT * FROM ${this.props.table} WHERE name="${data.name}"`, callback)
+    }
+
+
+    /**
+     * This function get all chat data
      * @param {Object} data is the id of the user associated to this chat
      * @param {*} callback
      */
@@ -57,7 +67,7 @@ module.exports = class ChatOrm {
      */
     create(data, callback = undefined){
         const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.name}", "${data.userId}")`;
-        
+
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
             else this.App.debug(`Creating chat with: ${JSON.stringify(data)}`, this.props.prefix)

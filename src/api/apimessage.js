@@ -75,7 +75,7 @@ module.exports = class ApiMessage {
                 }
 
                 this.App.MessageOrm.getByChatName(bind, (err, rows) => {
-                    if (err) throw err
+                    if (err) this.App.throwErr(err, this.prefix, res);
                     res.status(200).send(rows)
                 })
             }
