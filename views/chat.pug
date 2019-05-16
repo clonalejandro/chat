@@ -43,7 +43,54 @@ html(lang="en")
         include helpers/cookies.pug
         include helpers/css.pug
         link(rel='stylesheet', href="../assets/css/chat.css")
+        link(rel='stylesheet', href="../assets/css/menu.css")
         body
+            //Modal Room create
+            div.modal#modalCreateRoom(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Room creator
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            form(onsubmit="processCreateRoom()")
+                                div.form-group
+                                    input.form-control(placeholder="Room name", maxlength=32, name="roomName", required)
+                        div.modal-footer
+                            button.btn.btn-danger(data-dismiss="modal") Close
+                            button.btn.btn-success(type="submit") Create!
+            
+            //Modal Room join
+            div.modal#modalJoinRoom(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Join a room
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            form(onsubmit="processJoinRoom()")
+                                div.form-group
+                                    input.form-control#auto(placeholder="Room name", autocomplete="off", maxlength=32, name="roomName", required)
+                        div.modal-footer
+                            button.btn.btn-danger(data-dismiss="modal") Close
+                            button.btn.btn-success(type="submit") Join!
+
+            //Modal Room join
+            div.modal#modalDeleteProfile(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Delete profile
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            | Are you sure to delete your profile?
+                        div.modal-footer
+                            button.btn.btn-danger.delete Delete
+                            button.btn.btn-primary(data-dismiss="modal") Cancel
+                    
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")
@@ -107,3 +154,4 @@ html(lang="en")
             script(src="../assets/js/autocomplete.js")
             script(src="../assets/js/chatsocket.js")
             script(src="../assets/js/chat.js")
+            script(src="../assets/js/menu.js")

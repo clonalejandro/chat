@@ -18,6 +18,7 @@ module.exports = class ApiUser {
      * This function register all apiuser routes
      */
     register(){
+        this.getUserName();
         this.getUserChats();
         this.deleteUser();
         this.updateUser();
@@ -26,6 +27,36 @@ module.exports = class ApiUser {
     }
     
     
+    /**
+     * This function get username from user
+     * requeriments for request: (id)
+     */
+    getUserName(){
+        this.server.get('/api/get-username', (req, res) => {
+            try {
+                const bind = {
+                    id: req.query.id
+                };
+                
+                console.log(bind.id);
+                
+                this.App.UserOrm.getByPk(bind, (err, rows) => {
+                    if (err) throw err;
+                    else res.send(rows[0].username)
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix);
+                res.status(500).send(err.message)
+            }
+        })
+    }
+
+
+    /**
+     * This function get chats from user
+     * requeriments for the request: (id)
+     */
     getUserChats(){
         this.server.get('/api/get-user-chats', (req, res) => {
             try {
@@ -39,7 +70,7 @@ module.exports = class ApiUser {
                 })
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })
@@ -62,7 +93,7 @@ module.exports = class ApiUser {
                 setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })
@@ -89,7 +120,7 @@ module.exports = class ApiUser {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err);
+                this.App.throwErr(err, this.prefix);
                 res.status(500).send(err.message)
             }
         })

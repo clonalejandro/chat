@@ -30,7 +30,7 @@ checkroot
 # Main vars
 debug="none"
 resave="none"
-saveUninitialized="none"
+saveUnitialized="none"
 fileconfig="../data/config.json"
 
 
@@ -56,8 +56,8 @@ read -p "Session secret key: " secret
 while [ $resave != "true" ] && [ $resave != "false" ]; do
 	read -p "Session resave (true/false): " resave
 done
-while [ $saveUninitialized != "true" ] && [ $saveUninitialized != "false" ]; do
-	read -p "Session save unitiliazed (true/false): " saveUninitialized
+while [ $saveUnitialized != "true" ] && [ $saveUnitialized != "false" ]; do
+	read -p "Session save unitiliazed (true/false): " saveUnitialized
 done
 
 read -p "Session Cookie max age in milis: " cookieAge

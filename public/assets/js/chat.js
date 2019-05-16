@@ -64,16 +64,18 @@ function renderOutgoingMessage(props){
     const container = $(".msg_history");
 
     container.append(`
-        <div class="outgoing_msg">
+        <div id="${props.id}" class="outgoing_msg">
             <div class="sent_msg">
                 <p>
                     ${props.text}
-                    <i class="fa fa-trash"></i>    
+                    <i id="${props.id}-btn" class="fa fa-trash"></i>    
                 </p>
                 <span class="time_date">${props.timeIn}</span>
             </div>
         </div>
     `);
+
+    deleteMessageListener(props);
 
     return responsive()
 }
@@ -87,7 +89,7 @@ function renderIncomingMessage(props){
     const container = $(".msg_history");
 
     container.append(`
-        <div class="incoming_msg">
+        <div id="${props.userId}" class="incoming_msg">
             <div class="received_msg">
                 <div class="received_withd_msg">
                     <b color="white">${props.user}</b>
@@ -97,6 +99,10 @@ function renderIncomingMessage(props){
             </div>
         </div>
     `);
+
+    resolveUserNameRequest(
+        props, e => $(`#${props.userId}.incoming_msg b`).text(e.responseText)
+    );
 
     return responsive()
 }
@@ -191,12 +197,32 @@ function processSocketData(data){
 }
 
 
+/**
+ * This function register a listener when you click the trash button
+ * @param {Object} bind 
+ */
+function deleteMessageListener(bind){
+    $(`#${bind.id}-btn`).on('click', e =>  deleteMessageRequest(bind, () => 
+        $(`#${bind.id}`).fadeOut(350, () => $(this).remove())
+    ))
+}
+
+
 /** REQUESTS **/
 
 function createMessageRequest(bind, callback){
     new Request(`${webURI}/api/create-message?chatName=${room}&text=${bind.text}&time=${bind.timeOut}`, "GET", e => {
         if (e.responseText == "Ok!" || e.status == 200) callback()
+        else throwErr(e.responseText)
     }, `chatName=${room}&text=${bind.text}&time=${bind.time}`)
+}
+
+
+function deleteMessageRequest(bind, callback){
+    new Request(`${webURI}/api/delete-message?id=${bind.id}`, "POST", e => {
+        if (e.responseText == "Ok!" || e.status == 200) callback()
+        else throwErr(e.responseText)
+    }, `id=${bind.id}`)
 }
 
 
@@ -208,7 +234,16 @@ function getMessagesFromThisChatRequest(){
             processSocketData(json);
             socketOnGetMessage(data => processSocketData(data))
         }
+        else throwErr(e.responseText)
     }, `chatName=${room}`)
+}
+
+
+function resolveUserNameRequest(bind, callback){
+    new Request(`${webURI}/api/get-username?id=${bind.userId}`, "GET", e => {
+        if (e.status == 200) callback(e);
+        else throwErr(e.responseText)
+    }, `id=${bind.userId}`)
 }
 
 

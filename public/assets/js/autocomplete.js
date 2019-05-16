@@ -111,8 +111,12 @@ class AutoComplete {
         const elements = document.querySelectorAll('.autocompleter > .element');
         
         elements.forEach(e => e.addEventListener('click', e => {
-            this.element.value = e.target.textContent;
-            this.completeWithData()//Refresh autocomplete
+            const chatName = e.target.textContent;
+
+            this.element.value = chatName;
+            this.completeWithData();//Refresh autocomplete
+
+            setTimeout(() => window.location.href = `${webURI}/chats/${chatName}`, 250)
         }))
     }
     

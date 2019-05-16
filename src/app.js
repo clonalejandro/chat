@@ -39,7 +39,7 @@ module.exports = class App {
 		App.RankOrm = new RankOrm(App);
         App.tasks = new Array();
 		
-        App.io = io;
+        App.io = io
 	}
 
 	
