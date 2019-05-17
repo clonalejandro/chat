@@ -136,13 +136,23 @@ module.exports = class App {
      * @return {String} salt
      */
     static serializeSalt(word, size = 6){
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
         if (App.salt == "")//Check if salt is empty gen a new salt 
-            for (let i = 0; i < size; i++) 
-                App.salt = App.salt.concat(chars.charAt(Math.rand(0, chars.length)))
+            App.generateSalt(size);
+        
+        return `${word}${App.salt}`
+    }
 
-        return word + App.salt
+
+    /**
+     * This function generates a random salt
+     * @param {Number} size 
+     */
+    static generateSalt(size){
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (let i = 0; i < size; i++) 
+            App.salt = App.salt.concat(chars.charAt(Math.rand(0, chars.length)))
     }
 
 
@@ -153,7 +163,7 @@ module.exports = class App {
      * @return {String} salt 
      */
     static deserializeSalt(word, size = 6){
-        return word.replace(App.salt, "")
+        return word.slice(0, word.length - size)
     }
 
 

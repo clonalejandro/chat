@@ -57,7 +57,7 @@ module.exports = class ApiChat {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err, this.prefix, res);
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }
@@ -89,7 +89,7 @@ module.exports = class ApiChat {
                 })
             }
             catch (err){
-                this.App.throwErr(err, this.prefix, res);
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }
@@ -107,10 +107,10 @@ module.exports = class ApiChat {
                 }
                 
                 if (!this.App.isNull(bind.id)) this.App.ChatOrm.deleteById({ id: bind.id });
-                res.status(200).send('Ok!');
+                res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err, this.prefix, res);
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }
@@ -136,7 +136,7 @@ module.exports = class ApiChat {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err, this.prefix, res);
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }

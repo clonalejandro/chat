@@ -40,7 +40,7 @@ module.exports = class ApiUser {
 
                 this.App.UserOrm.getByPk(bind, (err, rows) => {
                     if (err) return this.App.throwErr(err, this.prefix, res);
-                    if (!rows) return this.App.throwErr({message: "User not found!"}, this.prefix, res);
+                    if (!rows.length) return this.App.throwErr({message: "User not found!"}, this.prefix, res);
                     else res.send(rows[0].username)
                 })
             }
@@ -104,14 +104,14 @@ module.exports = class ApiUser {
      * requeriments for the request: (id , newusername)
      */
     updateUser(){
-        this.server.post('/api/update-user', (req, res) => {
+        this.server.get('/api/update-user', (req, res) => {
             try {
                 const bind = {
-                    id: req.body.id,
-                    newusername: req.body.newusername
+                    id: req.user.id,
+                    newusername: req.query.newusername
                 };
                 
-                if (!this.App.isNull(bind.id)) this.App.UserOrm.updateById({
+                this.App.UserOrm.updateById({
                     id: bind.id,
                     newname: bind.newusername
                 });
@@ -119,8 +119,7 @@ module.exports = class ApiUser {
                 res.status(200).send('Ok!')
             }
             catch (err){
-                this.App.throwErr(err, this.prefix);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }

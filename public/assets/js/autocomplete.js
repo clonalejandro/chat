@@ -116,7 +116,7 @@ class AutoComplete {
             this.element.value = chatName;
             this.completeWithData();//Refresh autocomplete
 
-            setTimeout(() => window.location.href = `${webURI}/chats/${chatName}`, 250)
+            processJoinRoom();
         }))
     }
     
