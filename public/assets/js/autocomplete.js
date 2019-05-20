@@ -76,7 +76,7 @@ class AutoComplete {
         const container = $(".autocompleter")[0];
         const targetList = new Array();
         
-        if (container && currentVal.isEmpty()){
+        if (currentVal.isEmpty()){
             this.clearContainer();
             return
         }
@@ -91,8 +91,8 @@ class AutoComplete {
         var html = `<div class='autocompleter'>`;
 
         targetList.forEach(e => {
-            const first = e.substring(0, 1);
-            const rest = e.substring(1, e.length);
+            const first = currentVal;
+            const rest = e.substring(currentVal.length, e.length);
             
             html = html.concat(`<div class='element' id='${e}'><b>${first}</b>${rest}</div>`);
         });

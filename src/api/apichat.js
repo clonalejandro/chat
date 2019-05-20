@@ -1,12 +1,14 @@
 /** FUNCTIONS **/
 
 function userIsJoined(rows, bind){
-    var result;
+    var result = false;
 
     rows.forEach(row => {
-        result = (row.userId == bind.userId);
-        if (result) return;
-    })
+        if (row.userId == bind.userId){
+            result = true;
+            return
+        }
+    });
 
     return result
 }
@@ -82,13 +84,10 @@ module.exports = class ApiChat {
                 };
 
                 this.App.ChatOrm.getByChatName(bind, (err, rows) => {
-                    if (err) return this.App.throwErr(err, this.prefix, res);
-                    
-                    if (!rows.length) return this.App.throwErr({message: "This chat not exists"}, this.prefix, res);
-                    
-                    if (userIsJoined(rows, bind)) return res.status(200).send("You already joined to this chat!")
-                    
-                    this.App.ChatOrm.create(bind, (err, rows) => {
+                    if (err) this.App.throwErr(err, this.prefix, res);
+                    else if (!rows.length) this.App.throwErr({message: "This chat not exists"}, this.prefix, res);
+                    else if (userIsJoined(rows, bind)) res.status(200).send("You already joined to this chat!")
+                    else this.App.ChatOrm.create(bind, (err, rows) => {
                         if (err) this.App.throwErr(err, this.prefix, res);
                         else res.status(200).send("Ok!")
                     })

@@ -1,3 +1,8 @@
+/** IMPORTS **/
+
+const bCrypt = require("bcrypt-nodejs");
+
+
 module.exports = class ApiUser {
     
     
@@ -22,8 +27,9 @@ module.exports = class ApiUser {
         this.getUserChats();
         this.deleteUser();
         this.updateUser();
+        this.updatePassword();
         
-        this.App.debug("Register all apiuser routes", this.prefix);
+        this.App.debug("Register all apiuser routes", this.prefix)
     }
     
     
@@ -101,22 +107,31 @@ module.exports = class ApiUser {
     
     /**
      * This function prepare the route for update user in the api
-     * requeriments for the request: (id , newusername)
+     * requeriments for the request: (id, password, newusername)
      */
     updateUser(){
         this.server.get('/api/update-user', (req, res) => {
             try {
                 const bind = {
                     id: req.user.id,
+                    password: req.query.password,
                     newusername: req.query.newusername
                 };
-                
-                this.App.UserOrm.updateById({
-                    id: bind.id,
-                    newname: bind.newusername
-                });
-
-                res.status(200).send('Ok!')
+ 
+                this.App.UserOrm.getByPk(bind, (err, rows) => {
+                    if (err) this.App.throwErr(err, this.prefix, res);
+                    else if (!this.isValidPassword(rows[0], bind.password)) this.App.throwErr({message: "Wrong password!"}, this.prefix, res);
+                    else this.App.UserOrm.getByUserName({username: bind.newusername}, (err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else if (rows.length) this.App.throwErr({message: "This username is already in use"}, this.prefix, res);
+                        else {
+                            res.redirect('/');
+                            setTimeout(() => this.App.UserOrm.updateById(bind, (err, rows) => {
+                                if (err) this.App.throwErr(err, this.prefix, res)
+                            }), 250)
+                        }
+                    })
+                })
             }
             catch (err){
                 this.App.throwErr(err, this.prefix, res)
@@ -125,4 +140,52 @@ module.exports = class ApiUser {
     }
     
     
+    /**
+     * This function update the password via api
+     * requirements for the request (id, newpassword, currentpassword)
+     */
+    updatePassword(){
+        this.server.get('/api/update-password', (req, res) => {
+            try {
+                const bind = {
+                    id: req.user.id,
+                    newpassword: this.createHash(req.query.newpassword),
+                    currentpassword: req.query.currentpassword
+                };
+
+                this.App.UserOrm.getByPk(bind, (err, rows) => {
+                    if (err) this.App.throwErr(err, this.prefix, res);
+                    else if (!this.isValidPassword(rows[0], bind.currentpassword)) this.App.throwErr({message: "Wrong password!"}, this.prefix, res);
+                    else this.App.UserOrm.updatePassword(bind, (err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else res.status(200).send("Ok!")
+                    })
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        })
+    }
+
+
+    /**
+     * This function encrypt the password passed by parameter
+     * @param {String} password 
+     * @return {String} passwordHashed
+     */
+    createHash(password){
+        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null)
+    }
+
+
+    /**
+     * This function check if user & password is correct
+     * @param {String} row 
+     * @param {String} password 
+     * @return {Boolean} isValid
+     */
+    isValidPassword(row, password){
+        return bCrypt.compareSync(password, row.password)
+    }
 }

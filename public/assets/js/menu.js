@@ -145,9 +145,12 @@ $("#deleteProfile").on('click',
 );
 
 $("#logout").on('click', 
-    () => setTimeout(() => window.location.href = '/logout', 250)
+    () => setTimeout(() => window.location.href = `${webURI}/logout`, 250)
 );
 
+$("#settings").on('click',
+    () => setTimeout(() => window.location.href = `${webURI}/profile`, 250)
+);
 
 $("#modalCreateRoom form").on('submit', e => e.preventDefault());
 $("#modalCreateRoom button[type='submit']").on('click', () => processCreateRoom());

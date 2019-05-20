@@ -1,7 +1,9 @@
 /** IMPORTS **/
 
-const routes = require('../../assets/data/routes.json');
-const config = require('../../assets/data/config.json');
+const routes   = require('../../assets/data/routes.json');
+const config   = require('../../assets/data/config.json');
+const fetch    = require("node-fetch");
+const Bluebird = require("bluebird");
 
 
 /** FUNCTIONS **/
@@ -31,6 +33,8 @@ module.exports = class Router {
         this.server = server;
         this.passport = passport;
         this.prefix = "ROUTER";
+
+        fetch.Promise = Bluebird
     }
     
     
@@ -42,6 +46,7 @@ module.exports = class Router {
     render(){
         this.renderMainRoutes();
         this.renderChat();
+        this.renderProfile();
         this.renderRegister();
         this.renderLogin();
         this.renderPanel();
@@ -58,11 +63,11 @@ module.exports = class Router {
             
             this.server.get(url, (req, res) => {
                 try {
-                    res.render(view, getSecureConfig());
+                    const tempConfig = getSecureConfig();
+                    res.render(view, tempConfig)
                 }
                 catch (err){
-                    this.App.throwAlert(err);
-                    res.status(500).send(err)
+                    this.App.throwErr(err, this.prefix, res)
                 }
             });
             this.App.debug(`The server is registering route: "${url}" aiming to: ${view}`, this.prefix)
@@ -70,6 +75,9 @@ module.exports = class Router {
     }
     
     
+    /**
+     * This function render the chat rooms
+     */
     renderChat(){
         this.server.get('/chats/:room', this.isAuthenticated, (req, res) => {
             try {
@@ -80,18 +88,45 @@ module.exports = class Router {
                 tempConfig.user = req.user;
                 tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
 
-                res.render('chat', tempConfig)
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    tempConfig.isAdmin = isAdmin;
+                    res.render('chat', tempConfig)
+                })
             }
             catch (err){
-                this.App.throwAlert(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         });
         
-        this.App.debug(`The server is registering route: "/chats/:room" aiming to: chat`, this.prefix);
+        this.App.debug(`The server is registering route: "/chats/:room" aiming to: chat`, this.prefix)
     }
     
     
+    /**
+     * This function render the profile page
+     */
+    renderProfile(){
+        this.server.get('/profile', this.isAuthenticated, (req, res) => {
+            try {
+                const tempConfig = getSecureConfig();
+
+                tempConfig.user = req.user;
+                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
+
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    tempConfig.isAdmin = isAdmin;
+                    res.render('profile', tempConfig)
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        });
+
+        this.App.debug(`The server is registering route: "/profile" aiming to: profile`, this.prefix)
+    }
+
+
     /**
      * This function render the register pasarel
      */
@@ -109,8 +144,7 @@ module.exports = class Router {
                 }
             }
             catch (err){
-                this.App.throwAlert(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         });
         
@@ -138,8 +172,7 @@ module.exports = class Router {
                 res.render('login', tempConfig)
             }
             catch (err){
-                this.App.throwAlert(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         });
         
@@ -163,8 +196,7 @@ module.exports = class Router {
                 res.redirect('/login');
             }
             catch (err){
-                this.App.throwAlert(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         })
     }
@@ -180,11 +212,13 @@ module.exports = class Router {
 
                 tempConfig.username = req.user.username;
                 
-                res.render('panel', tempConfig)
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    tempConfig.isAdmin = isAdmin;
+                    res.render('panel', tempConfig)
+                })
             }
             catch (err){
-                this.App.throwAlert(err);
-                res.status(500).send(err.message)
+                this.App.throwErr(err, this.prefix, res)
             }
         });
         

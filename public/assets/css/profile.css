@@ -1,0 +1,161 @@
+/** CUSTOM **/ 
+
+body {
+    background: url(https://i.imgur.com/PnnfCBk.jpg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%
+}
+
+body, html {
+    margin: 0;
+    height: 100%;
+}
+
+#wrapper {
+    background: rgba(0, 0, 0, .5);
+    height: 100%;
+}
+
+header {
+    margin-top: 5%;
+    color: white;
+    text-align: center
+}
+
+#main {
+    margin-top: 5%;
+    background: rgba(.5, .5, .5, .5);
+    border-radius: 2%;
+    text-align: center;
+    padding-top: 2%;
+    width: 350px
+}
+
+#main > form > button {
+    margin-top: 5%;
+    margin-bottom: 10%
+}
+
+#main > form > div.help > p {
+    color: darkgray;
+    padding-bottom: 5%
+}
+
+#main > div.center {
+    text-align: center;
+    align-content: center
+}
+
+#main > div.center > img {
+    width: 128px;
+    height: 128px
+}
+
+
+/** INPUTS **/
+
+::placeholder {
+    color: white!important
+}
+
+.form-control, .form-control:focus {
+    color: white
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+input:-internal-autofill-selected {
+    background: transparent!important;
+    transition: background-color 5000s ease-in-out 0s!important;
+    -webkit-text-fill-color: #fff !important
+}
+
+
+/** FORM PASSOWRD **/
+
+input[name="password"]{
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important
+}
+
+input[name="newpassword"]{
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important
+}
+
+input[name="currentpassword"]{
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important
+}
+
+.input-group {
+    -webkit-box-shadow: inset 0 -1px 0 #ddd;
+    box-shadow: inset 0 -1px 0 #ddd;
+    -webkit-transition: -webkit-box-shadow 0.2s;
+    transition: -webkit-box-shadow 0.2s;
+    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, -webkit-box-shadow 0.2s
+}
+
+.input-group > input[name="password"]:focus {
+    -webkit-box-shadow: inset 0 -2px 0 #2196F3!important;
+    box-shadow: inset 0 -2px 0 #2196F3!important
+}
+
+.input-group > input[name="currentpassword"]:focus {
+    -webkit-box-shadow: inset 0 -2px 0 #e91e63!important;
+    box-shadow: inset 0 -2px 0 #e91e63!important
+}
+
+.input-group > input[name="newpassword"]:focus {
+    -webkit-box-shadow: inset 0 -2px 0 #e91e63!important;
+    box-shadow: inset 0 -2px 0 #e91e63!important
+}
+
+a.input-group-text,
+a.input-group-text:hover {
+    cursor: pointer;
+    color: white!important
+}
+
+
+/** MODAL **/
+
+
+#modalChangePassword .modal-content,
+#modalChangePassword .modal-dialog {
+    background: rgba(63, 81, 181, .6)
+}
+
+#modalChangePassword input.form-control:focus {
+    -webkit-box-shadow: inset 0 -2px 0 #e91e63;
+    box-shadow: inset 0 -2px 0 #e91e63
+}
+
+
+/** SCROLLBAR **/
+
+/* width */
+::-webkit-scrollbar {
+    width: 3px
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(233, 30, 99, 1); 
+    border-radius: 10px
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(233, 30, 99, .7); 
+}

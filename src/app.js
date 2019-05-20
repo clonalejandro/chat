@@ -236,7 +236,8 @@ module.exports = class App {
 	 * This function prepare all api
 	 */
 	prepareApi(){
-		Api = new Api(App, this.server)
+        Api = new Api(App, this.server);
+        App.Api = Api;
 	}
 	
 	

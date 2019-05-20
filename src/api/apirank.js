@@ -117,20 +117,17 @@ module.exports = class ApiRank {
      * @param {*} callback (isAdmin boolean)
      */
     isAdmin(data, callback){
-        function checkIsAdmin(err, rows){
-            if (err){
-                this.App.throwErr(err);
-                return
-            }
-            callback(rows[0].id == 2)
+        function checkIsAdmin(err, rows, manager){
+            if (err) manager.throwErr(err);
+            else callback(rows[0].id == 2)
         }
         
         if (!this.App.isNull(data.username)) this.orm.getByUserName({
             username: data.username
-        }, checkIsAdmin);
+        }, (err, rows) => checkIsAdmin(err, rows, this.App));
         else if (!this.App.isNull(data.id)) this.orm.getByUserId({
             userId: data.id
-        }, checkIsAdmin)
+        }, (err, rows) => checkIsAdmin(err, rows, this.App))
     }
     
     
@@ -140,20 +137,17 @@ module.exports = class ApiRank {
      * @param {*} callback (isMod boolean)
      */
     isMod(data, callback){
-        function checkIsAdmin(err, rows){
-            if (err){
-                this.App.throwErr(err);
-                return
-            }
-            callback(rows[0].id == 1)
+        function checkIsAdmin(err, rows, manager){
+            if (err) manager.throwErr(err);
+            else callback(rows[0].id == 1)
         }
         
         if (!this.App.isNull(data.username)) this.orm.getByUserName({
             username: data.username
-        }, checkIsAdmin);
+        }, (err, rows) => checkIsAdmin(err, rows, this.App));
         else if (!this.App.isNull(data.id)) this.orm.getByUserId({
             userId: data.id
-        }, checkIsAdmin)
+        }, (err, rows) => checkIsAdmin(err, rows, this.App))
     }
     
     
@@ -164,19 +158,16 @@ module.exports = class ApiRank {
      */
     isUser(data, callback){
         function checkIsAdmin(err, rows){
-            if (err){
-                this.App.throwErr(err);
-                return
-            }
-            callback(rows[0].id == 0)
+            if (err) manager.throwErr(err);
+            else callback(rows[0].id == 0)
         }
         
         if (!this.App.isNull(data.username)) this.orm.getByUserName({
             username: data.username
-        }, checkIsAdmin);
+        }, (err, rows) => checkIsAdmin(err, rows, this.App));
         else if (!this.App.isNull(data.id)) this.orm.getByUserId({
             userId: data.id
-        }, checkIsAdmin)
+        }, (err, rows) => checkIsAdmin(err, rows, this.App))
     }
     
     

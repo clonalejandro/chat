@@ -81,7 +81,7 @@ module.exports = class Auth {
                 
                 this.App.UserOrm.create(data, (err, res) => {
                     if (err) this.App.throwErr(err, this.prefix);
-                    return done(null, data);
+                    return done(null, data)
                 })
             })
             
@@ -104,11 +104,11 @@ module.exports = class Auth {
     
     /**
      * This function check if user & password is correct
-     * @param {String} rows 
+     * @param {String} row 
      * @param {String} password 
      * @return {Boolean} isValid
      */
-    isValidPassword(rows, password){
-        return bCrypt.compareSync(password, rows.password)
+    isValidPassword(row, password){
+        return bCrypt.compareSync(password, row.password)
     }
 }

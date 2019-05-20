@@ -111,12 +111,21 @@ html(lang="en")
                                         i.fa.fa-pencil
                                     a.dropdown-item#joinRoom(href="#") Join a room 
                                         i.fa.fa-sign-in
+                            if isAdmin
+                                li.nav-item.dropdown
+                                    a(href="#", role="button", id="serverDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                                        i.fa.fa-connectdevelop.nav-icon
+                                    div.dropdown-menu(aria-labelledby="serverDropdown")
+                                        a.dropdown-item#joinPanel(href="#") Join a AdminPanel 
+                                            i.fa.fa-tachometer
+                                        a.dropdown-item(href="#") more... 
+                                            i.fa.fa-question
                         ul.nav.navbar-nav.navbar-right
                             li.dropdown
                                 a(href="#", role="button", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                                     i.fa.fa-user.nav-icon
                                 div.dropdown-menu(aria-labelledby="userDropdown")
-                                    a.dropdown-item(href="#") Settings 
+                                    a#settings.dropdown-item(href="#") Settings 
                                         i.fa.fa-cog
                                     a#deleteProfile.dropdown-item(href="#") Delete profile 
                                         i.fa.fa-trash

@@ -193,9 +193,7 @@ function processSocketData(data, wrap = true){
         timeIn: formatInTime(new Date(row.date))
     }));
 
-    gotoToLastItem();
-
-    //if (wrap) return wrapMessages()
+    gotoToLastItem()
 }
 
 
@@ -227,92 +225,6 @@ function getUserNameFromCache(bind){
         $(`#${bind.id}.incoming_msg b`).text(username)
     })
     else $(`#${bind.id}.incoming_msg b`).text(username)    
-}
-
-
-/**
- * This function returns a last item of array
- * @param {Array} array 
- * @return {*} lastItem
- */
-function lastItemOfArray(array){
-    return array[array.length - 1]
-}
-
-
-/**
- * This function returns a random number
- * @param {Number} min 
- * @param {Number} max 
- * @return {Number} random
- */
-function randomNumber(min = 0, max = 100){
-    return Math.floor((Math.random() * max) + min)
-}
-
-
-/**
- * This function get elements to wrap
- */
-function getElementsToWrap(){
-    const container = $(".msg_history");//Messages container
-    const childrens = container.children();//Messages
-    const tempArray = new Array();//array that contains all messages for divide this messages
-    const elementsToWrap = new Array();//array that contains messages divided
-
-    Object.keys(childrens).forEach((it, key) => {
-        const children = childrens[key];
-        
-        if (isNull(children)) return;
-
-        if (tempArray.length){
-            const lastItem = lastItemOfArray(tempArray);
-
-            if (lastItem.className == children.className)
-                if (elementsToWrap.length){//If length search results
-                    const lastArrayElementToWrap = lastItemOfArray(elementsToWrap);
-                    const lastElementToWrap = lastItemOfArray(lastArrayElementToWrap);
-
-                    if (lastElementToWrap.className == children.className) lastArrayElementToWrap.push(children);
-                    else elementsToWrap.push([children, lastItem])//If not have coincidences with the last item in the array of elements to wrap
-                }
-                else elementsToWrap.push([children, lastItem])
-            else elementsToWrap.push([children]);//If not have coincidences
-        }
-        tempArray.push(children);
-    })
-
-    return elementsToWrap
-}
-
-
-function wrapMessages(){
-    const lists = getElementsToWrap();//Elements to wrap has this format [0: ['test', 'test']]
-    const data = new Array();
-
-    lists.forEach(list => {
-        var row = {
-            room: room,
-            userId: "",
-            text: "",
-            timeOut: null,//time without seconds and other format
-            timeIn: null
-        };
-
-        //Prepare data
-        list.forEach(element => {
-            const elementId = element.id;
-
-            row.id = elementId;
-            row.userId = $(`#${elementId}`).attr("data-uuid");
-            row.text += $(`#${elementId} p`).html() + "<br>";
-            row.timeOut = $(`#${elementId} .time_date`).text() + `:${randomNumber(0, 60)}`;
-        });
-
-        data.push(row)
-    });
-
-    processSocketData(data, false)
 }
 
 
@@ -370,3 +282,5 @@ $(document).ready(() => {
 /** METHODS **/
 
 $(".type_msg form").on('submit', e => e.preventDefault());
+$('.collapse').on('shown.bs.collapse', () => responsive());
+$(".dropdown").on('show.bs.dropdown	', () => responsive());

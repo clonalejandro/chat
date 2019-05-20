@@ -94,7 +94,7 @@ module.exports = class UserOrm {
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
+            else this.App.debug(`Updating username with: ${JSON.stringify(data)}`, this.props.prefix)
         });
         else this.con().query(query, callback)
     }
@@ -102,7 +102,7 @@ module.exports = class UserOrm {
     
     /**
      * This function updates a user in database
-     * @param {Object} data is the name of the user and newname of the user
+     * @param {Object} data is the name of the user and newusername of the user
      * @param {*} callback
      */
     updateByName(data, callback = undefined){
@@ -110,10 +110,24 @@ module.exports = class UserOrm {
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Updating user with: ${JSON.stringify(data)}`, this.props.prefix)
+            else this.App.debug(`Updating username with: ${JSON.stringify(data)}`, this.props.prefix)
         });
         else this.con().query(query, callback)
     }
     
     
+    /**
+     * This function updates a user password in database
+     * @param {Object} data is the id of the user and the newpassword of the user 
+     * @param {*} callback 
+     */
+    updatePassword(data, callback = undefined){
+        const query = `UPDATE ${this.props.table} SET password="${data.newpassword}" WHERE id="${data.id}"`;
+
+        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else this.App.debug(`Updating user password with: ${JSON.stringify(data)}`, this.props.prefix)
+        });
+        else this.con().query(query, callback)
+    }
 }
