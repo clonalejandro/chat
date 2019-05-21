@@ -22,32 +22,32 @@ var RankOrm 	  = require('./orms/rankorm');
 
 
 module.exports = class App {
-	
-	
-	/** SMALL CONSTRUCTORS **/
-	
-	constructor(http, server, io){
+    
+    
+    /** SMALL CONSTRUCTORS **/
+    
+    constructor(http, server, io){
         this.http = http;
         this.server = server;
-		
+        
         Log = new Log();
-		
+        
         App.config = config;
         App.salt = "";
         App.MysqlManager = new MysqlManager(App, config);
         App.ChatOrm = new ChatOrm(App);
-		App.UserOrm = new UserOrm(App);
-		App.MessageOrm = new MessageOrm(App);
-		App.RankOrm = new RankOrm(App);
+        App.UserOrm = new UserOrm(App);
+        App.MessageOrm = new MessageOrm(App);
+        App.RankOrm = new RankOrm(App);
         App.tasks = new Array();
-		
+        
         App.io = io
-	}
+    }
 
-	
-	/** REST **/
-	
-	/**
+    
+    /** REST **/
+    
+    /**
      * This function replace all
      * @param {String} data 
      * @param {String} charToReplace charToReplace
@@ -74,20 +74,20 @@ module.exports = class App {
     static isNull(data){
         return data == null || data == undefined
     }
-	
-	
+    
+    
     /**
      * This function debug data passed by parameter
      * @param {String || Object} data message to debug
-	 * @param {String} type
+     * @param {String} type
      */
     static debug(data, type = "INFO"){
-		const prefix = `[${type}]`;
+        const prefix = `[${type}]`;
         const prompt = " ⇒ ";
         
-		data = (data instanceof Object ? JSON.stringify(data) : data);
+        data = (data instanceof Object ? JSON.stringify(data) : data);
 
-		Log.write(`${prefix}${prompt}${data}\n`);
+        Log.write(`${prefix}${prompt}${data}\n`);
 
         if (!config.debug) return;
 
@@ -97,16 +97,16 @@ module.exports = class App {
         else console.log(Color.FgBlue + prefix + Color.FgMagenta + prompt + Color.Reset + data);
     }
 
-	
-	/**
-	 * This function throw custom test debug messages
-	 * @param {*} data test
-	 */
-	static throwTest(data){
-		App.debug(data, "TEST")
-	}
-	
-	
+    
+    /**
+     * This function throw custom test debug messages
+     * @param {*} data test
+     */
+    static throwTest(data){
+        App.debug(data, "TEST")
+    }
+    
+    
     /**
      * This function throw custom alerts
      * @param {*} data alert 
@@ -122,7 +122,7 @@ module.exports = class App {
      */
     static throwErr(err, type = "ERROR", res = undefined){
         if(!App.isNull(err)) App.debug(
-			err.message, (type == "ERROR" ? type : `${type}!ERROR`)
+            err.message, (type == "ERROR" ? type : `${type}!ERROR`)
         )
         
         if (!App.isNull(res)) res.status(500).send(err.message)
@@ -182,9 +182,9 @@ module.exports = class App {
 
         this.server.use('/api/', apiLimiter)
     }
-	
-	
-	/**
+    
+    
+    /**
      * This function configure the middlewares
      * @param {*} cookieParser cookieParser
      * @param {*} bodyParser bodyParser
@@ -199,65 +199,65 @@ module.exports = class App {
         this.server.use(session(config.session));
         this.server.use(passport.initialize());
         this.server.use(passport.session());
-		this.server.use(compress());
+        this.server.use(compress());
 
         passport.serializeUser((user, done) => done(null, user.username));
         passport.deserializeUser((username, done) => App.UserOrm.getByUserName({username: username}, (err, rows) => done(err, rows[0])));
        
         Auth = new Auth(App, passport)
     }
-	
-	
-	/**
+    
+    
+    /**
      * This function prepare the node server
-	 */
-	prepareServer(){
-		this.server.use('/assets', express.static(`${ __dirname}/../public/assets/`, config.session.cookie));
-		this.server.set('views', 'views');
+     */
+    prepareServer(){
+        this.server.use('/assets', express.static(`${ __dirname}/../public/assets/`, config.session.cookie));
+        this.server.set('views', 'views');
         this.server.set('view engine', 'pug');
-		
-		this.http.listen(config.port, () => {
-			App.debug("The server has been started!");
-			App.debug(`The server is listening the port: ${config.port}`)
-		})
-	}
-	
-	
-	/**
+        
+        this.http.listen(config.port, () => {
+            App.debug("The server has been started!");
+            App.debug(`The server is listening the port: ${config.port}`)
+        })
+    }
+    
+    
+    /**
      * This function register all listeners for the sockets and eneable this
      */
-	prepareSockets(){
-		SocketManager = new SocketManager(App);
-		SocketManager.registerListeners()	
-	}
+    prepareSockets(){
+        SocketManager = new SocketManager(App);
+        SocketManager.registerListeners()	
+    }
 
-	
-	/**
-	 * This function prepare all api
-	 */
-	prepareApi(){
+    
+    /**
+     * This function prepare all api
+     */
+    prepareApi(){
         Api = new Api(App, this.server);
         App.Api = Api;
-	}
-	
-	
-	/**
-	 * This function prepare main routes
-	 * @param {*} passport
-	 */
-	prepareRoutes(passport){
-		Router = new Router(App, this.server, passport);
+    }
+    
+    
+    /**
+     * This function prepare main routes
+     * @param {*} passport
+     */
+    prepareRoutes(passport){
+        Router = new Router(App, this.server, passport);
         Router.render()
-	}
-	
-	
-	/**
-	 * This function start the task for the logRotate
-	 */
-	startLogRotate(){
-		new TaskTimer(App, 'Log rotate', () => {
-			Log.logRotate()
-		}, Math.hoursToMilis(1))
+    }
+    
+    
+    /**
+     * This function start the task for the logRotate
+     */
+    startLogRotate(){
+        new TaskTimer(App, 'Log rotate', () => {
+            Log.logRotate()
+        }, Math.hoursToMilis(1))
     }
     
 
