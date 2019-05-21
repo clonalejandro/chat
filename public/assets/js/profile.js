@@ -55,7 +55,7 @@ function updatePassword(){
         currentpassword: currentpassword.val(),
         newpassword: newpassword.val()
     };
-    console.log("Updating");
+
     updatePasswordRequest(data)
 }
 

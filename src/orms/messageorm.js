@@ -91,7 +91,7 @@ module.exports = class MessageOrm {
      * @param {*} callback
      */
     deleteByUserName(data, callback = undefined){
-        const query = `DELETE FROM $(this.props.table} WHERE userId=(
+        const query = `DELETE FROM ${this.props.table} WHERE userId=(
             SELECT id FROM ${this.App.UserOrm.props.table} WHERE username="${data.username}"
         )`;
         
@@ -109,7 +109,7 @@ module.exports = class MessageOrm {
      * @param {*} callback
      */
     deleteByUserId(data, callback = undefined){
-        const query = `DELETE FROM $(this.props.table} WHERE userId="${data.userId}"`;
+        const query = `DELETE FROM ${this.props.table} WHERE userId="${data.userId}"`;
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);

@@ -59,14 +59,20 @@ module.exports = class UserOrm {
     deleteById(data, callback = undefined){
         const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
         
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+        this.App.ChatOrm.deleteByUserId({userId: data.id}, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+            else this.App.MessageOrm.deleteByUserId({userId: data.id}, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix);
+                else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                    if (err) this.App.throwErr(err, this.props.prefix);
+                    else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
+                });
+                else this.con().query(query, callback)
+            })
+        })
     }
-    
-    //TODO: WHEN DELETE USER DELETE CHAT AND MESSAGE 
+
+    //TODO: Refact the chatorm and userorm when deletes
     
     /**
      * This function deletes a user in database
@@ -76,14 +82,21 @@ module.exports = class UserOrm {
     deleteByName(data, callback = undefined){
         const query = `DELETE FROM ${this.props.table} WHERE username="${data.username}"`;
         
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+        this.App.ChatOrm.deleteByUserName(data, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+            else this.App.MessageOrm.deleteByUserName(data, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix);
+                else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                    if (err) this.App.throwErr(err, this.props.prefix);
+                    else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
+                });
+                else this.con().query(query, callback)
+            })
+        }) 
+
     }
     
-    
+
     /**
      * This function updates a user in database
      * @param {Object} data is the id of the user and newname of the user
