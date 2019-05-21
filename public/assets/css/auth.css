@@ -26,7 +26,7 @@ body {
     margin-bottom: 10%;
     background: transparent;
     border-radius: initial;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, .1)!important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, .1)!important
 }
 
 #main > form > button:hover, 
@@ -44,7 +44,7 @@ body {
 
 #main > form > div.help > p {
     color: white;
-    padding-bottom: 5%;
+    padding-bottom: 5%
 }
 
 .form-control, .form-control:focus {
@@ -68,7 +68,7 @@ input:-webkit-autofill:active,
 input:-internal-autofill-selected {
     background: transparent!important;
     transition: background-color 5000s ease-in-out 0s!important;
-    -webkit-text-fill-color: #fff !important;
+    -webkit-text-fill-color: #fff !important
 }
 
 
@@ -81,7 +81,7 @@ input:-internal-autofill-selected {
 
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 ::-webkit-scrollbar-thumb {
@@ -91,5 +91,5 @@ input:-internal-autofill-selected {
   
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(233, 30, 99, .7); 
+    background: rgba(233, 30, 99, .7)
 }

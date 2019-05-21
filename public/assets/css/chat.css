@@ -6,7 +6,7 @@
 }
 
 img { 
-    max-width:100%
+    max-width: 100%
 }
 
 .inbox_people {
@@ -14,7 +14,7 @@ img {
     float: left;
     overflow: hidden;
     width: 40%; 
-    border-right:1px solid #c4c4c4
+    border-right: 1px solid #c4c4c4
 }
 
 .inbox_msg {
@@ -30,13 +30,13 @@ img {
 
 .recent_heading {
     float: left; 
-    width:40%
+    width: 40%
 }
 
 .srch_bar {
     display: inline-block;
     text-align: right;
-    width: 60%;
+    width: 60%
 }
 
 .headind_srch { 
@@ -74,18 +74,18 @@ img {
 .chat_ib h5 { 
     font-size: 15px;
     color: #464646;
-    margin:0 0 8px 0
+    margin: 0 0 8px 0
 }
 
 .chat_ib h5 span {
-    font-size:13px;
-    float:right
+    font-size: 13px;
+    float: right
 }
 
 .chat_ib p { 
-    font-size:14px;
-    color:#989898;
-    margin:auto
+    font-size: 14px;
+    color: #989898;
+    margin: auto
 }
 
 .chat_img {
@@ -100,8 +100,8 @@ img {
 }
 
 .chat_people { 
-    overflow:hidden;
-    clear:both
+    overflow: hidden;
+    clear: both
 }
 
 .chat_list {
@@ -252,12 +252,12 @@ body {
 
 body, html {
     margin: 0;
-    height: 100%;
+    height: 100%
 }
 
 #wrapper {
     background: rgba(0, 0, 0, .5);
-    height: 100%;
+    height: 100%
 }
 
 header {
@@ -282,7 +282,7 @@ input:-webkit-autofill:active,
 input:-internal-autofill-selected {
     background: transparent!important;
     transition: background-color 5000s ease-in-out 0s!important;
-    -webkit-text-fill-color: #fff !important;
+    -webkit-text-fill-color: #fff !important
 }
 
 .inbox_msg {
@@ -299,7 +299,7 @@ input:-internal-autofill-selected {
 
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 ::-webkit-scrollbar-thumb {
@@ -309,5 +309,5 @@ input:-internal-autofill-selected {
   
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(233, 30, 99, .7); 
+    background: rgba(233, 30, 99, .7)
 }

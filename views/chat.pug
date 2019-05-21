@@ -94,7 +94,7 @@ html(lang="en")
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")
-                        img(src=`${logo}`, alt=`${webName}`)
+                        img(src="", data-src=`${logo}`, alt=`${webName}`)
                     button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar", aria-controls="navbar", aria-expanded="false", aria-label="Toggle navigation")
                         span.navbar-toggler-icon
                     div.collapse.navbar-collapse#navbar
@@ -159,6 +159,7 @@ html(lang="en")
             script(src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js")
             script(src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js")
             script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js")
+            script(src="https://clonalejandro.github.io/lazyload/lazyload.min.js")
             script(src="../assets/js/request.js")
             script(src="../assets/js/autocomplete.js")
             script(src="../assets/js/chatsocket.js")

@@ -159,3 +159,5 @@ $("#modalJoinRoom form").on('submit', e => e.preventDefault());
 $("#modalJoinRoom button[type='submit']").on('click', () => processJoinRoom());
 
 $("#modalDeleteProfile .delete").on('click', deleteUserRequest);
+
+$("img").on('dragstart', e => e.preventDefault());

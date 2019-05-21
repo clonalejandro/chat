@@ -11,12 +11,12 @@ body {
 
 body, html {
     margin: 0;
-    height: 100%;
+    height: 100%
 }
 
 #wrapper {
     background: rgba(0, 0, 0, .5);
-    height: 100%;
+    height: 100%
 }
 
 header {
@@ -147,7 +147,7 @@ a.input-group-text:hover {
 
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 ::-webkit-scrollbar-thumb {
@@ -157,5 +157,5 @@ a.input-group-text:hover {
   
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(233, 30, 99, .7); 
+    background: rgba(233, 30, 99, .7)
 }

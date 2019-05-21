@@ -63,7 +63,7 @@
 .dropdown:focus .dropdown-menu,
 .dropdown:active .dropdown-menu,
 .dropdown:hover .dropdown-menu {
-    display: block;
+    display: block
 }
 
 .dropdown-menu {
@@ -95,7 +95,7 @@ li.dropdown:hover > a > i {
 .dropdown-item:hover,
 .dropdown-item:focus {
     background: rgba(255, 255, 255, .2);
-    border-radius: 2px;
+    border-radius: 2px
 }
 
 .open > .dropdown-menu.dropdown-info {
@@ -164,7 +164,7 @@ input:-webkit-autofill:active,
 input:-internal-autofill-selected {
     background: transparent!important;
     transition: background-color 5000s ease-in-out 0s!important;
-    -webkit-text-fill-color: #fff !important;
+    -webkit-text-fill-color: #fff !important
 }
 
 
