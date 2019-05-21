@@ -266,6 +266,10 @@ header {
     text-align: center
 }
 
+header > h3 {
+    font-weight: 300
+}
+
 .form-control,
 .form-control:focus {
     color: white

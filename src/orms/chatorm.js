@@ -116,11 +116,14 @@ module.exports = class ChatOrm {
     deleteByName(data, callback = undefined){
         const query = `DELETE FROM ${this.props.table} WHERE name="${data.name}"`;
         
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+        this.App.MessageOrm.deleteByChatName({chatName: data.name}, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+            else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix);
+                else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+            });
+            else this.con().query(query, callback)
+        })
     }
     
 
@@ -130,15 +133,16 @@ module.exports = class ChatOrm {
      * @param {*} callback
      */
     deleteById(data, callback = undefined){
-        const query = `DELETE FROM ${this.props.table} WHERE name=(
-            SELECT id FROM ${this.props.table} WHERE id="${data.id}"
-        )`;
-        
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
-            if (err) this.App.throwErr(err, this.props.prefix)
-            else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+        const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
+
+        this.App.MessageOrm.deleteById({chatId: data.id}, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix)
+                else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+            });
+            else this.con().query(query, callback)
+        })        
     }
 
     
@@ -150,11 +154,14 @@ module.exports = class ChatOrm {
     deleteByUserId(data, callback = undefined){
         const query = `DELETE FROM ${this.props.table} WHERE userId="${data.userId}"`;
 
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+        this.App.MessageOrm.deleteByUserId(data, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+            else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix);
+                else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+            });
+            else this.con().query(query, callback)
+        })
     }
 
 
@@ -168,12 +175,13 @@ module.exports = class ChatOrm {
             SELECT id FROM ${this.App.UserOrm.props.table} WHERE username="${data.username}"
         )`;
 
-        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
-            if (err) this.App.throwErr(err, this.props.prefix)
-            else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
-        });
-        else this.con().query(query, callback)
+        this.App.MessageOrm.deleteByUserName(data, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+                if (err) this.App.throwErr(err, this.props.prefix)
+                else this.App.debug(`Deleting chat with: ${JSON.stringify(data)}`, this.props.prefix)
+            });
+            else this.con().query(query, callback)
+        })
     }
-
-
 }

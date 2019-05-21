@@ -3,8 +3,8 @@ html(lang="en")
     head
         - var author = "clonalejandro"
         - var twitter = "clonalejandro11"
-        - var title = `${webName}`
-        
+        - var title = `${webName} | Room ${room}`
+
         meta(name="DC.title", content=`${title}`)
         meta(property="og:title", content=`${title}`)
         meta(name="twitter:title", content=`${title}`)
@@ -42,7 +42,7 @@ html(lang="en")
         
         include helpers/cookies.pug
         include helpers/css.pug
-        link(rel='stylesheet', href="assets/css/panel.css")
+        link(rel='stylesheet', href="assets/css/chatpanel.css")
         link(rel='stylesheet', href="assets/css/menu.css")
         body
             //Modal Room create
@@ -90,6 +90,20 @@ html(lang="en")
                         div.modal-footer
                             button.btn.btn-danger.delete Delete
                             button.btn.btn-primary(data-dismiss="modal") Cancel
+
+            //Modal Delete Chat
+            div.modal#modalDeleteChat(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Delete chat
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            | Are you sure to delete this chat?
+                        div.modal-footer
+                            button.btn.btn-danger.delete Delete
+                            button.btn.btn-primary(data-dismiss="modal") Cancel
                     
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
@@ -99,9 +113,9 @@ html(lang="en")
                         span.navbar-toggler-icon
                     div.collapse.navbar-collapse#navbar
                         ul.navbar-nav.mr-auto
-                            li.nav-item.active
-                                a.nav-link(href="#") #{username}
-                            li.nav-item.dropdown
+                            li.nav-item
+                                a.nav-link(href="#") #{user.username}
+                            li.nav-item.dropdown.active
                                 a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                                     i.fa.fa-bed.nav-icon
                                 div.dropdown-menu(aria-labelledby="roomDropdown")
@@ -131,18 +145,20 @@ html(lang="en")
                                         i.fa.fa-trash
                                     a#logout.dropdown-item(href="#") Logout 
                                         i.fa.fa-sign-out
-                //Notifications
-                div.container#notifications
-                    include helpers/noscript.pug
-                
-                //Content
-                div.container#main
-                    h1 Welcome #{username} to panel 
-                    h4 Developed with much 
-                        i.fa.fa-heart
-                        |  by 
-                        a(href="https://clonalejandro.github.io", rel="noopener", target="_blank") clonalejandro
+                //Rest
+                div.container
+                    //Notification
+                    div#notifications.container
+                        include helpers/noscript.pug
+                        if msg
+                            div.alert.alert-danger.alert-dismissible
+                                button.close(type="button", data-dismiss="alert") &times;
+                                strong Oops an error has occurred
+                                p The error trace is: #{msg}
+                    header
+                        h3 Edit your chats
+                    div.container#main
 
             include helpers/js.pug
-            script const webURI = `${window.location.protocol}//${window.location.host}`;
+            script(src="assets/js/chatpanel.js")
             script(src="assets/js/menu.js")

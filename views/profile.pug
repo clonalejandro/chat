@@ -102,11 +102,11 @@ html(lang="en")
                         div.modal-body
                             form(onsubmit="updatePassword()")
                                 div.input-group.mb-3
-                                    input.form-control(placeholder="Current password", type="password", name="currentpassword", minlength="6", required)
+                                    input.form-control(placeholder="Current password", type="password", name="currentpassword", minlength=6, required)
                                     div.input-group-append
                                         a.input-group-text.fa.fa-eye-slash
                                 div.input-group.mb-3
-                                    input.form-control(placeholder="New password", type="password", name="newpassword", minlength="6", required)
+                                    input.form-control(placeholder="New password", type="password", name="newpassword", minlength=6, required)
                                     div.input-group-append
                                         a.input-group-text.fa.fa-eye-slash
                         div.modal-footer
@@ -147,7 +147,7 @@ html(lang="en")
                                 a(href="#", role="button", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                                     i.fa.fa-user.nav-icon
                                 div.dropdown-menu(aria-labelledby="userDropdown")
-                                    a.dropdown-item(href="#") Settings 
+                                    a#settings.dropdown-item(href="#") Settings 
                                         i.fa.fa-cog
                                     a#deleteProfile.dropdown-item(href="#") Delete profile 
                                         i.fa.fa-trash
@@ -182,6 +182,5 @@ html(lang="en")
 
 
             include helpers/js.pug
-            script const user = {id: '#{user.id}', username: '#{user.username}'}; const room = '#{room}';  
             script(src="assets/js/profile.js")
             script(src="assets/js/menu.js")

@@ -47,6 +47,7 @@ module.exports = class Router {
         this.renderMainRoutes();
         this.renderChat();
         this.renderProfile();
+        this.renderChatPanel();
         this.renderRegister();
         this.renderLogin();
         this.renderPanel();
@@ -102,6 +103,31 @@ module.exports = class Router {
     }
     
     
+    /**
+     * This function render the chat panel
+     */
+    renderChatPanel(){
+        this.server.get('/chatpanel', this.isAuthenticated, (req, res) => {
+            try {
+                const tempConfig = getSecureConfig();
+
+                tempConfig.user = req.user;
+                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
+
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    tempConfig.isAdmin = isAdmin;
+                    res.render('chatpanel', tempConfig)
+                })
+            } 
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        });
+
+        this.App.debug(`The server is registering route: "/chatpanel" aiming to: chatpanel`, this.prefix)
+    }
+
+
     /**
      * This function render the profile page
      */

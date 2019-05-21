@@ -247,6 +247,7 @@ function deleteMessageRequest(bind, callback){
 
 
 function getMessagesFromThisChatRequest(){
+    console.log(`${webURI}/api/get-messages?chatName=${room}`);
     new Request(`${webURI}/api/get-messages?chatName=${room}`, "GET", e => {
         if (e.status == 200){
             const json = JSON.parse(e.responseText);

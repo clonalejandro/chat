@@ -3,6 +3,19 @@ var myRooms = new Array();
 
 /** FUNCTIONS **/
 
+/**
+ * This function redirects with timeout
+ * @param {String} url 
+ * @return {Number} timeoutId
+ */
+function redirect(url, timeout = 250){
+    return setTimeout(() => window.location.href = url, timeout)
+}
+
+
+/**
+ * This function create a alert with timeout
+ */
 function alertTimeout(){
     const notification = $("#notifications > .alert");
     const timeout = notification.data("timeout");
@@ -12,11 +25,20 @@ function alertTimeout(){
 }
 
 
+/**
+ * This function checks if data isNull
+ * @param {*} data 
+ * @return {Boolean} isNull
+ */
 function isNull(data){
     return data == undefined || data == "" || data == null
 }
 
 
+/**
+ * This function create a alert danger with message
+ * @param {String} message 
+ */
 function throwErr(message){
     const html = `
         <div class="alert alert-dimissible alert-danger">
@@ -30,6 +52,9 @@ function throwErr(message){
 }
 
 
+/**
+ * This function create a room
+ */
 function processCreateRoom(){
     const name = $("#modalCreateRoom input[name='roomName']").val();
     
@@ -50,12 +75,15 @@ function processCreateRoom(){
     
         $("#notifications").append(html);
 
-        alertTimeout()
-        setTimeout(() => window.location.href = `/chats/${name}`, 250)
+        alertTimeout();
+        redirect(`/chats/${name}`)
     })
 }
 
 
+/**
+ * This function join a user into a room
+ */
 function processJoinRoom(){
     const name = $("#modalJoinRoom input[name='roomName']").val();
     
@@ -87,15 +115,10 @@ function createRoomRequest(name, callback){
 }
 
 
-function getChatsRequest(){
+function getChatsRequest(callback){
     new Request(`${webURI}/api/get-user-chats`, "GET", e => {
-        const res = e.response;
-        const json = JSON.parse(res);
-        
-        myRooms = new Array();//Clear the array
-        json.forEach(e => myRooms.push(e.name));
-
-        new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms)
+        if (e.status == 200) callback(e);
+        else throwErr(e.responseText)
     })
 }
 
@@ -126,7 +149,15 @@ function deleteUserRequest(){
 /** METHODS **/
 
 $(document).ready(() => {
-    getChatsRequest()
+    getChatsRequest(e => {
+        const res = e.response;
+        const json = JSON.parse(res);
+        
+        myRooms = new Array();//Clear the array
+        json.forEach(e => myRooms.push(e.name));
+
+        new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms)
+    })
 });
 
 
@@ -144,13 +175,9 @@ $("#deleteProfile").on('click',
     () => $("#modalDeleteProfile").fadeIn(300, () => $("#modalDeleteProfile").modal('show'))
 );
 
-$("#logout").on('click', 
-    () => setTimeout(() => window.location.href = `${webURI}/logout`, 250)
-);
-
-$("#settings").on('click',
-    () => setTimeout(() => window.location.href = `${webURI}/profile`, 250)
-);
+$("#logout").on('click', () => redirect(`${webURI}/logout`));
+$("#settings").on('click', () => redirect(`${webURI}/profile`));
+$("#editRoom").on('click', () => redirect(`${webURI}/chatpanel`));
 
 $("#modalCreateRoom form").on('submit', e => e.preventDefault());
 $("#modalCreateRoom button[type='submit']").on('click', () => processCreateRoom());

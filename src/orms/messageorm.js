@@ -87,6 +87,40 @@ module.exports = class MessageOrm {
     
     /**
      * This function delete a message in database
+     * @param {Object} data data is the chatName associated to the message
+     * @param {*} callback
+     */
+    deleteByChatName(data, callback = undefined){
+        const query = `DELETE FROM ${this.props.table} WHERE chatName="${data.chatName}"`;
+
+        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
+        });
+        else this.con().query(query, callback)
+    }
+
+
+    /**
+     * This function delete a message in database
+     * @param {Object} data data is the chatId of the chat associated to the message
+     * @param {*} callback 
+     */
+    deleteByChatId(data, callback = undefined){
+        const query = `DELETE FROM ${this.props.table} WHERE chatName=(
+            SELECT name FROM ${this.App.ChatOrm.props.table} WHERE id="${data.chatId}"
+        )`;
+        
+        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else this.App.debug(`Deleting message with: ${JSON.stringify(data)}`, this.props.prefix)
+        });
+        else this.con().query(query, callback)
+    }
+
+
+    /**
+     * This function delete a message in database
      * @param {Object} data data is the username associated to message
      * @param {*} callback
      */
