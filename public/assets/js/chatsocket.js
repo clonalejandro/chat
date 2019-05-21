@@ -9,12 +9,12 @@ const tasks = new Array();
  * @return task {*}
  */
 const connectionChecker = () => {
-	return setInterval(() => {
-		if (!socket.connected && !socket.connecting){
-			socket.connect();
-			console.log("Trying to reconnect to the socket server")
-		}
-	}, 2000)
+    return setInterval(() => {
+        if (!socket.connected && !socket.connecting){
+            socket.connect();
+            console.log("Trying to reconnect to the socket server")
+        }
+    }, 2000)
 };
 
 
@@ -24,10 +24,10 @@ const connectionChecker = () => {
  * This function init the backend sockets
  */
 function initIo(){
-	const config = {'forceNew': true};
-	const url = `${location.protocol}//${location.host}`;
+    const config = {'forceNew': true};
+    const url = `${location.protocol}//${location.host}`;
 
-	socket = io.connect(url, config);
+    socket = io.connect(url, config);
     tasks.push({name: "connectionChecker", id: connectionChecker()});
     
     socket.on('connect', () => console.log("Sockets initialized"))
@@ -40,7 +40,7 @@ function initIo(){
  * @return isNull {Boolean}
  */
 function isNull(element){
-	return element == undefined || element == null || element == ""
+    return element == undefined || element == null || element == ""
 }
 
 
@@ -58,7 +58,7 @@ function socketOnGetMessage(callback){
  * @param {*} callback 
  */
 function socketOnRefresh(callback){
-	socket.on('refresh', callback)
+    socket.on('refresh', callback)
 }
 
 
@@ -76,5 +76,5 @@ function socketSendMessage(data){
  * @param {Object} data 
  */
 function socketSendRefresh(data){
-	socket.emit('refresh', data)
+    socket.emit('refresh', data)
 }

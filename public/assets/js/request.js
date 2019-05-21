@@ -12,10 +12,10 @@ class Request {
         
         if (data != null) this.request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         
-		this.request.onload = e => callback(e.target);
-		this.request.onerror = e => console.error(e);
-			
-		this.request.send(data);
+        this.request.onload = e => callback(e.target);
+        this.request.onerror = e => console.error(e);
+            
+        this.request.send(data);
     }
   
     
