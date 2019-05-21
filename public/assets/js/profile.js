@@ -45,6 +45,9 @@ function updateProfile(){
 }
 
 
+/**
+ * This function updates the password
+ */
 function updatePassword(){
     const currentpassword = $("input[name='currentpassword']");
     const newpassword = $("input[name='newpassword']");
@@ -80,9 +83,7 @@ function updatePasswordRequest(bind){
 
 /** METHODS **/
 
-$(document).ready(() => {
-    responsive();
-})
+$(document).ready(() => responsive())
 
 
 /** EVENTS **/
