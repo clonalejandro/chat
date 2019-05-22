@@ -90,7 +90,16 @@ html(lang="en")
                         div.modal-footer
                             button.btn.btn-danger.delete Delete
                             button.btn.btn-primary(data-dismiss="modal") Cancel
-                    
+            //Modal for see images
+            div.modal#modalImages(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            center
+                                img.image-to-open
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")

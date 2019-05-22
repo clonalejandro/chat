@@ -32,8 +32,10 @@ function responsive(height = getHeight()){
  * This function scroll To the last message 
  */
 function gotoToLastItem(){
-    const target = $(".msg_history")[0];
-    if (target) target.scrollTop = target.scrollHeight
+    setTimeout(() => {
+        const target = $(".msg_history")[0];
+        if (target) target.scrollTop = target.scrollHeight
+    }, 650)//Wait for the images load
 }
 
 
@@ -42,7 +44,7 @@ function gotoToLastItem(){
  * @param {Object} props 
  */
 function renderMessage(props){
-    if (props.userId == user.id) renderOutgoingMessage(props)
+    if (props.userId == user.id) renderOutgoingMessage(props);
     else renderIncomingMessage(props)
 }
 
@@ -57,6 +59,69 @@ function clearMessageContainer(){
 
 
 /**
+ * This function converts youtube video watch to a youtube video embed
+ * @param {String} url 
+ */
+function resolveYoutubeVideo(url){
+    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+
+    if (match && match[2].length == 11)
+        return `https://www.youtube.com/embed/${match[2]}`
+    else return `Error parsing the ${url}`
+}
+
+
+/**
+ * This function converts a url into a html url
+ * @param {String} url 
+ */
+function serializeHtmlUrl(url){
+    if (url.includes(webURI)) return `<a href="${url}">${url}</a>`;
+    else return `<a href="${url}" target="_blank">${url}</a>`
+}
+
+
+/**
+ * This function serialize the images
+ * @param {Object} bind 
+ */
+function serializeChatText(bind){
+    const urls = bind.text.match(/\bhttps?:\/\/\S+/gi);
+
+    if (isNull(urls)) return bind.text;
+
+    //replace images in the text with <img> format or replace the videos with <iframe> format
+    urls.forEach(url => {
+        //Check if is youtube video
+        if (url.includes("youtube.com")) bind.text = bind.text.replace(url, `
+            <iframe width="350" height="200" src="${resolveYoutubeVideo(url)}" frameborder="0" allowfullscreen>
+            </iframe><br>
+        `);
+        //Check if is image
+        else if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) bind.text = bind.text.replace(url, `<img alt="image" src="${url}"/><br>`);
+        //Check if is normal url
+        else bind.text = bind.text.replace(url, `${serializeHtmlUrl(url)}<br>`)
+    });
+
+    return bind.text
+}
+
+
+/**
+ * This function register a images chat listener when you click the images
+ * @param {Object} bind 
+ */
+function registerImageChatListener(bind){
+    $(`#${bind.id} img`).on('click', e => {
+        const imageClickedSrc = e.target.src;
+        
+        $("#modalImages img")[0].src = imageClickedSrc;
+        $("#modalImages").fadeIn(300, () => $("#modalImages").modal('show'))
+    })
+}
+
+
+/**
  * This function render a message sended by you
  * @param {Object} props 
  */
@@ -66,15 +131,16 @@ function renderOutgoingMessage(props){
     container.append(`
         <div id="${props.id}" data-uuid="${props.userId}" class="outgoing_msg">
             <div class="sent_msg">
-                <p>
-                    ${props.text}
-                    <i id="${props.id}-btn" class="fa fa-trash"></i>    
+                <p class="message_content">
+                    <i id="${props.id}-btn" class="fa fa-trash"></i>   
+                    ${serializeChatText(props)} 
                 </p>
                 <span class="time_date">${props.timeIn}</span>
             </div>
         </div>
     `);
 
+    registerImageChatListener(props);
     deleteMessageListener(props);
 
     return responsive()
@@ -93,7 +159,7 @@ function renderIncomingMessage(props){
             <div class="received_msg">
                 <div class="received_withd_msg">
                     <b color="white">${props.user}</b>
-                    <p>${props.text}</p>
+                    <p class="message_content">${serializeChatText(props)}</p>
                     <span class="time_date">${props.timeIn}</span>
                 </div>
             </div>

@@ -60,6 +60,19 @@ function deleteElementFromArray(array, element){
 
 
 /**
+ * This function remove the chat container
+ */
+function removeChatContainer(){
+    if (!chatContainerHasVisibleContent()){
+        const container = $("#main");
+        
+        container.parent().append("<h4 style='color: white; font-weight: 300; text-align: center'>You don't have chats</h4>");
+        container.remove();
+    } 
+}
+
+
+/**
  * This function check if the chat container has a visible content
  * @return {Boolean} chatContainerHasVisibleContent
  */
@@ -88,7 +101,7 @@ function deleteChatRequest(){
             $("#modalDeleteChat").modal('hide');//close the modal
             $(`#${currentChatToDelete.id}`).fadeOut(350, () => {
                 $(this).remove();
-                if (!chatContainerHasVisibleContent()) $("#main").remove();
+                removeChatContainer();
             });//Remove this room from list
             
             deleteElementFromArray(myRooms, currentChatToDelete.name);//Remove the array from the autocomplete rooms array
@@ -114,7 +127,7 @@ $(document).ready(() => {
         const res = e.response;
         const json = JSON.parse(res);
         
-        if (!json.length) $("#main").remove();
+        if (!json.length) removeChatContainer()
         else json.forEach(renderChats)
     })
 })

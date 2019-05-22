@@ -236,9 +236,19 @@ img {
     margin-right: 1%
 }
 
+.outgoing_msg a {
+    color: #E91E63;
+    font-weight: bold
+}
+
+.outgoing_msg img {
+    cursor: pointer;
+    max-width: 256px;
+    max-height: 256px
+}
+
 .type_msg {
-    border-top: none;
-    margin-top: 3%
+    border-top: none
 }
 
 body {
@@ -291,6 +301,14 @@ input:-internal-autofill-selected {
 
 .inbox_msg {
     border: none
+}
+
+
+/** MODALS **/
+
+#modalImages .modal-content,
+#modalImages .modal-dialog {
+    background: rgba(0, 0, 0, 1)
 }
 
 
