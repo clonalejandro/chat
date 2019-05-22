@@ -98,7 +98,7 @@ function serializeChatText(bind){
             </iframe><br>
         `);
         //Check if is image
-        else if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) bind.text = bind.text.replace(url, `<img alt="image" src="${url}"/><br>`);
+        else if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) bind.text = bind.text.replace(url, `<img alt="image" src="" data-src="${url}"/><br>`);
         //Check if is normal url
         else bind.text = bind.text.replace(url, `${serializeHtmlUrl(url)}<br>`)
     });
@@ -259,6 +259,7 @@ function processSocketData(data){
         timeIn: formatInTime(new Date(row.date))
     }));
 
+    new LazyLoad();
     gotoToLastItem()
 }
 

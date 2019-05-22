@@ -117,7 +117,7 @@ function createRoomRequest(name, callback){
 
 function getChatsRequest(callback){
     new Request(`${webURI}/api/get-user-chats`, "GET", e => {
-        if (e.status == 200) callback(e);
+        if (e.status == 200 || e.responseText == "Ok!") callback(e);
         else throwErr(e.responseText)
     })
 }
@@ -133,7 +133,7 @@ function joinChatRequest(bind, callback){
 
 function deleteUserRequest(){
     new Request(`${webURI}/api/delete-user`, "GET", e => {
-        if (e.status == 200) window.location.href = `${webURI}/logout`;
+        if (e.status == 200 || e.responseText == "Ok!") window.location.href = `${webURI}/logout`;
         else if (e.status == 500 || e.status == 401) throwErr(`
             <ul>
                 <li style='text-align: left'><strong>Error status: </strong><i>${e.status}</i></li>
@@ -178,6 +178,7 @@ $("#deleteProfile").on('click',
 $("#logout").on('click', () => redirect(`${webURI}/logout`));
 $("#settings").on('click', () => redirect(`${webURI}/profile`));
 $("#editRoom").on('click', () => redirect(`${webURI}/chatpanel`));
+$("#joinPanel").on('click', () => redirect(`${webURI}/adminpanel`));
 
 $("#modalCreateRoom form").on('submit', e => e.preventDefault());
 $("#modalCreateRoom button[type='submit']").on('click', () => processCreateRoom());

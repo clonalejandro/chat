@@ -3,7 +3,7 @@ html(lang="en")
     head
         - var author = "clonalejandro"
         - var twitter = "clonalejandro11"
-        - var title = `${webName} | Room ${room}`
+        - var title = `${webName} | Admin Panel`
 
         meta(name="DC.title", content=`${title}`)
         meta(property="og:title", content=`${title}`)
@@ -42,8 +42,8 @@ html(lang="en")
         
         include helpers/cookies.pug
         include helpers/css.pug
-        link(rel='stylesheet', href="../assets/css/chat.css")
-        link(rel='stylesheet', href="../assets/css/menu.css")
+        link(rel='stylesheet', href="assets/css/adminpanel.css")
+        link(rel='stylesheet', href="assets/css/menu.css")
         body
             //Modal Room create
             div.modal#modalCreateRoom(role="dialog")
@@ -90,16 +90,7 @@ html(lang="en")
                         div.modal-footer
                             button.btn.btn-danger.delete Delete
                             button.btn.btn-primary(data-dismiss="modal") Cancel
-            //Modal for see images
-            div.modal#modalImages(role="dialog")
-                div.modal-dialog(role="document")
-                    div.modal-content
-                        div.modal-header
-                            button.close(type="button", data-dismiss="modal", aria-label="Close")
-                                span(aria-hidden="true") &times;
-                        div.modal-body
-                            center
-                                img.image-to-open
+                    
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")
@@ -110,18 +101,18 @@ html(lang="en")
                         ul.navbar-nav.mr-auto
                             li.nav-item
                                 a.nav-link(href="#") #{user.username}
-                            li.nav-item.active.dropdown
+                            li.nav-item.dropdown
                                 a(href="#", role="button", id="roomDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                                     i.fa.fa-bed.nav-icon
                                 div.dropdown-menu(aria-labelledby="roomDropdown")
                                     a.dropdown-item#createRoom(href="#") Create room 
                                         i.fa.fa-plus
-                                    a.dropdown-item#editRoom(href="#") Edit room 
+                                    a.dropdown-item#editRoom(href="#") Manage rooms 
                                         i.fa.fa-pencil
                                     a.dropdown-item#joinRoom(href="#") Join a room 
                                         i.fa.fa-sign-in
                             if isAdmin
-                                li.nav-item.dropdown
+                                li.nav-item.dropdown.active
                                     a(href="#", role="button", id="serverDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                                         i.fa.fa-connectdevelop.nav-icon
                                     div.dropdown-menu(aria-labelledby="serverDropdown")
@@ -151,26 +142,9 @@ html(lang="en")
                                 strong Oops an error has occurred
                                 p The error trace is: #{msg}
                     header
-                        h3 Room #{room}
-                    div.messagin
-                        div.inbox_msg
-                            div.mesgs
-                                div.msg_history
-                                div.type_msg
-                                    div.input_msg_write
-                                        form(onsubmit="sendMessage()")
-                                            input.form-control.write_msg(placeholder="Type a message", required)
-                                            button.msg_send_btn(type="submit")
-                                                i.fa.fa-paper-plane-o(aria-hidden="true")
+                        h3 Admin Panel
+                    div.container#main
 
-            script(src="https://code.jquery.com/jquery-3.4.1.min.js", integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=", crossorigin="anonymous")
-            script(src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js")
-            script(src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js")
-            script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js")
-            script(src="https://clonalejandro.github.io/cdn/request.js")
-            script(src="https://clonalejandro.github.io/lazyload/lazyload.min.js")
-            script const user = {id: '#{user.id}', username: '#{user.username}'}; const room = '#{room}'; 
-            script(src="../assets/js/autocomplete.js")
-            script(src="../assets/js/chatsocket.js")
-            script(src="../assets/js/chat.js")
-            script(src="../assets/js/menu.js")
+            include helpers/js.pug
+            script(src="assets/js/adminpanel.js")
+            script(src="assets/js/menu.js")

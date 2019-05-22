@@ -1,0 +1,32 @@
+/** CUSTOM **/ 
+
+body {
+    background-image: url(https://i.imgur.com/kcNDljq.jpg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%
+}
+
+body, html {
+    margin: 0;
+    height: 100%
+}
+
+#wrapper {
+    background: rgba(0, 0, 0, .7);
+    height: 100%
+}
+
+header {
+    margin-top: 5%;
+    color: white;
+    text-align: center
+}
+
+header > h3 {
+    font-weight: 300
+}
+
+

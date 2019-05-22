@@ -48,6 +48,7 @@ module.exports = class Router {
         this.renderChat();
         this.renderProfile();
         this.renderChatPanel();
+        this.renderAdminPanel();
         this.renderRegister();
         this.renderLogin();
         this.renderPanel();
@@ -65,7 +66,8 @@ module.exports = class Router {
             this.server.get(url, (req, res) => {
                 try {
                     const tempConfig = getSecureConfig();
-                    res.render(view, tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render(view, tempConfig)
                 }
                 catch (err){
                     this.App.throwErr(err, this.prefix, res)
@@ -87,11 +89,12 @@ module.exports = class Router {
 
                 tempConfig.room = room;
                 tempConfig.user = req.user;
-                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
-
+                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id); 
+                
                 this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
-                    res.render('chat', tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render('chat', tempConfig)
                 })
             }
             catch (err){
@@ -116,7 +119,8 @@ module.exports = class Router {
 
                 this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
-                    res.render('chatpanel', tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render('chatpanel', tempConfig)
                 })
             } 
             catch (err){
@@ -125,6 +129,33 @@ module.exports = class Router {
         });
 
         this.App.debug(`The server is registering route: "/chatpanel" aiming to: chatpanel`, this.prefix)
+    }
+
+
+    /**
+     * This function renders the Admin Panel Page
+     */
+    renderAdminPanel(){
+        this.server.get('/adminpanel', this.isAuthenticated, (req, res) => {
+            try {
+                const tempConfig = getSecureConfig();
+
+                tempConfig.user = req.user;
+                tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
+
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    if (isAdmin)
+                        if (!this.debugView(req, res, tempConfig))
+                            res.render('adminpanel', tempConfig)
+                    else res.status(401).send(`Forbbiden: you need more rank to see this page!`);
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        });
+
+        this.App.debug(`The server is registering route: "/adminpanel" aiming to: adminpanel`, this.prefix)
     }
 
 
@@ -141,7 +172,8 @@ module.exports = class Router {
 
                 this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
-                    res.render('profile', tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render('profile', tempConfig)
                 })
             }
             catch (err){
@@ -165,8 +197,8 @@ module.exports = class Router {
                     const msg = req.flash('msg');
                 
                     tempConfig.msg = (!msg.length || this.App.isNull(msg)) ? undefined : msg;
-                
-                    res.render('signup', tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render('signup', tempConfig)
                 }
             }
             catch (err){
@@ -194,8 +226,8 @@ module.exports = class Router {
                 const msg = req.flash('msg');
                 
                 tempConfig.msg = (!msg.length || this.App.isNull(msg)) ? undefined : msg;
-                
-                res.render('login', tempConfig)
+                if (!this.debugView(req, res, tempConfig))
+                    res.render('login', tempConfig)
             }
             catch (err){
                 this.App.throwErr(err, this.prefix, res)
@@ -240,7 +272,8 @@ module.exports = class Router {
                 
                 this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
-                    res.render('panel', tempConfig)
+                    if (!this.debugView(req, res, tempConfig))
+                        res.render('panel', tempConfig)
                 })
             }
             catch (err){
@@ -273,5 +306,27 @@ module.exports = class Router {
     preventRelogin(req, res, next){
         if (req.isAuthenticated()) res.redirect('/logout');
         else next();
+    }
+
+
+    /**
+     * This function debug the view
+     * @param {*} req 
+     * @param {*} res 
+     * @param {Object} tempConfig 
+     * @return {Boolean} debugViewIsRendered
+     */
+    debugView(req, res, tempConfig){
+        const viewType = req.query.view;
+        
+        if (!config.debug || this.App.isNull(viewType)) return;
+
+        switch (viewType){
+            case "json":
+                res.send(tempConfig);
+                return true
+            default:
+                return false
+        }
     }
 }
