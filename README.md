@@ -1,4 +1,4 @@
-# CHAT ONLINE
+# CHAT ONLINE [WIP]
 A chat with nodejs and sockets with socket.io and express, mysql..
 
 ### How to install?
