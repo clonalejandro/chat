@@ -248,7 +248,7 @@ function sendMessage(){
  * This function processData from socket or from requests
  * @param {Object} data 
  */
-function processSocketData(data, wrap = true){
+function processSocketData(data){
     clearMessageContainer();
 
     data.forEach(row => renderMessage({
