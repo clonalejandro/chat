@@ -1,5 +1,6 @@
 /** MAIN VARS **/
 
+var currentChatToDelete;
 const webURI = `${window.location.protocol}//${window.location.host}`;
 
 
@@ -34,10 +35,12 @@ function renderChats(bind){
  */
 function registerChatControlListener(bind){
     $(`#${bind.id} .join`).on('click', e => redirect(`${webURI}/chats/${bind.name}`));
-    $("#modalDeleteChat .delete").on('click', e => deleteChatRequest(bind))
-    $(`#${bind.id} .remove`).on('click',
-        () => $("#modalDeleteChat").fadeIn(300, () => $("#modalDeleteChat").modal('show'))
-    );
+    $("#modalDeleteChat button.delete-chat").unbind().on('click', e => deleteChatRequest());
+
+    $(`#${bind.id} .remove`).on('click', () => {
+        currentChatToDelete = bind;
+        $("#modalDeleteChat").fadeIn(300, () => $("#modalDeleteChat").modal('show'))
+    });
 }
 
 
@@ -56,25 +59,51 @@ function deleteElementFromArray(array, element){
 }
 
 
+/**
+ * This function check if the chat container has a visible content
+ * @return {Boolean} chatContainerHasVisibleContent
+ */
+function chatContainerHasVisibleContent(){
+    const childrens = $("#main").children();
+    var isVisible = false;
+
+    $.each(childrens, (key, val) => {
+        const children = $(val);
+
+        if (children.is(":visible")){
+            isVisible = true;
+            return
+        }
+    });
+
+    return isVisible
+}
+
+
 /** REQUESTS **/
 
-function deleteChatRequest(bind){
-    new Request(`${webURI}/api/delete-chat?id=${bind.id}`, "POST", e => {
-        if (e.status == 200 || e.responseText == "Ok!"){ 
+function deleteChatRequest(){
+    new Request(`${webURI}/api/delete-chat?id=${currentChatToDelete.id}`, "POST", e => {
+        if (e.readyState == 4 && (e.status == 200 || e.responseText == "Ok!")){ 
             $("#modalDeleteChat").modal('hide');//close the modal
-            $(`#${bind.id}`).fadeOut(350, () => $(this).remove());//Remove this room from list
+            $(`#${currentChatToDelete.id}`).fadeOut(350, () => {
+                $(this).remove();
+                if (!chatContainerHasVisibleContent()) $("#main").remove();
+            });//Remove this room from list
             
-            deleteElementFromArray(myRooms, bind.name);//Remove the array from the autocomplete rooms array
-            //TODO: Check if container is empty remove this
+            deleteElementFromArray(myRooms, currentChatToDelete.name);//Remove the array from the autocomplete rooms array
+           
             $("#notifications").append(`
                 <div data-timeout="5" class="alert alert-dimissible alert-info">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Success!</strong><br> Deleting the chat room: '${bind.name}'
+                    <strong>Success!</strong><br> Deleting the chat room: '${currentChatToDelete.name}'
                 </div>
-            `)
+            `);
+
+            alertTimeout()//For clear the notifications in time
         }
         else throwErr(e.responseText)
-    }, `id=${bind.id}`)
+    }, `id=${currentChatToDelete.id}`)
 }
 
 

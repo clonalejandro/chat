@@ -61,18 +61,14 @@ module.exports = class UserOrm {
         
         this.App.ChatOrm.deleteByUserId({userId: data.id}, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
-            else this.App.MessageOrm.deleteByUserId({userId: data.id}, (err, res) => {
+            else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
                 if (err) this.App.throwErr(err, this.props.prefix);
-                else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
-                    if (err) this.App.throwErr(err, this.props.prefix);
-                    else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
-                });
-                else this.con().query(query, callback)
-            })
+                else this.App.debug(`Deleting user with: ${JSON.stringify(data)}`, this.props.prefix)
+            });
+            else this.con().query(query, callback)
         })
     }
 
-    //TODO: Refact the chatorm and userorm when deletes
     
     /**
      * This function deletes a user in database

@@ -3,7 +3,7 @@ html(lang="en")
     head
         - var author = "clonalejandro"
         - var twitter = "clonalejandro11"
-        - var title = `${webName} | Room ${room}`
+        - var title = `${webName} | chats of ${user.username}`
 
         meta(name="DC.title", content=`${title}`)
         meta(property="og:title", content=`${title}`)
@@ -102,7 +102,7 @@ html(lang="en")
                         div.modal-body
                             | Are you sure to delete this chat?
                         div.modal-footer
-                            button.btn.btn-danger.delete Delete
+                            button.btn.btn-danger.delete-chat Delete
                             button.btn.btn-primary(data-dismiss="modal") Cancel
                     
             div#wrapper
@@ -121,7 +121,7 @@ html(lang="en")
                                 div.dropdown-menu(aria-labelledby="roomDropdown")
                                     a.dropdown-item#createRoom(href="#") Create room 
                                         i.fa.fa-plus
-                                    a.dropdown-item#editRoom(href="#") Edit room 
+                                    a.dropdown-item#editRoom(href="#") Manage rooms 
                                         i.fa.fa-pencil
                                     a.dropdown-item#joinRoom(href="#") Join a room 
                                         i.fa.fa-sign-in

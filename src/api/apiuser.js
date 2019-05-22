@@ -94,7 +94,7 @@ module.exports = class ApiUser {
                 };
                 
                 res.redirect('/logout');
-                    
+
                 setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
             }
             catch (err){

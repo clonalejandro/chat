@@ -135,7 +135,7 @@ module.exports = class ChatOrm {
     deleteById(data, callback = undefined){
         const query = `DELETE FROM ${this.props.table} WHERE id="${data.id}"`;
 
-        this.App.MessageOrm.deleteById({chatId: data.id}, (err, res) => {
+        this.App.MessageOrm.deleteByChatId({chatId: data.id}, (err, res) => {
             if (err) this.App.throwErr(err, this.props.prefix);
             else if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
                 if (err) this.App.throwErr(err, this.props.prefix)
