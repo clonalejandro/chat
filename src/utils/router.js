@@ -117,11 +117,11 @@ module.exports = class Router {
                 tempConfig.user = req.user;
                 tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
 
-                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                this.isBan(req, res, () => this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
                     if (!this.debugView(req, res, tempConfig))
                         res.render('chatpanel', tempConfig)
-                })
+                }))
             } 
             catch (err){
                 this.App.throwErr(err, this.prefix, res)
@@ -147,7 +147,7 @@ module.exports = class Router {
                     if (isAdmin)
                         if (!this.debugView(req, res, tempConfig))
                             res.render('adminpanel', tempConfig)
-                    else res.status(401).send(`Forbbiden: you need more rank to see this page!`);
+                    else res.status(401).send('Forbbiden: you need more rank to see this page!');
                 })
             }
             catch (err){
@@ -170,11 +170,11 @@ module.exports = class Router {
                 tempConfig.user = req.user;
                 tempConfig.user.id = this.App.serializeSalt(tempConfig.user.id);
 
-                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                this.isBan(req, res, () => this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
                     if (!this.debugView(req, res, tempConfig))
                         res.render('profile', tempConfig)
-                })
+                }))
             }
             catch (err){
                 this.App.throwErr(err, this.prefix, res)
@@ -270,11 +270,11 @@ module.exports = class Router {
 
                 tempConfig.username = req.user.username;
                 
-                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                this.isBan(req, res, () => this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;
                     if (!this.debugView(req, res, tempConfig))
                         res.render('panel', tempConfig)
-                })
+                }))
             }
             catch (err){
                 this.App.throwErr(err, this.prefix, res)
@@ -294,6 +294,20 @@ module.exports = class Router {
     isAuthenticated(req, res, next){
         if (req.isAuthenticated()) return next();
         res.redirect('/login');
+    }
+
+
+    /**
+     * This function check if user is banned
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} callback 
+     */
+    isBan(req, res, callback){
+        this.App.Api.ApiBan.isBan({userId: req.user.id}, isBan => {
+            if (isBan) res.redirect('/logout');
+            else callback()
+        })
     }
 
 

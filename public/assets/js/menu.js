@@ -131,7 +131,7 @@ function joinChatRequest(bind, callback){
 }
 
 
-function deleteUserRequest(){
+function deleteProfileRequest(){
     new Request(`${webURI}/api/delete-user`, "GET", e => {
         if (e.status == 200 || e.responseText == "Ok!") window.location.href = `${webURI}/logout`;
         else if (e.status == 500 || e.status == 401) throwErr(`
@@ -186,6 +186,6 @@ $("#modalCreateRoom button[type='submit']").on('click', () => processCreateRoom(
 $("#modalJoinRoom form").on('submit', e => e.preventDefault());
 $("#modalJoinRoom button[type='submit']").on('click', () => processJoinRoom());
 
-$("#modalDeleteProfile .delete").on('click', deleteUserRequest);
+$("#modalDeleteProfile .delete").on('click', deleteProfileRequest);
 
 $("img").on('dragstart', e => e.preventDefault());

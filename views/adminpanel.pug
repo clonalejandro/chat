@@ -77,7 +77,7 @@ html(lang="en")
                             button.btn.btn-danger(data-dismiss="modal") Close
                             button.btn.btn-success(type="submit") Join!
 
-            //Modal Room join
+            //Modal Delete profile
             div.modal#modalDeleteProfile(role="dialog")
                 div.modal-dialog(role="document")
                     div.modal-content
@@ -90,7 +90,37 @@ html(lang="en")
                         div.modal-footer
                             button.btn.btn-danger.delete Delete
                             button.btn.btn-primary(data-dismiss="modal") Cancel
-                    
+
+            //Modal Delete user
+            div.modal#modalDeleteUser(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Delete user
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            | Are you sure to delete the user: 
+                            b %username%
+                        div.modal-footer
+                            button.btn.btn-danger.delete Delete
+                            button.btn.btn-primary(data-dismiss="modal") Cancel
+
+            //Modal Ban user
+            div.modal#modalBanUser(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Ban user
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            | Are you sure to ban the user: 
+                            b %username%
+                        div.modal-footer
+                            button.btn.btn-danger.ban Ban
+                            button.btn.btn-primary(data-dismiss="modal") Cancel
+
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")
@@ -141,9 +171,17 @@ html(lang="en")
                                 button.close(type="button", data-dismiss="alert") &times;
                                 strong Oops an error has occurred
                                 p The error trace is: #{msg}
+                    button.btn.btn-secondary#back.hide
+                        i.fa.fa-arrow-left
                     header
                         h3 Admin Panel
-                    div.container#main
+                    div.container.controlls
+                        button.btn.btn-warning#banControll Ban/Remove users 
+                            i.fa.fa-ban
+                        button.btn.btn-primary#unbanControll Unban users 
+                            i.fa.fa-gavel
+                    div.container#users.hide
+                    div.container#unbanUsers.hide
 
             include helpers/js.pug
             script(src="assets/js/adminpanel.js")

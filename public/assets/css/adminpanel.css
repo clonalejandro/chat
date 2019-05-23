@@ -10,13 +10,13 @@ body {
 }
 
 body, html {
-    margin: 0;
-    height: 100%
+    height: 100%;
+    margin: 0
 }
 
 #wrapper {
-    background: rgba(0, 0, 0, .7);
-    height: 100%
+    height: 100%;
+    background: rgba(0, 0, 0, .7)
 }
 
 header {
@@ -29,4 +29,119 @@ header > h3 {
     font-weight: 300
 }
 
+#users,
+#unbanUsers {
+    height: 350px;
+    overflow: auto;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    background: rgba(.5, .5, .5, .5);
+    border-radius: 2%;
+    padding-top: 2%;
+    animation: fadeIn 1s;
+    width: 350px
+}
 
+.hide {
+    display: none
+}
+
+.hidden {
+    animation: fadeOut 1s;
+    opacity: 0
+}
+
+#back {
+    border-radius: 100%;
+    float: right;
+    background: rgba(63, 81, 181, 1);
+    color: white
+}
+
+
+/** CONTROLLS **/
+
+.controlls {
+    margin-top: 5%;
+    text-align: center
+}
+
+.controlls > button {
+    margin-left: 5%
+}
+
+
+/** USER LIST **/
+
+.user {
+    padding-bottom: 5%
+}
+
+.user > .header {
+    color: white;
+    width: 50%;
+    font-size: 1.1em
+}
+
+.user > .header > img {
+    width: 32px;
+    height: 32px
+}
+
+.user > .header > p {
+    display: inline;
+    margin-left: 5%;
+    word-break: break-all
+}
+
+.user > div {
+    display: inline-block
+}
+
+.user > .body {
+    width: 50%;
+    float: right
+}
+
+.user > .body > button {
+    border-radius: 100%;
+    left: 35%;
+    margin-left: 5%
+}
+
+
+/** MODALS **/
+
+#modalDeleteUser .modal-content,
+#modalDeleteUser .modal-dialog {
+    color: white;
+    background: rgba(103, 58, 183, .6)
+}
+
+#modalBanUser .modal-content,
+#modalBanUser .modal-dialog {
+    color: white;
+    background: rgba(0, 150, 136, .6)
+}
+
+/** SCROLLBAR **/
+
+/* width */
+::-webkit-scrollbar {
+    width: 3px
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(233, 30, 99, 1); 
+    border-radius: 10px
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(233, 30, 99, .7)
+}

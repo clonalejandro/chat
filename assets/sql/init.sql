@@ -10,6 +10,7 @@ CREATE TABLE USERS (
     username VARCHAR(32) NOT NULL,
     password VARCHAR(512) NOT NULL,
     rankId INT NOT NULL,
+    ip VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 ) ENGINE=InnoDB;
 
@@ -36,20 +37,25 @@ CREATE TABLE MESSAGES (
     FOREIGN KEY(userId) REFERENCES USERS(id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE BANS (
+    userId VARCHAR(512) NOT NULL,
+    PRIMARY KEY(userId)
+) ENGINE=InnoDB;
+
 
 /* INIT RANKS */
 
 INSERT INTO RANKS VALUES (
-    1,
+    0,
     "USER"
 );
 
 INSERT INTO RANKS VALUES (
-    2,
+    1,
     "MODERATOR"
 );
 
 INSERT INTO RANKS VALUES (
-    3,
+    2,
     "ADMINISTRATOR"
 );

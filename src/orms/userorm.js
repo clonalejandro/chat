@@ -16,6 +16,28 @@ module.exports = class UserOrm {
     /** REST **/
     
     /**
+     * This function get all users from database
+     * @param {*} callback 
+     */
+    getAll(callback){
+        this.con().query(`SELECT * FROM ${this.props.table}`, callback)
+    }
+
+
+    /**
+     * This function get all users without ban from database
+     * @param {*} callback 
+     */
+    getAllWithoutBan(callback){
+        const query = `SELECT * FROM ${this.props.table} WHERE id NOT IN (
+            SELECT userId FROM ${this.App.BanOrm.props.table}
+        )`;
+
+        this.con().query(query, callback)
+    }
+
+
+    /**
      * This function get all user data from database
      * @param {Object} data is the id of the user
      * @param {*} callback
@@ -37,15 +59,15 @@ module.exports = class UserOrm {
 
     /**
      * This function create a user in database
-     * @param {Object} data is the name of the user and the password of the user
+     * @param {Object} data is the name of the user, the password of the user, the rank of the user and the ip of the user
      * @param {*} callback
      */
     create(data, callback = undefined){
-        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.username}", "${data.password}", ${data.rank})`;
+        const query = `INSERT INTO ${this.props.table} VALUES (uuid(), "${data.username}", "${data.password}", ${data.rank}, "${data.ip}")`;
         
         if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
-                if (err) this.App.throwErr(err, this.props.prefix);
-                else this.App.debug(`Creating user with: ${JSON.stringify(data)}`, this.props.prefix)
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else this.App.debug(`Creating user with: ${JSON.stringify(data)}`, this.props.prefix)
         });
         else this.con().query(query, callback)
     }

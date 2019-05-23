@@ -54,7 +54,7 @@ module.exports = class ApiChat {
                     name: req.query.name,
                     userId: req.user.id
                 };
-                
+
                 this.App.ChatOrm.getByChatName(bind, (err, rows) => {
                     if (err) this.App.throwErr(err, this.prefix, res)
                     else if (rows.length) this.App.throwErr({message: "This chat room already exists!"}, this.prefix, res);

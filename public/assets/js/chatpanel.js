@@ -109,7 +109,7 @@ function deleteChatRequest(){
             $("#notifications").append(`
                 <div data-timeout="5" class="alert alert-dimissible alert-info">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Success!</strong><br> Deleting the chat room: '${currentChatToDelete.name}'
+                    <strong>Success!</strong><br> Deleting the chat room: <i>${currentChatToDelete.name}</i>
                 </div>
             `);
 

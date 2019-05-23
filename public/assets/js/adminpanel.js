@@ -1,4 +1,278 @@
-/** VARS **/
+/** MAIN VARS **/
 
+var currentUser;
 const webURI = `${window.location.protocol}//${window.location.host}`;
 
+
+/** OBJECTS **/
+
+const Controlls = {
+    container: $(".controlls"),
+    hidden: false,
+    show: () => {
+        Controlls.hidden = false;
+        Controlls.container.removeClass("hide");
+        Controlls.container.removeClass("hidden")
+    },
+    hide: () => {
+        Controlls.hidden = true;
+        Controlls.container.addClass("hidden");
+        setTimeout(() => Controlls.container.addClass("hide"), 250)
+    }
+};
+
+const BackButton = {
+    button: $("#back"),
+    hidden: true,
+    show: () => {
+        BackButton.hidden = false;
+        BackButton.button.removeClass("hide");
+        BackButton.button.removeClass("hidden")
+    },
+    hide: () => {
+        BackButton.hidden = true;
+        BackButton.button.addClass("hidden");
+        setTimeout(() => BackButton.button.addClass("hide"), 250)
+    }
+};
+
+const UsersContainer = {
+    container: $("#users"),
+    hidden: true,
+    clear: () => UsersContainer.container.html(""),
+    show: () => {
+        UsersContainer.hidden = false;
+        UsersContainer.container.removeClass("hide");
+        UsersContainer.container.removeClass("hidden")
+    },
+    hide: () => {
+        UsersContainer.hidden = true;
+        UsersContainer.container.addClass("hidden");
+        setTimeout(() => UsersContainer.container.addClass("hide"), 250)
+    }
+};
+
+const UnbanUsersContainer = {
+    container: $("#unbanUsers"),
+    hidden: true,
+    clear: () => UnbanUsersContainer.container.html(""),
+    show: () => {
+        UnbanUsersContainer.hidden = false;
+        UnbanUsersContainer.container.removeClass("hide");
+        UnbanUsersContainer.container.removeClass("hidden");
+    },
+    hide: () => {
+        UnbanUsersContainer.hidden = true;
+        UnbanUsersContainer.container.addClass("hidden");
+        setTimeout(() => UnbanUsersContainer.container.addClass("hide"), 250)
+    }
+};
+
+
+/** FUNCTIONS **/
+
+/**
+ * This function render the users in the html
+ * @param {Object} bind 
+ */
+function renderUsers(bind){
+    const container = $("#users");
+
+    container.append(`
+        <div id="${bind.id}" class="user">
+            <div class="header">
+                <img src="https://i.imgur.com/ElM6QDb.png" alt="user"/>
+                <p>${bind.username}</p>
+            </div>
+            <div class="body">
+                <button class="btn btn-warning btn-sm ban"><i class="fa fa-ban"></i></button>
+                <button class="btn btn-danger btn-sm remove"><i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+    `);
+
+    registerUserControlListener(bind);
+}
+
+
+/**
+ * This function render the users banned in the html
+ * @param {Object} bind 
+ */
+function renderUnbanUsers(bind){
+    const container = $("#unbanUsers");
+
+    container.append(`
+        <div id="${bind.id}" class="user">
+            <div class="header">
+                <img src="https://i.imgur.com/ElM6QDb.png" alt="user"/>
+                <p>${bind.username}</p>
+            </div>
+            <div class="body">
+                <button class="btn btn-primary btn-sm unban"><i class="fa fa-check"></i></button>
+            </div>
+        </div>
+    `);
+
+    registerUnbanUserListener(bind);
+}
+
+
+/**
+ * This function register user control listeners
+ * @param {Object} bind 
+ */
+function registerUserControlListener(bind){
+    $(`#${bind.id} .ban`).on('click', () => {
+        const modal = $("#modalBanUser");
+        const modalBody = $("#modalBanUser .modal-body");
+
+        currentUser = bind;
+
+        modalBody.html(modalBody.html().replace("%username%", bind.username));
+        modal.fadeIn(300, () => modal.modal('show'))
+    });
+
+    $(`#${bind.id} .remove`).on('click', () => {
+        const modal = $("#modalDeleteUser");
+        const modalBody = $("#modalDeleteUser .modal-body");
+
+        currentUser = bind;
+
+        modalBody.html(modalBody.html().replace("%username%", bind.username));
+        modal.fadeIn(300, () => modal.modal('show'))
+    });
+
+    $("#modalDeleteUser button.delete").unbind().on('click', () => deleteUserRequest(() => {
+        $("#modalDeleteUser").modal('hide');
+        $(`#${currentUser.id}`).fadeOut(300, () => $(this).remove());
+
+        $("#notifications").append(`
+            <div data-timeout="5" class="alert alert-dimissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong><br> Deleting this user: <i>${currentUser.username}</i>
+            </div>
+        `);
+
+        alertTimeout()//For clear the notifications in time
+    }));
+
+    $("#modalBanUser button.ban").unbind().on('click', () => banUserRequest(() => {
+        $("#modalBanUser").modal('hide');
+        $(`#${currentUser.id}`).fadeOut(300, () => $(this).remove());
+
+        $("#notifications").append(`
+            <div data-timeout="5" class="alert alert-dimissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong><br> Banning this user: <i>${currentUser.username}</i>
+            </div>
+        `);
+
+        getAllUsersBannedRequest(users => users.forEach(renderBanUsers))//Rebuild the users banned list
+        alertTimeout()//For clear the notifications in time
+    }))
+}
+
+
+/**
+ * This function register unban control listeners
+ * @param {Object} bind 
+ */
+function registerUnbanUserListener(bind){
+    $(`#${bind.id} .unban`).on('click', () => {
+        const modal = $("#modalUnbanUser");
+        const modalBody = $("#modalUnbanUser .modal-body");
+
+        currentUser = bind;
+
+        modalBody.html(modalBody.html().replace("%username%", bind.username));
+        modal.fadeIn(300, () => modal.modal('show'))
+    });
+
+    //TODO: Create unban modal
+    //TODO: Create user browser
+    
+    $("#modalUnbanUser button.unban").unbind().on('click', () => deleteUserRequest(() => {
+        $("#modalUnbanUser").modal('hide');
+        $(`#${currentUser.id}`).fadeOut(300, () => $(this).remove());
+
+        $("#notifications").append(`
+            <div data-timeout="5" class="alert alert-dimissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong><br> Unban this user: <i>${currentUser.username}</i>
+            </div>
+        `);
+
+        alertTimeout()//For clear the notifications in time
+    }));
+}
+
+
+/** REQUESTS **/
+
+function getAllUsersRequest(callback){
+    new Request(`${webURI}/api/get-all-users-without-ban`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback(JSON.parse(e.response));
+        else throwErr(e.responseText)
+    })
+}
+
+
+function getAllUsersBannedRequest(callback){
+    new Request(`${webURI}/api/get-users-banned`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback(JSON.parse(e.response));
+        else throwErr(e.responseText)
+    })
+}
+
+
+function deleteUserRequest(callback){
+    new Request(`${webURI}/api/delete-user?id=${currentUser.id}`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback();
+        else throwErr(e.responseText)
+    }, `id=${currentUser.id}`)
+}
+
+
+function banUserRequest(callback){
+    new Request(`${webURI}/api/ban-user?userId=${currentUser.id}`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback();
+        else throwErr(e.responseText)
+    }, `userId=${currentUser.id}`)
+}
+
+
+/** METHODS **/
+
+$(document).ready(() => {
+    getAllUsersRequest(users => {
+        UsersContainer.clear();
+        users.forEach(renderUsers)
+    });
+
+    getAllUsersBannedRequest(users => {
+        UnbanUsersContainer.clear();
+        users.forEach(renderUnbanUsers)
+    });
+});
+
+$("#banControll").on('click', () => {
+    Controlls.hide();
+    BackButton.show();
+    UsersContainer.show();
+});
+
+$("#unbanControll").on('click', () => {
+    Controlls.hide();
+    BackButton.show();
+    UnbanUsersContainer.show();
+});
+
+$("#back").on('click', () => {
+    BackButton.hide();
+    
+    if (!UsersContainer.hidden) UsersContainer.hide();
+    else UnbanUsersContainer.hide();
+
+    Controlls.show();
+});

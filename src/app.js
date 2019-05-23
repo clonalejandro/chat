@@ -18,6 +18,7 @@ var Auth 		  = require('./utils/auth');
 var ChatOrm 	  = require('./orms/chatorm');
 var UserOrm 	  = require('./orms/userorm');
 var MessageOrm	  = require('./orms/messageorm');
+var BanOrm        = require("./orms/banorm");
 var RankOrm 	  = require('./orms/rankorm');
 
 
@@ -38,6 +39,7 @@ module.exports = class App {
         App.ChatOrm = new ChatOrm(App);
         App.UserOrm = new UserOrm(App);
         App.MessageOrm = new MessageOrm(App);
+        App.BanOrm = new BanOrm(App);
         App.RankOrm = new RankOrm(App);
         App.tasks = new Array();
         
@@ -76,6 +78,18 @@ module.exports = class App {
     }
     
     
+    /**
+     * This function resolve ip from request
+     * @param {*} req 
+     */
+    static resolveIp(req){
+        const ip = req.connection.remoteAddress;
+
+        if (ip.includes("::ffff:")) return ip.replace("::ffff:", "")
+        else return ip
+    }
+
+
     /**
      * This function debug data passed by parameter
      * @param {String || Object} data message to debug

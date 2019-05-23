@@ -47,8 +47,11 @@ module.exports = class Auth {
                 this.App.debug(`Wrong password: ${req}`, prefix);
                 return done(null, false, req.flash('msg', 'Oops! Wrong password.'))
             }
-            
-            return done(null, rows[0])
+
+            this.App.Api.ApiBan.isBan({userId: rows[0].id}, isBan => {
+                if (isBan) return done(null, false, req.flash('msg', 'Oops! This user is banned from this server.'))
+                else return done(null, rows[0])
+            })
         }));
         
         this.passport.use('login', localStrategy)
@@ -76,7 +79,8 @@ module.exports = class Auth {
                 const data = {
                     username: username, 
                     password: this.createHash(password),
-                    rank: 0
+                    rank: 0,
+                    ip: this.App.resolveIp(req)
                 };
                 
                 this.App.UserOrm.create(data, (err, res) => {

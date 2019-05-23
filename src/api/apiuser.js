@@ -23,6 +23,8 @@ module.exports = class ApiUser {
      * This function register all apiuser routes
      */
     register(){
+        this.getAllUsers();
+        this.getAllUsersWithOutBan();
         this.getUserName();
         this.getUserChats();
         this.deleteUser();
@@ -33,6 +35,50 @@ module.exports = class ApiUser {
     }
     
     
+    /**
+     * This function get all users from database
+     * requeriments for request: (username)
+     */
+    getAllUsers(){
+        this.server.get('/api/get-all-users', (req, res) => {
+            try {
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    if (isAdmin) this.App.UserOrm.getAll((err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else res.send(rows)
+                    });
+                    else res.status(401).send('Forbbiden: you need more rank to see this page!')
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        })
+    }
+
+
+    /**
+     * This function get all users without ban from database
+     * requeriments for request: (username)
+     */
+    getAllUsersWithOutBan(){
+        this.server.get('/api/get-all-users-without-ban', (req, res) => {
+            try {
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    if (isAdmin) this.App.UserOrm.getAllWithoutBan((err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else res.send(rows)
+                    });
+                    else res.status(401).send('Forbbiden: you need more rank to see this page!')
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        })
+    }
+
+
     /**
      * This function get username from user
      * requeriments for request: (id)
@@ -90,12 +136,17 @@ module.exports = class ApiUser {
         this.server.get('/api/delete-user', (req, res) => {
             try {
                 const bind = {
-                    id: req.user.id
+                    id: (this.App.isNull(req.query.id) ? req.user.id : req.query.id)//TODO: add security
                 };
                 
-                res.redirect('/logout');
-
-                setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
+                if (this.App.isNull(req.query.id)){
+                    res.redirect('/logout');
+                    setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
+                }//If the user id is not your current user
+                else this.App.UserOrm.deleteById({ id: bind.id }, (err, rows) => {
+                    if (err) this.App.throwErr(err, this.prefix, res);
+                    else res.status(200).send("Ok!");
+                });
             }
             catch (err){
                 this.App.throwErr(err, this.prefix);
