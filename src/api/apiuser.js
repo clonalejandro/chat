@@ -29,6 +29,7 @@ module.exports = class ApiUser {
         this.getUserChats();
         this.deleteUser();
         this.updateUser();
+        this.updateRankUser();
         this.updatePassword();
         
         this.App.debug("Register all apiuser routes", this.prefix)
@@ -156,6 +157,33 @@ module.exports = class ApiUser {
     }
     
     
+    /**
+     * This function prepare the route for update rank in the api
+     * requeriments for the request: (username, rankId, userRequestId)
+     */
+    updateRankUser(){
+        this.server.get('/api/update-rank-user', (req, res) => {
+            try {
+                const bind = {
+                    username: req.query.username,
+                    rankId: req.query.rankId
+                };
+
+                this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                    if (isAdmin) this.App.UserOrm.updateRank(bind, (err, rows) => {
+                        if (err) this.App.throwErr(err, this.prefix, res);
+                        else res.status(200).send("Ok!")
+                    });
+                    else res.status(401).send("Forbbiden: you don't have permissions to do this")
+                })
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        })
+    }
+
+
     /**
      * This function prepare the route for update user in the api
      * requeriments for the request: (id, password, newusername)

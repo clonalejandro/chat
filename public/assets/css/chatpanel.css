@@ -15,6 +15,7 @@ body, html {
 }
 
 #wrapper {
+    overflow: auto;
     background: rgba(0, 0, 0, .5);
     height: 100%
 }

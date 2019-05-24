@@ -121,6 +121,21 @@ html(lang="en")
                             button.btn.btn-danger.ban Ban
                             button.btn.btn-primary(data-dismiss="modal") Cancel
 
+            //Modal Ban user
+            div.modal#modalUnbanUser(role="dialog")
+                div.modal-dialog(role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title Unban user
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            | Are you sure to unban the user: 
+                            b %username%
+                        div.modal-footer
+                            button.btn.btn-warning.unban Unban
+                            button.btn.btn-primary(data-dismiss="modal") Cancel
+
             div#wrapper
                 nav.navbar.navbar-expand-lg.navbar-light.bg-light
                     a.navbar-brand(href="/")
@@ -178,9 +193,22 @@ html(lang="en")
                     div.container.controlls
                         button.btn.btn-warning#banControll Ban/Remove users 
                             i.fa.fa-ban
+                        button.btn.btn-info#rankControll Promote users 
+                            i.fa.fa-leaf
                         button.btn.btn-primary#unbanControll Unban users 
                             i.fa.fa-gavel
                     div.container#users.hide
+                    div.container#ranks.hide
+                        form(onsubmit="changeRank()")
+                            div.form-group
+                                input.form-control(autocomplete="off", name="r_username", placeholder="Username", required)
+                            div.form-group
+                                select.form-control
+                                    option(id="0") User
+                                    option(id="1") Moderator
+                                    option(id="2") Administrator
+                            br
+                            button.btn.btn-info.btn-block Save!
                     div.container#unbanUsers.hide
 
             include helpers/js.pug

@@ -15,6 +15,7 @@ body, html {
 }
 
 #wrapper {
+    overflow: auto;
     height: 100%;
     background: rgba(0, 0, 0, .7)
 }
@@ -52,6 +53,7 @@ header > h3 {
 }
 
 #back {
+    animation: fadeIn 1s;
     border-radius: 100%;
     float: right;
     background: rgba(63, 81, 181, 1);
@@ -79,7 +81,7 @@ header > h3 {
 
 .user > .header {
     color: white;
-    width: 50%;
+    width: 60%;
     font-size: 1.1em
 }
 
@@ -99,7 +101,7 @@ header > h3 {
 }
 
 .user > .body {
-    width: 50%;
+    width: 40%;
     float: right
 }
 
@@ -107,6 +109,20 @@ header > h3 {
     border-radius: 100%;
     left: 35%;
     margin-left: 5%
+}
+
+
+/** SELECT **/
+
+#ranks {
+    animation: fadeIn 1s;
+    width: 70%;
+    margin-top: 5%
+}
+
+select option {
+    border-radius: 9%;
+    background: rgba(0, 0, 0, .6)
 }
 
 
@@ -123,6 +139,13 @@ header > h3 {
     color: white;
     background: rgba(0, 150, 136, .6)
 }
+
+#modalUnbanUser .modal-content,
+#modalUnbanUser .modal-dialog {
+    color: white;
+    background: rgba(255, 87, 34, .6)
+}
+
 
 /** SCROLLBAR **/
 

@@ -156,7 +156,7 @@ $(document).ready(() => {
         myRooms = new Array();//Clear the array
         json.forEach(e => myRooms.push(e.name));
 
-        new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms)
+        new AutoComplete("#modalJoinRoom input[name='roomName']", myRooms, processJoinRoom);
     })
 });
 

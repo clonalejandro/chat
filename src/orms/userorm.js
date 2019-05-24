@@ -161,4 +161,20 @@ module.exports = class UserOrm {
         });
         else this.con().query(query, callback)
     }
+
+
+    /**
+     * This function updates the rank of the user
+     * @param {Object} data is the username and the rankId
+     * @param {*} callback 
+     */
+    updateRank(data, callback = undefined){
+        const query = `UPDATE ${this.props.table} SET rankId=${data.rankId} WHERE username="${data.username}"`
+
+        if (this.App.isNull(callback)) this.con().query(query, (err, res) => {
+            if (err) this.App.throwErr(err, this.props.prefix);
+            else this.App.debug(`Updating user rank with: ${JSON.stringify(data)}`, this.props.prefix)
+        })
+        else this.con().query(query, callback)
+    }
 }

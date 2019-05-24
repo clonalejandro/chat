@@ -1,7 +1,11 @@
 /** FUNCTIONS **/
 
-String.prototype.startsWithIgnoreCase = function(chr) {	
+String.prototype.startsWithIgnoreCase = function(chr){	
     return this.toUpperCase().startsWith(chr.toUpperCase())
+}
+
+String.prototype.equalsIgnoreCase = function(str){
+    return this.toUpperCase() == str.toUpperCase()
 }
 
 String.prototype.isEmpty = function(){
@@ -14,10 +18,11 @@ class AutoComplete {
     
     /** SMALL CONSTRUCTORS **/
     
-    constructor(element, list = new Array()){
+    constructor(element, list = [], onclickCompleted = undefined){
         this.element = $(element)[0];
         this.list = list;
-    
+        this.onclickCompleted = onclickCompleted;
+        
         this.start()
     }
     
@@ -75,6 +80,9 @@ class AutoComplete {
         const parent = this.element.parentElement;
         const container = $(".autocompleter")[0];
         const targetList = new Array();
+
+        var isEquals = false;
+
         
         if (currentVal.isEmpty()){
             this.clearContainer();
@@ -82,10 +90,13 @@ class AutoComplete {
         }
         
         this.list.forEach(e => {
+            if (e.equalsIgnoreCase(currentVal)) isEquals = true;
             if (e.startsWithIgnoreCase(currentVal)) 
                 targetList.push(e) 
         });
     
+        if (isEquals && targetList.length <= 1) return this.clearContainer();
+        
         if (!targetList.length) return this.clearContainer();
 
         var html = `<div class='autocompleter'>`;
@@ -115,8 +126,8 @@ class AutoComplete {
 
             this.element.value = chatName;
             this.completeWithData();//Refresh autocomplete
-
-            processJoinRoom();
+            
+            if (this.onclickCompleted != undefined) this.onclickCompleted();
         }))
     }
     
