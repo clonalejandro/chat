@@ -23,6 +23,7 @@ module.exports = class ApiUser {
      * This function register all apiuser routes
      */
     register(){
+        this.userIsOnline();
         this.getAllUsers();
         this.getAllUsersWithOutBan();
         this.getUserName();
@@ -37,8 +38,37 @@ module.exports = class ApiUser {
     
     
     /**
-     * This function get all users from database
+     * This function get if user is online
      * requeriments for request: (username)
+     */
+    userIsOnline(){
+        this.server.get('/api/user-is-online', (req, res) => {
+            try {
+                const bind = {
+                    username: req.query.username
+                };
+
+                var isOnline = false;
+
+                this.App.onlineUsers.forEach(user => {
+                    if (user.username == bind.username) {
+                        isOnline = true;
+                        return
+                    }
+                });
+
+                res.send(isOnline ? "online" : "offline")
+            }
+            catch (err){
+                this.App.throwErr(err, this.prefix, res)
+            }
+        })
+    }
+
+
+    /**
+     * This function get all users from database
+     * requeriments for request: (username) and be admin
      */
     getAllUsers(){
         this.server.get('/api/get-all-users', (req, res) => {
@@ -60,7 +90,7 @@ module.exports = class ApiUser {
 
     /**
      * This function get all users without ban from database
-     * requeriments for request: (username)
+     * requeriments for request: (username) and be admin
      */
     getAllUsersWithOutBan(){
         this.server.get('/api/get-all-users-without-ban', (req, res) => {
@@ -137,17 +167,22 @@ module.exports = class ApiUser {
         this.server.get('/api/delete-user', (req, res) => {
             try {
                 const bind = {
-                    id: (this.App.isNull(req.query.id) ? req.user.id : req.query.id)//TODO: add security
+                    id: (this.App.isNull(req.query.id) ? req.user.id : req.query.id)
                 };
                 
                 if (this.App.isNull(req.query.id)){
-                    res.redirect('/logout');
-                    setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
-                }//If the user id is not your current user
+                    this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
+                        if (isAdmin){
+                            res.redirect('/logout');
+                            setTimeout(() => this.App.UserOrm.deleteById({ id: bind.id }), 250)
+                        }
+                        else res.status(401).send("Forbbiden: You don't have permissions to do this")
+                    })
+                }//Delete by query param
                 else this.App.UserOrm.deleteById({ id: bind.id }, (err, rows) => {
                     if (err) this.App.throwErr(err, this.prefix, res);
                     else res.status(200).send("Ok!");
-                });
+                })
             }
             catch (err){
                 this.App.throwErr(err, this.prefix);
@@ -159,7 +194,7 @@ module.exports = class ApiUser {
     
     /**
      * This function prepare the route for update rank in the api
-     * requeriments for the request: (username, rankId, userRequestId)
+     * requeriments for the request: (username, rankId, userRequestId) and be admin
      */
     updateRankUser(){
         this.server.get('/api/update-rank-user', (req, res) => {
@@ -205,9 +240,7 @@ module.exports = class ApiUser {
                         else if (rows.length) this.App.throwErr({message: "This username is already in use"}, this.prefix, res);
                         else {
                             res.redirect('/');
-                            setTimeout(() => this.App.UserOrm.updateById(bind, (err, rows) => {
-                                if (err) this.App.throwErr(err, this.prefix, res)
-                            }), 250)
+                            setTimeout(() => this.App.UserOrm.updateById(bind), 250)
                         }
                     })
                 })

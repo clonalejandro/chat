@@ -33,6 +33,7 @@ module.exports = class App {
         
         Log = new Log();
         
+        App.onlineUsers = new Array();
         App.config = config;
         App.salt = "";
         App.MysqlManager = new MysqlManager(App, config);
@@ -87,6 +88,26 @@ module.exports = class App {
 
         if (ip.includes("::ffff:")) return ip.replace("::ffff:", "")
         else return ip
+    }
+
+
+    /**
+     * This function set user as online
+     * @param {*} req 
+     */
+    static addOnlineUser(req){
+        App.onlineUsers.push(req.user)
+    }
+
+
+    /**
+     * This function set user as offline
+     * @param {*} req 
+     */
+    static removeOnlineUser(req){
+        App.onlineUsers.map((element, i)=> {
+            if (element.id == req.user.id) delete App.onlineUsers[i]
+        })
     }
 
 

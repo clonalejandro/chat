@@ -173,7 +173,11 @@ function renderUsers(bind){
         <div id="${bind.id}" class="user ban">
             <div class="header">
                 <img src="https://i.imgur.com/ElM6QDb.png" alt="user"/>
-                <p>${bind.username} ${buildBadgeByRank(bind)}</p>
+                <p>
+                    ${bind.username} 
+                    ${buildBadgeByRank(bind)}
+                    <span class="${bind.status}"></span> 
+                </p>
             </div>
             <div class="body">
                 <button class="btn btn-warning btn-sm ban"><i class="fa fa-ban"></i></button>
@@ -197,7 +201,11 @@ function renderUnbanUsers(bind){
         <div id="${bind.id}" class="user unban">
             <div class="header">
                 <img src="https://i.imgur.com/ElM6QDb.png" alt="user"/>
-                <p>${bind.username} ${buildBadgeByRank(bind)}</p>
+                <p>
+                    ${bind.username} 
+                    ${buildBadgeByRank(bind)}
+                    <span class="${bind.status}"></span> 
+                </p>
             </div>
             <div class="body">
                 <button class="btn btn-primary btn-sm unban"><i class="fa fa-check"></i></button>
@@ -274,11 +282,6 @@ function registerUserControlListener(bind){
  * @param {Object} bind 
  */
 function registerUnbanUserListener(bind){
-    if (isNull($(`#${bind.id}.unban`))) return setTimeout(() => {
-        console.log("Waiting for render the html for the user: ", bind);
-        registerUnbanUserListener(bind)
-    }, 500)
-
     $(`#${bind.id}.unban .unban`).on('click', () => {
         const modal = $("#modalUnbanUser");
         const modalBody = $("#modalUnbanUser .modal-body");
@@ -316,25 +319,46 @@ function getAllUsersRequest(callback){
     new Request(`${webURI}/api/get-all-users-without-ban`, "GET", e => {
         if (e.status == 200 || e.responseText == "Ok!") {
             const json = JSON.parse(e.response);
-            
-            //Prepare the users array for the autocomplete
             users = new Array();
-            json.forEach(row => users.push(row.username));
+
+            json.map((user, i) => {
+                users.push(user.username)
+                getUserStatus(user, status => json[i].status = status)//Build the user status
+            });
+            
+            setTimeout(() => callback(json), 250)
+
+            //Prepare the users array for the autocomplete
             autoCompleteUsers = (isNull(autoCompleteUsers) 
                 ? new AutoComplete("#ranks input[name='r_username']", users, () => autoCompleteUsers.clearContainer()) 
                 : autoCompleteUsers
             );
             
-            callback(json)
         }
         else throwErr(e.responseText)
     })
 }
 
 
+async function getUserStatus(user, callback){
+    return await new Request(`${webURI}/api/user-is-online?username=${user.username}`, "GET", e => {
+        if (e.status == 200 || e.responseText == "Ok!") callback(e.responseText);
+        else throwErr(e.responseText)
+    }, `username=${user.username}`)
+}
+
+
 function getAllUsersBannedRequest(callback){
     new Request(`${webURI}/api/get-users-banned`, "GET", e => {
-        if (e.status == 200 || e.responseText == "Ok!") callback(JSON.parse(e.response));
+        if (e.status == 200 || e.responseText == "Ok!") {
+            const json = JSON.parse(e.response);
+
+            json.map((user, i) => {
+                getUserStatus(user, status => json[i].status = status)//Build the user status
+            });
+
+            setTimeout(() => callback(json), 250)
+        }
         else throwErr(e.responseText)
     })
 }

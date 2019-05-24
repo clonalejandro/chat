@@ -81,7 +81,7 @@ module.exports = class ApiBan {
 
     /**
      * This function prepare the route for ban a users
-     * requeriments for the request: (userId)
+     * requeriments for the request: (userId) and be admin
      */
     ban(){
         this.server.get('/api/ban-user', (req, res) => {
@@ -107,7 +107,7 @@ module.exports = class ApiBan {
 
     /**
      * This function prepare the route for unban a users
-     * requeriments for the request: (userId)
+     * requeriments for the request: (userId) and be admin
      */
     unban(){
         this.server.get('/api/unban-user', (req, res) => {

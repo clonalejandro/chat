@@ -250,6 +250,8 @@ module.exports = class Router {
     renderLogout(){
         this.server.get('/logout', (req, res) => {
             try {
+                this.App.removeOnlineUser(req);
+
                 req.logout();
                 res.redirect('/login');
             }
@@ -267,8 +269,10 @@ module.exports = class Router {
         this.server.get('/',  this.isAuthenticated, (req, res) => {
             try {
                 const tempConfig = getSecureConfig();
-
+                
                 tempConfig.username = req.user.username;
+
+                this.App.addOnlineUser(req);
                 
                 this.isBan(req, res, () => this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                     tempConfig.isAdmin = isAdmin;

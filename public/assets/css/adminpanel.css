@@ -112,6 +112,35 @@ header > h3 {
 }
 
 
+/** STATUS **/
+
+.online::before {
+    content: '';
+    display: inline-flex;
+    width: 6px;
+    height: 6px;
+    width: 6px;
+    height: 6px;
+    background: #4CAF50;
+    border-radius: 6px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.offline::before {
+    content: '';
+    display: inline-flex;
+    width: 6px;
+    height: 6px;
+    width: 6px;
+    height: 6px;
+    background: #9E9E9E;
+    border-radius: 6px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
 /** SELECT **/
 
 #ranks {
