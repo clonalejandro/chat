@@ -293,9 +293,7 @@ module.exports = class App {
      * This function start the task for the logRotate
      */
     startLogRotate(){
-        new TaskTimer(App, 'Log rotate', () => {
-            Log.logRotate()
-        }, Math.hoursToMilis(1))
+        new TaskTimer(App, 'Log rotate',  () => Log.logRotate(), Math.hoursToMilis(1))
     }
     
 

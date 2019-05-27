@@ -29,6 +29,7 @@ body {
 
 #main > h1,
 #main > h4 {
+    word-break: break-all;
     font-weight: 300
 }
 

@@ -2,8 +2,6 @@
 
 const routes   = require('../../assets/data/routes.json');
 const config   = require('../../assets/data/config.json');
-const fetch    = require("node-fetch");
-const Bluebird = require("bluebird");
 
 
 /** FUNCTIONS **/
@@ -33,8 +31,6 @@ module.exports = class Router {
         this.server = server;
         this.passport = passport;
         this.prefix = "ROUTER";
-
-        fetch.Promise = Bluebird
     }
     
     

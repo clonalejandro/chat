@@ -414,8 +414,8 @@ $(document).ready(() => {
     socketOnStatus(() => makeMainRequests());
 
     $("#logout").unbind().on('click', e => socketDisconnect().then(
-        () => redirect(`${webURI}/logout`))
-    )
+        () => redirect(`${webURI}/logout`)
+    ))//End the sockets on disconnect
 });
 
 $("#banControll").on('click', () => {

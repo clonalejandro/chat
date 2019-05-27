@@ -343,7 +343,11 @@ $(document).ready(() => {
     responsive();
     initIo();
     
-    getMessagesFromThisChatRequest()
+    getMessagesFromThisChatRequest();
+
+    $("#logout").unbind().on('click', e => socketDisconnect().then(
+        () => redirect(`${webURI}/logout`)
+    ))//End the sockets on disconnect
 });
 
 
