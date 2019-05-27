@@ -1,4 +1,5 @@
 var socket;
+var reconnect = true;
 const tasks = new Array();
 
 
@@ -10,7 +11,7 @@ const tasks = new Array();
  */
 const connectionChecker = () => {
     return setInterval(() => {
-        if (!socket.connected && !socket.connecting){
+        if (!socket.connected && !socket.connecting && reconnect){
             socket.connect();
             console.log("Trying to reconnect to the socket server")
         }
@@ -29,7 +30,7 @@ function initIo(){
 
     socket = io.connect(url, config);
     tasks.push({name: "connectionChecker", id: connectionChecker()});
-    
+
     socket.on('connect', () => console.log("Sockets initialized"))
 }
 
@@ -63,11 +64,29 @@ function socketOnRefresh(callback){
 
 
 /**
+ * This funciton register a listen when status of user change
+ * @param {*} callback 
+ */
+function socketOnStatus(callback){
+    socket.on('status', callback)
+}
+
+
+/**
  * This function send data via sockets
  * @param {Object} data 
  */
 function socketSendMessage(data){
     socket.emit('send-message', data)
+}
+
+
+/**
+ * This function end the socket connection
+ */
+async function socketDisconnect(){
+    reconnect = false;
+    socket.disconnect();
 }
 
 

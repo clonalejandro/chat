@@ -96,7 +96,8 @@ module.exports = class App {
      * @param {*} req 
      */
     static addOnlineUser(req){
-        App.onlineUsers.push(req.user)
+        App.onlineUsers.push(req.user);
+        App.io.sockets.emit('status', "changed!")
     }
 
 
@@ -105,9 +106,11 @@ module.exports = class App {
      * @param {*} req 
      */
     static removeOnlineUser(req){
-        App.onlineUsers.map((element, i)=> {
+        App.onlineUsers.map((element, i) => {
             if (element.id == req.user.id) delete App.onlineUsers[i]
-        })
+        });
+
+        App.io.sockets.emit('status', "changed!")
     }
 
 
@@ -211,7 +214,7 @@ module.exports = class App {
 
         const apiLimiter = rateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
-            max: 100, // limit each IP to 100 requests per windowMs
+            max: 350, // limit each IP to 350 requests per windowMs
             message: "Too many requests created from this IP, please try again after an hour"
         })
 

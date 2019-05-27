@@ -7,8 +7,6 @@ module.exports = class SocketManager {
         this.App = App;
         this.io = App.io;
         this.prefix = "SOCKET";
-
-        this.messageBuffer = [];
     }
 
     

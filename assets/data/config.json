@@ -6,8 +6,8 @@
     "webName": "chat online",
     "description": "chat with nodejs",
     "tagsString": "chat, online, clonalejandro, nodejs, js",
-    "email": "",
-    "webURI": "http://alex.hdt.es",
+    "email": "master@yourdomain.com",
+    "webURI": "http://192.168.0.46",
     "session": {
         "secret": "54321A",
         "resave": false,

@@ -91,6 +91,22 @@ const UnbanUsersContainer = {
 /** FUNCTIONS **/
 
 /**
+ * This function make the main requests
+ */
+function makeMainRequests(){
+    getAllUsersRequest(users => {
+        UsersContainer.clear();
+        users.forEach(renderUsers)
+    });//Update the rank in the all users list
+
+    getAllUsersBannedRequest(users => {
+        UnbanUsersContainer.clear();
+        users.forEach(renderUnbanUsers)
+    });//Update the rank in the all users banned list
+}
+
+
+/**
  * This function build a badge html per rankId
  * @param {Object} bind 
  * @return {String} htmlBadge
@@ -145,16 +161,7 @@ function changeRank(){
             </div>
         `);
 
-        getAllUsersRequest(users => {
-            UsersContainer.clear();
-            users.forEach(renderUsers)
-        });//Update the rank in the all users list
-    
-        getAllUsersBannedRequest(users => {
-            UnbanUsersContainer.clear();
-            users.forEach(renderUnbanUsers)
-        });//Update the rank in the all users banned list
-
+        makeMainRequests();
         alertTimeout();//For clear the notifications in time
 
         $("#ranks form")[0].reset()//Reset the form
@@ -326,7 +333,7 @@ function getAllUsersRequest(callback){
                 getUserStatus(user, status => json[i].status = status)//Build the user status
             });
             
-            setTimeout(() => callback(json), 250)
+            setTimeout(() => callback(json), 250);
 
             //Prepare the users array for the autocomplete
             autoCompleteUsers = (isNull(autoCompleteUsers) 
@@ -340,8 +347,8 @@ function getAllUsersRequest(callback){
 }
 
 
-async function getUserStatus(user, callback){
-    return await new Request(`${webURI}/api/user-is-online?username=${user.username}`, "GET", e => {
+function getUserStatus(user, callback){
+    new Request(`${webURI}/api/user-is-online?username=${user.username}`, "GET", e => {
         if (e.status == 200 || e.responseText == "Ok!") callback(e.responseText);
         else throwErr(e.responseText)
     }, `username=${user.username}`)
@@ -353,11 +360,14 @@ function getAllUsersBannedRequest(callback){
         if (e.status == 200 || e.responseText == "Ok!") {
             const json = JSON.parse(e.response);
 
-            json.map((user, i) => {
-                getUserStatus(user, status => json[i].status = status)//Build the user status
-            });
+            if (!json.length)
+                return UnbanUsersContainer.container.html("<h4 style='color: white'>No users banned<h4>")
 
-            setTimeout(() => callback(json), 250)
+            json.map((user, i) => 
+                getUserStatus(user, status => json[i].status = status)//Build the user status
+            );
+
+            setTimeout(() => callback(json), 250);
         }
         else throwErr(e.responseText)
     })
@@ -399,15 +409,13 @@ function unbanUserRequest(callback){
 /** METHODS **/
 
 $(document).ready(() => {
-    getAllUsersRequest(users => {
-        UsersContainer.clear();
-        users.forEach(renderUsers)
-    });
+    initIo();
+    makeMainRequests();
+    socketOnStatus(() => makeMainRequests());
 
-    getAllUsersBannedRequest(users => {
-        UnbanUsersContainer.clear();
-        users.forEach(renderUnbanUsers)
-    });
+    $("#logout").unbind().on('click', e => socketDisconnect().then(
+        () => redirect(`${webURI}/logout`))
+    )
 });
 
 $("#banControll").on('click', () => {

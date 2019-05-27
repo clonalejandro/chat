@@ -170,7 +170,7 @@ module.exports = class ApiUser {
                     id: (this.App.isNull(req.query.id) ? req.user.id : req.query.id)
                 };
                 
-                if (this.App.isNull(req.query.id)){
+                if (this.App.isNull(req.query.id) && (req.query.id != req.user.id)){
                     this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
                         if (isAdmin){
                             res.redirect('/logout');
@@ -205,11 +205,15 @@ module.exports = class ApiUser {
                 };
 
                 this.App.Api.ApiRank.isAdmin(req.user, isAdmin => {
-                    if (isAdmin) this.App.UserOrm.updateRank(bind, (err, rows) => {
+                    this.App.UserOrm.getByUserName(bind, (err, rows) => {
                         if (err) this.App.throwErr(err, this.prefix, res);
-                        else res.status(200).send("Ok!")
-                    });
-                    else res.status(401).send("Forbbiden: you don't have permissions to do this")
+                        else if (!rows.length) this.App.throwErr({message: "User not found!"}, this.prefix, res);
+                        else if (isAdmin) this.App.UserOrm.updateRank(bind, (err, rows) => {
+                            if (err) this.App.throwErr(err, this.prefix, res);
+                            else res.status(200).send("Ok!")
+                        });
+                        else res.status(401).send("Forbbiden: you don't have permissions to do this")
+                    })
                 })
             }
             catch (err){
