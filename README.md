@@ -12,5 +12,5 @@ A chat with nodejs and sockets with socket.io and express, mysql..
 * You can run the server executing `npm start`
 * Also you can run the server executing `chmod 755 start && sudo ./start`
 
-### Where is logs?
+### Where are logs?
 When you run the server for first time the chat creates in the folder installed a new folder called "Logs".
