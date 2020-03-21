@@ -236,7 +236,7 @@ module.exports = class Router {
             failureFlash: true
         }));
         
-        this.App.debug(`The server is registering route: "/login" aiming to: login`)
+        this.App.debug(`The server is registering route: "/login" aiming to: login`, this.prefix)
     }
     
     
@@ -281,7 +281,7 @@ module.exports = class Router {
             }
         });
         
-        this.App.debug(`The server is registering route: "/panel" aiming to: panel`);
+        this.App.debug(`The server is registering route: "/panel" aiming to: panel`, this.prefix);
     }
     
     
