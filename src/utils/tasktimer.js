@@ -22,7 +22,7 @@ module.exports = class TaskTimer {
     delete(){
         clearInterval(this.id);
         
-        tasks.map((e, index) => {
+        App.tasks.map((e, index) => {
             if (e.name == this.props.name) 
                 delete App.tasks[index];
         })
