@@ -1,4 +1,7 @@
 # CHAT ONLINE [BETA] 💬
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/16f0d93552444ac4b9f82fa3673e7328)](https://app.codacy.com/manual/clonalejandro/chat?utm_source=github.com&utm_medium=referral&utm_content=clonalejandro/chat&utm_campaign=Badge_Grade_Dashboard)
+
 A chat with nodejs and sockets with socket.io and express, mysql..
 
 ### How to install?
